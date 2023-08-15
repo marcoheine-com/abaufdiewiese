@@ -1,4 +1,5 @@
 import {Suspense} from 'react';
+import {type ActionArgs, json} from '@remix-run/server-runtime';
 import type {V2_MetaFunction} from '@shopify/remix-oxygen';
 import {defer, redirect, type LoaderArgs} from '@shopify/remix-oxygen';
 import type {FetcherWithComponents} from '@remix-run/react';
@@ -8,6 +9,7 @@ import type {
   ProductVariantsQuery,
   ProductVariantFragment,
 } from 'storefrontapi.generated';
+import invariant from 'tiny-invariant';
 
 import {
   Image,
@@ -16,6 +18,8 @@ import {
   type VariantOption,
   getSelectedProductOptions,
   CartForm,
+  type CartQueryData,
+  type HydrogenCart,
 } from '@shopify/hydrogen';
 import type {CartLineInput} from '@shopify/hydrogen/storefront-api-types';
 import {getVariantUrl} from '~/utils';
@@ -23,6 +27,24 @@ import {getVariantUrl} from '~/utils';
 export const meta: V2_MetaFunction = ({data}) => {
   return [{title: `Hydrogen | ${data.product.title}`}];
 };
+
+export async function action({request, context}: ActionArgs) {
+  const cart = context.cart as HydrogenCart;
+  // cart is type HydrogenCart or HydrogenCartCustom
+  // Declare cart type in remix.env.d.ts for interface AppLoadContext to avoid type casting
+  // const {cart} = context;
+  const formData = await request.formData();
+  const {action, inputs} = CartForm.getFormInput(formData);
+  let status = 200;
+  let result: CartQueryData;
+  if (action === CartForm.ACTIONS.NoteUpdate) {
+    result = await cart.updateNote(inputs.note);
+  } else {
+    invariant(false, `${action} cart action is not defined`);
+  }
+  const headers = cart.setCartId(result.cart.id);
+  return json(result, {status, headers});
+}
 
 export async function loader({params, request, context}: LoaderArgs) {
   const {handle} = params;
@@ -227,6 +249,8 @@ function ProductForm({
         {({option}) => <ProductOptions key={option.name} option={option} />}
       </VariantSelector>
       <br />
+      <CustomProductOptions />
+      <br />
       <AddToCartButton
         disabled={!selectedVariant || !selectedVariant.availableForSale}
         onClick={() => {
@@ -275,6 +299,15 @@ function ProductOptions({option}: {option: VariantOption}) {
       </div>
       <br />
     </div>
+  );
+}
+
+function CustomProductOptions() {
+  return (
+    <CartForm action={CartForm.ACTIONS.NoteUpdate}>
+      <input type="text" name="note" />
+      <button type="submit">Update</button>
+    </CartForm>
   );
 }
 

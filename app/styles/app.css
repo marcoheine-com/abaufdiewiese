@@ -131,7 +131,6 @@ aside li {
   align-items: center;
   background: #fff;
   display: flex;
-  height: var(--header-height);
   padding: 0 1rem;
   position: sticky;
   top: 0;

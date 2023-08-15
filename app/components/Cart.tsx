@@ -31,7 +31,7 @@ function CartDetails({layout, cart}: CartMainProps) {
 
   return (
     <div className="cart-details">
-      <CartLines lines={cart?.lines} layout={layout} />
+      <CartLines lines={cart?.lines} layout={layout} note={cart?.note} />
       {cartHasItems && (
         <CartSummary cost={cart.cost} layout={layout}>
           <CartDiscounts discountCodes={cart.discountCodes} />
@@ -45,9 +45,11 @@ function CartDetails({layout, cart}: CartMainProps) {
 function CartLines({
   lines,
   layout,
+  note = undefined,
 }: {
   layout: CartMainProps['layout'];
   lines: CartApiQueryFragment['lines'] | undefined;
+  note: CartApiQueryFragment['note'] | undefined;
 }) {
   if (!lines) return null;
 
@@ -55,7 +57,7 @@ function CartLines({
     <div aria-labelledby="cart-lines">
       <ul>
         {lines.nodes.map((line) => (
-          <CartLineItem key={line.id} line={line} layout={layout} />
+          <CartLineItem key={line.id} line={line} layout={layout} note={note} />
         ))}
       </ul>
     </div>
@@ -65,9 +67,11 @@ function CartLines({
 function CartLineItem({
   layout,
   line,
+  note,
 }: {
   layout: CartMainProps['layout'];
   line: CartLine;
+  note: CartApiQueryFragment['note'] | undefined;
 }) {
   const {id, merchandise} = line;
   const {product, title, image, selectedOptions} = merchandise;
@@ -112,6 +116,7 @@ function CartLineItem({
           ))}
         </ul>
         <CartLineQuantity line={line} />
+        {note && <p>Note: {note}</p>}
       </div>
     </li>
   );

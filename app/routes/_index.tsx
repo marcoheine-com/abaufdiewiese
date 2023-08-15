@@ -25,7 +25,7 @@ export default function Homepage() {
   const data = useLoaderData<typeof loader>();
   return (
     <div className="home">
-      <FeaturedCollection collection={data.featuredCollection} />
+      <h2 className="text-center">Aktuelle Picknicks</h2>
       <RecommendedProducts products={data.recommendedProducts} />
     </div>
   );
@@ -59,30 +59,34 @@ function RecommendedProducts({
 }) {
   return (
     <div className="recommended-products">
-      <h2>Recommended Products</h2>
       <Suspense fallback={<div>Loading...</div>}>
         <Await resolve={products}>
-          {({products}) => (
-            <div className="recommended-products-grid">
-              {products.nodes.map((product) => (
-                <Link
-                  key={product.id}
-                  className="recommended-product"
-                  to={`/products/${product.handle}`}
-                >
-                  <Image
-                    data={product.images.nodes[0]}
-                    aspectRatio="1/1"
-                    sizes="(min-width: 45em) 20vw, 50vw"
-                  />
-                  <h4>{product.title}</h4>
-                  <small>
-                    <Money data={product.priceRange.minVariantPrice} />
-                  </small>
-                </Link>
-              ))}
-            </div>
-          )}
+          {({products}) => {
+            return (
+              <div className="recommended-products-grid">
+                {products.nodes.map((product) => (
+                  <Link
+                    key={product.id}
+                    className="recommended-product"
+                    to={`/products/${product.handle}`}
+                  >
+                    <Image
+                      data={product.images.nodes[0]}
+                      aspectRatio="1/1"
+                      sizes="(min-width: 45em) 20vw, 50vw"
+                    />
+                    <h4 className="uppercase text-center mt-4">
+                      {product.title}
+                    </h4>
+                    <p className="text-center">{product.description}</p>
+                    <button className="bg-primary rounded-[4px] p-4 w-full mt-4">
+                      Picknick am {product.metafield?.value} buchen
+                    </button>
+                  </Link>
+                ))}
+              </div>
+            );
+          }}
         </Await>
       </Suspense>
       <br />
@@ -118,6 +122,7 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
     id
     title
     handle
+    description
     priceRange {
       minVariantPrice {
         amount
@@ -133,10 +138,14 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
         height
       }
     }
+    metafield(namespace: "custom", key: "date") {
+      value
+      type
+    }
   }
   query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
     @inContext(country: $country, language: $language) {
-    products(first: 4, sortKey: UPDATED_AT, reverse: true) {
+    products(first: 3, sortKey: UPDATED_AT, reverse: true) {
       nodes {
         ...RecommendedProduct
       }
