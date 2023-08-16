@@ -79,18 +79,8 @@ section {
   }
 }
 
-fieldset {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 0.5rem;
-  padding: 1rem;
-}
-
 form {
   max-width: 100%;
-  @media (min-width: 768px) {
-    max-width: 400px;
-  }
 }
 
 input {

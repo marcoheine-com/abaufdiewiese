@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+}
+input[type='radio'] {
+  /* Add if not using autoprefixer */
+  -webkit-appearance: none;
+  appearance: none;
+  /* For iOS < 15 to remove gradient background */
+  background-color: #fff;
+  /* Not removed via appearance */
+  margin: 0;
+  display: none;
+}
+
+input[type='radio'] + label {
+  @apply border-[1px] border-radioBorder cursor-pointer rounded py-2 px-8 m-[1px];
+}
+input[type='radio']:checked + label {
+  @apply border-2 border-primary m-0;
+}

@@ -7,6 +7,8 @@ import type {
   FeaturedCollectionFragment,
   RecommendedProductsQuery,
 } from 'storefrontapi.generated';
+import {PrimaryButton} from '~/components/PrimaryButton';
+import {formatGermanDate} from '~/utils';
 
 export const meta: V2_MetaFunction = () => {
   return [{title: 'Hydrogen | Home'}];
@@ -79,9 +81,14 @@ function RecommendedProducts({
                       {product.title}
                     </h4>
                     <p className="text-center">{product.description}</p>
-                    <button className="bg-primary rounded-[4px] p-4 w-full mt-4">
-                      Picknick am {product.metafield?.value} buchen
-                    </button>
+
+                    <PrimaryButton>
+                      {product.metafield?.value
+                        ? `Picknick am ${formatGermanDate(
+                            product.metafield?.value,
+                          )} buchen`
+                        : 'Picknick buchen'}
+                    </PrimaryButton>
                   </Link>
                 ))}
               </div>

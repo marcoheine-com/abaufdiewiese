@@ -1,5 +1,4 @@
 import {Suspense} from 'react';
-import {type ActionArgs, json} from '@remix-run/server-runtime';
 import type {V2_MetaFunction} from '@shopify/remix-oxygen';
 import {defer, redirect, type LoaderArgs} from '@shopify/remix-oxygen';
 import type {FetcherWithComponents} from '@remix-run/react';
@@ -9,7 +8,6 @@ import type {
   ProductVariantsQuery,
   ProductVariantFragment,
 } from 'storefrontapi.generated';
-import invariant from 'tiny-invariant';
 
 import {
   Image,
@@ -18,33 +16,18 @@ import {
   type VariantOption,
   getSelectedProductOptions,
   CartForm,
-  type CartQueryData,
-  type HydrogenCart,
 } from '@shopify/hydrogen';
-import type {CartLineInput} from '@shopify/hydrogen/storefront-api-types';
-import {getVariantUrl} from '~/utils';
+import type {
+  AttributeInput,
+  CartLineInput,
+} from '@shopify/hydrogen/storefront-api-types';
+import {formatGermanDate, getVariantUrl} from '~/utils';
+import {PrimaryButton} from '~/components/PrimaryButton';
+import {useState} from 'react';
 
 export const meta: V2_MetaFunction = ({data}) => {
   return [{title: `Hydrogen | ${data.product.title}`}];
 };
-
-export async function action({request, context}: ActionArgs) {
-  const cart = context.cart as HydrogenCart;
-  // cart is type HydrogenCart or HydrogenCartCustom
-  // Declare cart type in remix.env.d.ts for interface AppLoadContext to avoid type casting
-  // const {cart} = context;
-  const formData = await request.formData();
-  const {action, inputs} = CartForm.getFormInput(formData);
-  let status = 200;
-  let result: CartQueryData;
-  if (action === CartForm.ACTIONS.NoteUpdate) {
-    result = await cart.updateNote(inputs.note);
-  } else {
-    invariant(false, `${action} cart action is not defined`);
-  }
-  const headers = cart.setCartId(result.cart.id);
-  return json(result, {status, headers});
-}
 
 export async function loader({params, request, context}: LoaderArgs) {
   const {handle} = params;
@@ -169,7 +152,23 @@ function ProductMain({
   return (
     <div className="product-main">
       <h1>{title}</h1>
+      <p className="grid grid-cols-2 ">
+        {product.date?.value && (
+          <time dateTime={product.date?.value}>
+            {formatGermanDate(product.date?.value)}
+          </time>
+        )}
+        {product.date?.value && (
+          <time dateTime={product.date?.value}>{product.timeRange?.value}</time>
+        )}
+        {product.location?.value && (
+          <span className="mt-4">{product.location?.value}</span>
+        )}
+      </p>
+      <br />
       <ProductPrice selectedVariant={selectedVariant} />
+      <br />
+      <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
       <br />
       <Suspense
         fallback={
@@ -193,14 +192,6 @@ function ProductMain({
           )}
         </Await>
       </Suspense>
-      <br />
-      <br />
-      <p>
-        <strong>Description</strong>
-      </p>
-      <br />
-      <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
-      <br />
     </div>
   );
 }
@@ -239,8 +230,111 @@ function ProductForm({
   selectedVariant: ProductFragment['selectedVariant'];
   variants: Array<ProductVariantFragment>;
 }) {
+  const [guests, setGuests] = useState<AttributeInput>({
+    key: 'guests',
+    value: '1 - 2',
+  });
+  const [menu, setMenu] = useState<AttributeInput>({
+    key: 'menu',
+    value: 'Klassisch',
+  });
+
+  const onChangeHandler = (key: 'guests' | 'menu', value: string) => {
+    if (key === 'guests') {
+      setGuests({key, value});
+    }
+
+    if (key === 'menu') {
+      setMenu({key, value});
+    }
+  };
+
+  const attributes = [guests, menu].filter(Boolean) as AttributeInput[];
+
+  const buttonLabel = selectedVariant?.availableForSale
+    ? 'Mein Picknick buchen'
+    : 'Leider ausverkauft';
+
   return (
-    <div className="product-form">
+    <div className="flex flex-col gap-6">
+      <div className="grid md:grid-cols-[120px_auto]">
+        <legend className="font-normal">Picknickgäste</legend>
+        <fieldset className="flex flex-wrap gap-4 md:flex-nowrap">
+          <input
+            type="radio"
+            name="guests"
+            value="1 - 2"
+            id="1-2"
+            required
+            checked={guests?.value === '1 - 2'}
+            onChange={() => onChangeHandler('guests', '1 - 2')}
+          />
+          <label htmlFor="1-2" className="md:flex-1 text-center">
+            1 -2
+          </label>
+          <input
+            type="radio"
+            name="guests"
+            value="3 - 4"
+            id="3-4"
+            checked={guests?.value === '3 - 4'}
+            onChange={() => onChangeHandler('guests', '3 - 4')}
+          />
+          <label htmlFor="3-4" className="md:flex-1 text-center">
+            3 - 4
+          </label>
+          <input
+            type="radio"
+            name="guests"
+            value="5 - 6"
+            id="5-6"
+            checked={guests?.value === '5 - 6'}
+            onChange={() => onChangeHandler('guests', '5 - 6')}
+          />
+          <label htmlFor="5-6" className="md:flex-1 text-center">
+            5 - 6
+          </label>
+        </fieldset>
+      </div>
+      <div className="grid md:grid-cols-[120px_auto]">
+        <legend className="font-normal">Picknickmenü</legend>
+        <fieldset className="flex flex-wrap md:flex-nowrap gap-4">
+          <input
+            type="radio"
+            name="menu"
+            value="Klassisch"
+            id="klassisch"
+            required
+            checked={menu?.value === 'Klassisch'}
+            onChange={() => onChangeHandler('menu', 'Klassisch')}
+          />
+          <label htmlFor="klassisch" className="md:flex-1 text-center">
+            Klassisch
+          </label>
+          <input
+            type="radio"
+            name="menu"
+            value="Vegetarisch"
+            id="vegetarisch"
+            checked={menu?.value === 'Vegetarisch'}
+            onChange={() => onChangeHandler('menu', 'Vegetarisch')}
+          />
+          <label htmlFor="vegetarisch" className="md:flex-1 text-center">
+            Vegetarisch
+          </label>
+          <input
+            type="radio"
+            name="menu"
+            value="Vegan"
+            id="vegan"
+            checked={menu?.value === 'Vegan'}
+            onChange={() => onChangeHandler('menu', 'Vegan')}
+          />
+          <label htmlFor="vegan" className="md:flex-1 text-center">
+            Vegan
+          </label>
+        </fieldset>
+      </div>
       <VariantSelector
         handle={product.handle}
         options={product.options}
@@ -248,9 +342,6 @@ function ProductForm({
       >
         {({option}) => <ProductOptions key={option.name} option={option} />}
       </VariantSelector>
-      <br />
-      <CustomProductOptions />
-      <br />
       <AddToCartButton
         disabled={!selectedVariant || !selectedVariant.availableForSale}
         onClick={() => {
@@ -262,12 +353,13 @@ function ProductForm({
                 {
                   merchandiseId: selectedVariant.id,
                   quantity: 1,
+                  attributes: attributes,
                 },
               ]
             : []
         }
       >
-        {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
+        {buttonLabel}
       </AddToCartButton>
     </div>
   );
@@ -275,20 +367,25 @@ function ProductForm({
 
 function ProductOptions({option}: {option: VariantOption}) {
   return (
-    <div className="product-options" key={option.name}>
-      <h5>{option.name}</h5>
-      <div className="product-options-grid">
+    <div className="md:grid md:grid-cols-[120px_auto]" key={option.name}>
+      <h5 className="mt-0">{option.name}</h5>
+      <div className="flex items-start flex-wrap gap-4">
         {option.values.map(({value, isAvailable, isActive, to}) => {
           return (
             <Link
-              className="product-options-item"
+              className={` ${
+                isActive
+                  ? 'border-2 border-primary m-0'
+                  : 'border-[1px] border-radioBorder'
+              }
+             hover:no-underline cursor-pointer rounded py-2 px-8 m-[1px] md:flex-1 text-center
+            `}
               key={option.name + value}
               prefetch="intent"
               preventScrollReset
               replace
               to={to}
               style={{
-                border: isActive ? '1px solid black' : '1px solid transparent',
                 opacity: isAvailable ? 1 : 0.3,
               }}
             >
@@ -297,17 +394,7 @@ function ProductOptions({option}: {option: VariantOption}) {
           );
         })}
       </div>
-      <br />
     </div>
-  );
-}
-
-function CustomProductOptions() {
-  return (
-    <CartForm action={CartForm.ACTIONS.NoteUpdate}>
-      <input type="text" name="note" />
-      <button type="submit">Update</button>
-    </CartForm>
   );
 }
 
@@ -333,13 +420,13 @@ function AddToCartButton({
             type="hidden"
             value={JSON.stringify(analytics)}
           />
-          <button
+          <PrimaryButton
             type="submit"
             onClick={onClick}
             disabled={disabled ?? fetcher.state !== 'idle'}
           >
             {children}
-          </button>
+          </PrimaryButton>
         </>
       )}
     </CartForm>
@@ -392,6 +479,37 @@ const PRODUCT_FRAGMENT = `#graphql
     handle
     descriptionHtml
     description
+    timeRange: metafield(namespace: "custom", key: "time_range") {
+      value
+    }
+    date:  metafield(namespace: "custom", key: "date") {
+      value
+    }
+    location: metafield(namespace: "custom", key: "location") {
+      value
+    }
+    media(first: 4) {
+      nodes {
+        ... on MediaImage {
+          mediaContentType
+          image {
+            id
+            url
+            altText
+            width
+            height
+          }
+        }
+        ... on Model3d {
+          id
+          mediaContentType
+          sources {
+            mimeType
+            url
+          }
+        }
+      }
+    }
     options {
       name
       values

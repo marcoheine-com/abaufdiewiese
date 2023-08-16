@@ -3,7 +3,7 @@ import type {FooterQuery} from 'storefrontapi.generated';
 
 export function Footer({menu}: FooterQuery) {
   return (
-    <footer className="footer">
+    <footer className="bg-primary mt-auto ">
       <FooterMenu menu={menu} />
     </footer>
   );
@@ -13,7 +13,10 @@ function FooterMenu({menu}: Pick<FooterQuery, 'menu'>) {
   const [root] = useMatches();
   const publicStoreDomain = root?.data?.publicStoreDomain;
   return (
-    <nav className="footer-menu" role="navigation">
+    <nav
+      className="flex items-center gap-4 p-4 text-primaryText"
+      role="navigation"
+    >
       {(menu || FALLBACK_FOOTER_MENU).items.map((item) => {
         if (!item.url) return null;
         // if the url is internal, we strip the domain

@@ -15,6 +15,7 @@ export default {
         backgroundVariant: '#FFFFFF',
         primaryText: '#333',
         placeholderText: '#676767',
+        radioBorder: '#262825',
       },
     },
   },
