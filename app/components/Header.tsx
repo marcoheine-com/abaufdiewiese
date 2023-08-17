@@ -82,17 +82,11 @@ export function HeaderMenu({
   );
 }
 
-function HeaderCtas({
-  isLoggedIn,
-  cart,
-}: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
+function HeaderCtas({cart}: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
-      <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
-        {isLoggedIn ? 'Account' : 'Sign in'}
-      </NavLink>
-      <SearchToggle />
+
       <CartToggle cart={cart} />
     </nav>
   );
@@ -104,10 +98,6 @@ function HeaderMenuMobileToggle() {
       <h3>☰</h3>
     </a>
   );
-}
-
-function SearchToggle() {
-  return <a href="#search-aside">Search</a>;
 }
 
 function CartBadge({count}: {count: number}) {

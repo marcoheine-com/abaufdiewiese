@@ -26,7 +26,7 @@ import {PrimaryButton} from '~/components/PrimaryButton';
 import {useState} from 'react';
 
 export const meta: V2_MetaFunction = ({data}) => {
-  return [{title: `Hydrogen | ${data.product.title}`}];
+  return [{title: `${data.product.title}`}];
 };
 
 export async function loader({params, request, context}: LoaderArgs) {

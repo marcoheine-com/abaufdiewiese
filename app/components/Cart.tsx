@@ -62,6 +62,15 @@ function CartLines({
   );
 }
 
+type ATTRIBUTE_KEYS_MAP = {
+  [key: string]: string;
+};
+
+const ATTRIBUTE_KEYS: ATTRIBUTE_KEYS_MAP = {
+  guests: 'Picknickgäste',
+  menu: 'Picknickmenü',
+};
+
 function CartLineItem({
   layout,
   line,
@@ -115,7 +124,7 @@ function CartLineItem({
         {line.attributes?.map((attribute) => (
           <div key={attribute.key}>
             <small>
-              {attribute.key}: {attribute.value}
+              {ATTRIBUTE_KEYS[attribute.key]}: {attribute.value}
             </small>
           </div>
         ))}
@@ -174,7 +183,7 @@ function CartLineRemoveButton({lineIds}: {lineIds: string[]}) {
       action={CartForm.ACTIONS.LinesRemove}
       inputs={{lineIds}}
     >
-      <button type="submit">Remove</button>
+      <button type="submit">Entfernen</button>
     </CartForm>
   );
 }
@@ -182,33 +191,11 @@ function CartLineRemoveButton({lineIds}: {lineIds: string[]}) {
 function CartLineQuantity({line}: {line: CartLine}) {
   if (!line || typeof line?.quantity === 'undefined') return null;
   const {id: lineId, quantity} = line;
-  const prevQuantity = Number(Math.max(0, quantity - 1).toFixed(0));
-  const nextQuantity = Number((quantity + 1).toFixed(0));
 
   return (
     <div className="cart-line-quantiy">
-      <small>Quantity: {quantity} &nbsp;&nbsp;</small>
-      <CartLineUpdateButton lines={[{id: lineId, quantity: prevQuantity}]}>
-        <button
-          aria-label="Decrease quantity"
-          disabled={quantity <= 1}
-          name="decrease-quantity"
-          value={prevQuantity}
-        >
-          <span>&#8722; </span>
-        </button>
-      </CartLineUpdateButton>
-      &nbsp;
-      <CartLineUpdateButton lines={[{id: lineId, quantity: nextQuantity}]}>
-        <button
-          aria-label="Increase quantity"
-          name="increase-quantity"
-          value={nextQuantity}
-        >
-          <span>&#43;</span>
-        </button>
-      </CartLineUpdateButton>
-      &nbsp;
+      <small>Anzahl: {quantity} &nbsp;&nbsp;</small>
+
       <CartLineRemoveButton lineIds={[lineId]} />
     </div>
   );
@@ -252,19 +239,18 @@ export function CartEmpty({
     <div hidden={hidden}>
       <br />
       <p>
-        Looks like you haven&rsquo;t added anything yet, let&rsquo;s get you
-        started!
+        Sieht to aus als hättest du noch nichts hinzugefügt, lass uns starten!
       </p>
       <br />
       <Link
         to="/collections"
         onClick={() => {
           if (layout === 'aside') {
-            window.location.href = '/collections';
+            window.location.href = '/';
           }
         }}
       >
-        Continue shopping →
+        Weiter shoppen →
       </Link>
     </div>
   );

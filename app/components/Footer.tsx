@@ -3,7 +3,7 @@ import type {FooterQuery} from 'storefrontapi.generated';
 
 export function Footer({menu}: FooterQuery) {
   return (
-    <footer className="bg-primary mt-auto w-full">
+    <footer className="bg-primaryVariant mt-auto w-full">
       <FooterMenu menu={menu} />
     </footer>
   );
