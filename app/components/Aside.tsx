@@ -23,7 +23,6 @@ export function Aside({
         className="close-outside"
         onClick={() => {
           history.go(-1);
-          window.location.hash = '';
         }}
       />
       <aside>

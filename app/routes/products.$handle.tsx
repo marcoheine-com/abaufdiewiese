@@ -111,7 +111,7 @@ export default function Product() {
   const {product, variants} = useLoaderData<typeof loader>();
   const {selectedVariant} = product;
   return (
-    <div className="product">
+    <div className="grid md:grid-cols-2 gap-16 w-full content-padding content-max-width mt-16 md:mt-36">
       <ProductImage image={selectedVariant?.image} />
       <ProductMain
         selectedVariant={selectedVariant}
@@ -151,7 +151,7 @@ function ProductMain({
   const {title, descriptionHtml} = product;
   return (
     <div className="product-main">
-      <h1>{title}</h1>
+      <h2>{title}</h2>
       <p className="grid grid-cols-2 ">
         {product.date?.value && (
           <time dateTime={product.date?.value}>
@@ -259,7 +259,7 @@ function ProductForm({
     <div className="flex flex-col gap-6">
       <div className="grid md:grid-cols-[120px_auto]">
         <legend className="font-normal">Picknickgäste</legend>
-        <fieldset className="flex flex-wrap gap-4 md:flex-nowrap">
+        <fieldset className="flex flex-wrap gap-4">
           <input
             type="radio"
             name="guests"
@@ -298,7 +298,7 @@ function ProductForm({
       </div>
       <div className="grid md:grid-cols-[120px_auto]">
         <legend className="font-normal">Picknickmenü</legend>
-        <fieldset className="flex flex-wrap md:flex-nowrap gap-4">
+        <fieldset className="flex flex-wrap gap-4">
           <input
             type="radio"
             name="menu"
@@ -344,9 +344,6 @@ function ProductForm({
       </VariantSelector>
       <AddToCartButton
         disabled={!selectedVariant || !selectedVariant.availableForSale}
-        onClick={() => {
-          window.location.href = window.location.href + '#cart-aside';
-        }}
         lines={
           selectedVariant
             ? [
@@ -403,14 +400,15 @@ function AddToCartButton({
   children,
   disabled,
   lines,
-  onClick,
 }: {
   analytics?: unknown;
   children: React.ReactNode;
   disabled?: boolean;
   lines: CartLineInput[];
-  onClick?: () => void;
 }) {
+  const handleOnClick = () => {
+    window.location.href = window.location.href + '#cart-aside';
+  };
   return (
     <CartForm route="/cart" inputs={{lines}} action={CartForm.ACTIONS.LinesAdd}>
       {(fetcher: FetcherWithComponents<any>) => (
@@ -422,7 +420,7 @@ function AddToCartButton({
           />
           <PrimaryButton
             type="submit"
-            onClick={onClick}
+            onClick={handleOnClick}
             disabled={disabled ?? fetcher.state !== 'idle'}
           >
             {children}

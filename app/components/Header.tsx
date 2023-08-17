@@ -9,7 +9,7 @@ type Viewport = 'desktop' | 'mobile';
 export function Header({header, isLoggedIn, cart}: HeaderProps) {
   const {shop, menu} = header;
   return (
-    <header className="header">
+    <header className="flex top-0 sticky p-4 w-full bg-white items-center mx-auto z-[1] max-w-[1920px]">
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
         <img
           src="/images/abaufdiewiese.png"
@@ -111,7 +111,7 @@ function SearchToggle() {
 }
 
 function CartBadge({count}: {count: number}) {
-  return <a href="#cart-aside">Cart {count}</a>;
+  return <a href="#cart-aside">Mein Körbchen {count}</a>;
 }
 
 function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {

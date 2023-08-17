@@ -34,21 +34,23 @@ export function Layout({
       <CartAside cart={cart} />
       <SearchAside />
       <MobileMenuAside menu={header.menu} />
-      <Header header={header} cart={cart} isLoggedIn={isLoggedIn} />
-      <main>{children}</main>
-      <Suspense>
-        <Await resolve={footer}>
-          {(footer) => <Footer menu={footer.menu} />}
-        </Await>
-      </Suspense>
+      <div className="flex flex-col items-start w-full min-h-screen">
+        <Header header={header} cart={cart} isLoggedIn={isLoggedIn} />
+        <main className="flex justify-center w-full mx-auto">{children}</main>
+        <Suspense>
+          <Await resolve={footer}>
+            {(footer) => <Footer menu={footer.menu} />}
+          </Await>
+        </Suspense>
+      </div>
     </>
   );
 }
 
 function CartAside({cart}: {cart: LayoutProps['cart']}) {
   return (
-    <Aside id="cart-aside" heading="CART">
-      <Suspense fallback={<p>Loading cart ...</p>}>
+    <Aside id="cart-aside" heading="Mein Körbchen">
+      <Suspense fallback={<p>Körbchen wird geladen ...</p>}>
         <Await resolve={cart}>
           {(cart) => {
             return <CartMain cart={cart} layout="aside" />;

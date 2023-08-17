@@ -3,7 +3,7 @@ import type {FooterQuery} from 'storefrontapi.generated';
 
 export function Footer({menu}: FooterQuery) {
   return (
-    <footer className="bg-primary mt-auto ">
+    <footer className="bg-primary mt-auto w-full">
       <FooterMenu menu={menu} />
     </footer>
   );
@@ -14,7 +14,7 @@ function FooterMenu({menu}: Pick<FooterQuery, 'menu'>) {
   const publicStoreDomain = root?.data?.publicStoreDomain;
   return (
     <nav
-      className="flex items-center gap-4 p-4 text-primaryText"
+      className="flex items-center gap-4 p-4 text-primaryText mx-auto max-w-[1920px]"
       role="navigation"
     >
       {(menu || FALLBACK_FOOTER_MENU).items.map((item) => {

@@ -60,12 +60,12 @@ function RecommendedProducts({
   products: Promise<RecommendedProductsQuery>;
 }) {
   return (
-    <div className="recommended-products">
+    <div className="w-full content-max-width content-padding mt-4">
       <Suspense fallback={<div>Loading...</div>}>
         <Await resolve={products}>
           {({products}) => {
             return (
-              <div className="recommended-products-grid">
+              <div className="grid grid-cols-[repeat(3,1fr)] gap-8">
                 {products.nodes.map((product) => (
                   <Link
                     key={product.id}
