@@ -221,6 +221,11 @@ function ProductPrice({
   );
 }
 
+const PICKNICK_GUESTS = 'Picknickgäste';
+const PICKNICK_MENU = 'Picknickmenü';
+
+type ATTRIBUTE_KEYS_TYPE = 'Picknickgäste' | 'Picknickmenü';
+
 function ProductForm({
   product,
   selectedVariant,
@@ -231,20 +236,20 @@ function ProductForm({
   variants: Array<ProductVariantFragment>;
 }) {
   const [guests, setGuests] = useState<AttributeInput>({
-    key: 'guests',
+    key: PICKNICK_GUESTS,
     value: '1 - 2',
   });
   const [menu, setMenu] = useState<AttributeInput>({
-    key: 'menu',
+    key: PICKNICK_MENU,
     value: 'Klassisch',
   });
 
-  const onChangeHandler = (key: 'guests' | 'menu', value: string) => {
-    if (key === 'guests') {
+  const onChangeHandler = (key: ATTRIBUTE_KEYS_TYPE, value: string) => {
+    if (key === PICKNICK_GUESTS) {
       setGuests({key, value});
     }
 
-    if (key === 'menu') {
+    if (key === PICKNICK_MENU) {
       setMenu({key, value});
     }
   };
@@ -267,7 +272,7 @@ function ProductForm({
             id="1-2"
             required
             checked={guests?.value === '1 - 2'}
-            onChange={() => onChangeHandler('guests', '1 - 2')}
+            onChange={() => onChangeHandler(PICKNICK_GUESTS, '1 - 2')}
           />
           <label htmlFor="1-2" className="md:flex-1 text-center">
             1 -2
@@ -278,7 +283,7 @@ function ProductForm({
             value="3 - 4"
             id="3-4"
             checked={guests?.value === '3 - 4'}
-            onChange={() => onChangeHandler('guests', '3 - 4')}
+            onChange={() => onChangeHandler(PICKNICK_GUESTS, '3 - 4')}
           />
           <label htmlFor="3-4" className="md:flex-1 text-center">
             3 - 4
@@ -289,7 +294,7 @@ function ProductForm({
             value="5 - 6"
             id="5-6"
             checked={guests?.value === '5 - 6'}
-            onChange={() => onChangeHandler('guests', '5 - 6')}
+            onChange={() => onChangeHandler(PICKNICK_GUESTS, '5 - 6')}
           />
           <label htmlFor="5-6" className="md:flex-1 text-center">
             5 - 6
@@ -306,7 +311,7 @@ function ProductForm({
             id="klassisch"
             required
             checked={menu?.value === 'Klassisch'}
-            onChange={() => onChangeHandler('menu', 'Klassisch')}
+            onChange={() => onChangeHandler(PICKNICK_MENU, 'Klassisch')}
           />
           <label htmlFor="klassisch" className="md:flex-1 text-center">
             Klassisch
@@ -317,7 +322,7 @@ function ProductForm({
             value="Vegetarisch"
             id="vegetarisch"
             checked={menu?.value === 'Vegetarisch'}
-            onChange={() => onChangeHandler('menu', 'Vegetarisch')}
+            onChange={() => onChangeHandler(PICKNICK_MENU, 'Vegetarisch')}
           />
           <label htmlFor="vegetarisch" className="md:flex-1 text-center">
             Vegetarisch
@@ -328,7 +333,7 @@ function ProductForm({
             value="Vegan"
             id="vegan"
             checked={menu?.value === 'Vegan'}
-            onChange={() => onChangeHandler('menu', 'Vegan')}
+            onChange={() => onChangeHandler(PICKNICK_MENU, 'Vegan')}
           />
           <label htmlFor="vegan" className="md:flex-1 text-center">
             Vegan

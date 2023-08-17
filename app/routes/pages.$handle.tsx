@@ -3,7 +3,7 @@ import {json, type LoaderArgs} from '@shopify/remix-oxygen';
 import {useLoaderData} from '@remix-run/react';
 
 export const meta: V2_MetaFunction = ({data}) => {
-  return [{title: `Hydrogen | ${data.page.title}`}];
+  return [{title: `${data.page.title}`}];
 };
 
 export async function loader({params, context}: LoaderArgs) {

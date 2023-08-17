@@ -62,15 +62,6 @@ function CartLines({
   );
 }
 
-type ATTRIBUTE_KEYS_MAP = {
-  [key: string]: string;
-};
-
-const ATTRIBUTE_KEYS: ATTRIBUTE_KEYS_MAP = {
-  guests: 'Picknickgäste',
-  menu: 'Picknickmenü',
-};
-
 function CartLineItem({
   layout,
   line,
@@ -120,14 +111,14 @@ function CartLineItem({
             </li>
           ))}
         </ul>
-        <CartLineQuantity line={line} />
         {line.attributes?.map((attribute) => (
           <div key={attribute.key}>
             <small>
-              {ATTRIBUTE_KEYS[attribute.key]}: {attribute.value}
+              {attribute.key}: {attribute.value}
             </small>
           </div>
         ))}
+        <CartLineQuantity line={line} />
       </div>
     </li>
   );

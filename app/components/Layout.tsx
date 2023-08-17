@@ -13,6 +13,7 @@ import {
   PredictiveSearchForm,
   PredictiveSearchResults,
 } from '~/components/Search';
+import {SanityMenuLink} from '~/lib/sanity';
 
 export type LayoutProps = {
   cart: Promise<CartApiQueryFragment | null>;
@@ -20,6 +21,10 @@ export type LayoutProps = {
   footer: Promise<FooterQuery>;
   header: HeaderQuery;
   isLoggedIn: boolean;
+  layout: {
+    footer: null;
+    menuLinks: SanityMenuLink[];
+  };
 };
 
 export function Layout({
@@ -27,15 +32,15 @@ export function Layout({
   children = null,
   footer,
   header,
-  isLoggedIn,
+  layout,
 }: LayoutProps) {
   return (
     <>
       <CartAside cart={cart} />
       <SearchAside />
-      <MobileMenuAside menu={header.menu} />
+      <MobileMenuAside menu={header.menu} menuLinks={layout?.menuLinks} />
       <div className="flex flex-col items-start w-full min-h-screen">
-        <Header header={header} cart={cart} isLoggedIn={isLoggedIn} />
+        <Header header={header} menuLinks={layout?.menuLinks} cart={cart} />
         <main className="flex justify-center w-full mx-auto">{children}</main>
         <Suspense>
           <Await resolve={footer}>
@@ -88,10 +93,16 @@ function SearchAside() {
   );
 }
 
-function MobileMenuAside({menu}: {menu: HeaderQuery['menu']}) {
+function MobileMenuAside({
+  menu,
+  menuLinks,
+}: {
+  menu: HeaderQuery['menu'];
+  menuLinks: LayoutProps['layout']['menuLinks'];
+}) {
   return (
     <Aside id="mobile-menu-aside" heading="MENU">
-      <HeaderMenu menu={menu} viewport="mobile" />
+      <HeaderMenu menu={menu} menuLinks={menuLinks} viewport="mobile" />
     </Aside>
   );
 }

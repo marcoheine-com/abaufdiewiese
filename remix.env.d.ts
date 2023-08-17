@@ -7,6 +7,7 @@ import '@total-typescript/ts-reset';
 
 import type {Storefront, HydrogenCart} from '@shopify/hydrogen';
 import type {HydrogenSession} from './server';
+import {Sanity} from 'hydrogen-sanity';
 
 declare global {
   /**
@@ -23,6 +24,11 @@ declare global {
     PRIVATE_STOREFRONT_API_TOKEN: string;
     PUBLIC_STORE_DOMAIN: string;
     PUBLIC_STOREFRONT_ID: string;
+    SANITY_PREVIEW_SECRET: string;
+    SANITY_API_TOKEN: string;
+    SANITY_PROJECT_ID: string;
+    SANITY_DATASET: string;
+    SANITY_API_VERSION: string;
   }
 }
 
@@ -35,5 +41,6 @@ declare module '@shopify/remix-oxygen' {
     cart: HydrogenCart;
     storefront: Storefront;
     session: HydrogenSession;
+    sanity: Sanity;
   }
 }

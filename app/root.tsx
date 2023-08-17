@@ -17,6 +17,7 @@ import resetStyles from './styles/reset.css';
 import appStyles from './styles/app.css';
 import {Layout} from '~/components/Layout';
 import tailwindCss from './styles/tailwind.css';
+import {LAYOUT_QUERY} from '~/queries/sanity/layout';
 
 export function links() {
   return [
@@ -57,6 +58,14 @@ export async function loader({context}: LoaderArgs) {
     },
   });
 
+  const cache = storefront.CacheCustom({
+    mode: 'public',
+    maxAge: 60,
+    staleWhileRevalidate: 60,
+  });
+
+  const layout = await context.sanity.query<any>({query: LAYOUT_QUERY, cache});
+
   // await the header query (above the fold)
   const headerPromise = storefront.query(HEADER_QUERY, {
     cache: storefront.CacheLong(),
@@ -72,6 +81,7 @@ export async function loader({context}: LoaderArgs) {
       header: await headerPromise,
       isLoggedIn,
       publicStoreDomain,
+      layout,
     },
     {headers},
   );
