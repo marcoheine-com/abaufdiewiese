@@ -39,17 +39,29 @@ export type SanityCollectionGroup = {
   title: string;
 };
 
+export type SanityHomePage = {
+  hero?: SanityHero;
+  // modules: (SanityModuleImage | SanityModuleInstagram)[];
+  seo: SanitySeo;
+};
+
 export type SanityCollection = {
   _id: string;
   gid: string;
-  hero?: SanityHeroPage;
+  hero?: SanityHero;
   slug?: string;
   title: string;
   vector?: string;
 };
 
-export type SanityHeroPage = {
+export type SanityHero = {
   title?: string;
-  subtitle?: string;
+  subTitle?: string;
+  heroImage?: SanityAssetImage;
+};
+
+export type SanitySeo = {
+  description?: string;
   image?: SanityAssetImage;
+  title: string;
 };

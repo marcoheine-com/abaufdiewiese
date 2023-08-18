@@ -111,7 +111,7 @@ export default function Product() {
   const {product, variants} = useLoaderData<typeof loader>();
   const {selectedVariant} = product;
   return (
-    <div className="grid md:grid-cols-2 gap-16 w-full content-padding content-max-width mt-16 md:mt-36">
+    <div className="grid md:grid-cols-2 gap-16 w-full content-padding content-max-width mt-10 md:mt-24">
       <ProductImage image={selectedVariant?.image} />
       <ProductMain
         selectedVariant={selectedVariant}
@@ -262,9 +262,9 @@ function ProductForm({
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="grid md:grid-cols-[120px_auto]">
+      <div className="grid xl:grid-cols-[120px_auto]">
         <legend className="font-normal">Picknickgäste</legend>
-        <fieldset className="flex flex-wrap gap-4">
+        <fieldset className="flex flex-wrap gap-4 items-start mt-1 xl:mt-0">
           <input
             type="radio"
             name="guests"
@@ -274,7 +274,7 @@ function ProductForm({
             checked={guests?.value === '1 - 2'}
             onChange={() => onChangeHandler(PICKNICK_GUESTS, '1 - 2')}
           />
-          <label htmlFor="1-2" className="md:flex-1 text-center">
+          <label htmlFor="1-2" className="lg:flex-1 text-center">
             1 -2
           </label>
           <input
@@ -285,7 +285,7 @@ function ProductForm({
             checked={guests?.value === '3 - 4'}
             onChange={() => onChangeHandler(PICKNICK_GUESTS, '3 - 4')}
           />
-          <label htmlFor="3-4" className="md:flex-1 text-center">
+          <label htmlFor="3-4" className="lg:flex-1 text-center">
             3 - 4
           </label>
           <input
@@ -296,14 +296,14 @@ function ProductForm({
             checked={guests?.value === '5 - 6'}
             onChange={() => onChangeHandler(PICKNICK_GUESTS, '5 - 6')}
           />
-          <label htmlFor="5-6" className="md:flex-1 text-center">
+          <label htmlFor="5-6" className="lg:flex-1 text-center">
             5 - 6
           </label>
         </fieldset>
       </div>
-      <div className="grid md:grid-cols-[120px_auto]">
+      <div className="grid xl:grid-cols-[120px_auto]">
         <legend className="font-normal">Picknickmenü</legend>
-        <fieldset className="flex flex-wrap gap-4">
+        <fieldset className="flex flex-wrap gap-4 items-start mt-1 xl:mt-0">
           <input
             type="radio"
             name="menu"
@@ -313,7 +313,7 @@ function ProductForm({
             checked={menu?.value === 'Klassisch'}
             onChange={() => onChangeHandler(PICKNICK_MENU, 'Klassisch')}
           />
-          <label htmlFor="klassisch" className="md:flex-1 text-center">
+          <label htmlFor="klassisch" className="lg:flex-1 text-center">
             Klassisch
           </label>
           <input
@@ -324,7 +324,7 @@ function ProductForm({
             checked={menu?.value === 'Vegetarisch'}
             onChange={() => onChangeHandler(PICKNICK_MENU, 'Vegetarisch')}
           />
-          <label htmlFor="vegetarisch" className="md:flex-1 text-center">
+          <label htmlFor="vegetarisch" className="lg:flex-1 text-center">
             Vegetarisch
           </label>
           <input
@@ -335,7 +335,7 @@ function ProductForm({
             checked={menu?.value === 'Vegan'}
             onChange={() => onChangeHandler(PICKNICK_MENU, 'Vegan')}
           />
-          <label htmlFor="vegan" className="md:flex-1 text-center">
+          <label htmlFor="vegan" className="lg:flex-1 text-center">
             Vegan
           </label>
         </fieldset>
@@ -369,9 +369,9 @@ function ProductForm({
 
 function ProductOptions({option}: {option: VariantOption}) {
   return (
-    <div className="md:grid md:grid-cols-[120px_auto]" key={option.name}>
+    <div className="md:grid xl:grid-cols-[120px_auto]" key={option.name}>
       <h5 className="mt-0">{option.name}</h5>
-      <div className="flex items-start flex-wrap gap-4">
+      <div className="mt-1 flex items-start flex-wrap gap-4 xl:mt-0">
         {option.values.map(({value, isAvailable, isActive, to}) => {
           return (
             <Link

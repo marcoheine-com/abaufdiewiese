@@ -18,22 +18,17 @@ import {SanityMenuLink} from '~/lib/sanity';
 export type LayoutProps = {
   cart: Promise<CartApiQueryFragment | null>;
   children?: React.ReactNode;
-  footer: Promise<FooterQuery>;
   header: HeaderQuery;
   isLoggedIn: boolean;
   layout: {
-    footer: null;
+    footer: {
+      links: SanityMenuLink[];
+    };
     menuLinks: SanityMenuLink[];
   };
 };
 
-export function Layout({
-  cart,
-  children = null,
-  footer,
-  header,
-  layout,
-}: LayoutProps) {
+export function Layout({cart, children = null, header, layout}: LayoutProps) {
   return (
     <>
       <CartAside cart={cart} />
@@ -42,11 +37,7 @@ export function Layout({
       <div className="flex flex-col items-start w-full min-h-screen">
         <Header header={header} menuLinks={layout?.menuLinks} cart={cart} />
         <main className="flex justify-center w-full mx-auto">{children}</main>
-        <Suspense>
-          <Await resolve={footer}>
-            {(footer) => <Footer menu={footer.menu} />}
-          </Await>
-        </Suspense>
+        <Footer links={layout.footer.links} />
       </div>
     </>
   );

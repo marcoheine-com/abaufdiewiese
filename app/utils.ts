@@ -49,3 +49,9 @@ export function formatGermanDate(date: string) {
   const [year, month, day] = date.split('-');
   return `${day}.${month}.${year}`;
 }
+
+export const notFound = (message = 'Not Found') =>
+  new Response(message, {
+    status: 404,
+    statusText: 'Not Found',
+  });

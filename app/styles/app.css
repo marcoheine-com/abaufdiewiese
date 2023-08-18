@@ -1,5 +1,5 @@
 :root {
-  --aside-width: 400px;
+  --aside-width: 375px;
   --cart-aside-summary-height-with-discount: 300px;
   --cart-aside-summary-height: 250px;
   --grid-item-width: 355px;
@@ -22,7 +22,10 @@ aside {
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
   height: 100vh;
   max-width: var(--aside-width);
-  min-width: var(--aside-width);
+  min-width: 100vw;
+  @media (min-width: 45em) {
+    min-width: var(--aside-width);
+  }
   position: fixed;
   right: calc(-1 * var(--aside-width));
   top: 0;

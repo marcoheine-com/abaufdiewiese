@@ -6,27 +6,37 @@ import {RECOMMENDED_PRODUCTS_QUERY} from '~/routes/_index';
 import {Suspense} from 'react';
 import {Image} from '@shopify/hydrogen';
 import {PrimaryButton} from '~/components/PrimaryButton';
-import {formatGermanDate} from '~/utils';
+import {formatGermanDate, notFound} from '~/utils';
 
 export const meta: V2_MetaFunction = ({data}) => {
   return [
     {
-      title: `${data.page.seo.title}`,
-      description: `${data.page.seo.description}`,
+      title: `${data.page?.seo?.title}`,
+      description: `${data?.page?.seo?.description}`,
     },
   ];
 };
 
 export async function loader({params, context}: LoaderArgs) {
+  const {handle} = params;
+
+  if (!params.handle) {
+    throw new Error('Missing page handle');
+  }
+
   const cache = context.storefront.CacheLong();
 
   const page = await context.sanity.query<any>({
     query: PAGE_QUERY,
     params: {
-      slug: params.handle,
+      slug: handle,
     },
     cache,
   });
+
+  if (!page) {
+    throw notFound();
+  }
 
   const {storefront} = context;
 
@@ -34,7 +44,7 @@ export async function loader({params, context}: LoaderArgs) {
 
   return json({
     page,
-    products: params.handle === 'unsere-picknicks' ? products : null,
+    products: handle === 'unsere-picknicks' ? products : null,
   });
 }
 

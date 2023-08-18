@@ -14,9 +14,6 @@ export const LAYOUT_QUERY = groq`
       links[] {
         ${LINKS}
       },
-      text[]{
-        ${PORTABLE_TEXT}
-      },
     },
     notFoundPage {
       body,

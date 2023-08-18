@@ -27,7 +27,6 @@ export function Header({header, cart, menuLinks}: HeaderProps) {
 }
 
 export function HeaderMenu({
-  menu,
   menuLinks,
   viewport,
 }: {
@@ -48,17 +47,6 @@ export function HeaderMenu({
 
   return (
     <nav className={className} role="navigation">
-      {viewport === 'mobile' && (
-        <NavLink
-          end
-          onClick={closeAside}
-          prefetch="intent"
-          style={activeLinkStyle}
-          to="/"
-        >
-          Home
-        </NavLink>
-      )}
       {menuLinks?.map((item) => {
         if (!item.slug) return null;
 

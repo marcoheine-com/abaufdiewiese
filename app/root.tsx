@@ -50,14 +50,6 @@ export async function loader({context}: LoaderArgs) {
   // defer the cart query by not awaiting it
   const cartPromise = cart.get();
 
-  // defer the footer query (below the fold)
-  const footerPromise = storefront.query(FOOTER_QUERY, {
-    cache: storefront.CacheLong(),
-    variables: {
-      footerMenuHandle: 'footer', // Adjust to your footer menu handle
-    },
-  });
-
   const cache = storefront.CacheCustom({
     mode: 'public',
     maxAge: 60,
@@ -77,7 +69,6 @@ export async function loader({context}: LoaderArgs) {
   return defer(
     {
       cart: cartPromise,
-      footer: footerPromise,
       header: await headerPromise,
       isLoggedIn,
       publicStoreDomain,
@@ -133,12 +124,18 @@ export function ErrorBoundary() {
       <body>
         <Layout {...root.data}>
           <div className="route-error">
-            <h1>Oops</h1>
-            <h2>{errorStatus}</h2>
-            {errorMessage && (
-              <fieldset>
-                <pre>{errorMessage}</pre>
-              </fieldset>
+            {errorStatus === 404 ? (
+              <p>Oh nein! Diese Seite konnten wir leider nicht finden.</p>
+            ) : (
+              <>
+                <h1>Oops</h1>
+                <h2>{errorStatus}</h2>
+                {errorMessage && (
+                  <fieldset>
+                    <pre>{errorMessage}</pre>
+                  </fieldset>
+                )}
+              </>
             )}
           </div>
         </Layout>

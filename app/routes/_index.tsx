@@ -9,25 +9,41 @@ import type {
 } from 'storefrontapi.generated';
 import {PrimaryButton} from '~/components/PrimaryButton';
 import {formatGermanDate} from '~/utils';
+import {HOME_PAGE_QUERY} from '~/queries/sanity/home';
+import Hero from '~/components/Hero';
+import {SanityHomePage} from '~/lib/sanity';
 
 export const meta: V2_MetaFunction = () => {
   return [{title: 'Hydrogen | Home'}];
 };
 
-export async function loader({context}: LoaderArgs) {
+export async function loader({params, context}: LoaderArgs) {
   const {storefront} = context;
   const {collections} = await storefront.query(FEATURED_COLLECTION_QUERY);
   const featuredCollection = collections.nodes[0];
   const recommendedProducts = storefront.query(RECOMMENDED_PRODUCTS_QUERY);
 
-  return defer({featuredCollection, recommendedProducts});
+  const cache = context.storefront.CacheCustom({
+    mode: 'public',
+    maxAge: 60,
+    staleWhileRevalidate: 60,
+  });
+
+  const page = await context.sanity.query<SanityHomePage>({
+    query: HOME_PAGE_QUERY,
+    cache,
+  });
+
+  return defer({featuredCollection, recommendedProducts, page});
 }
 
 export default function Homepage() {
   const data = useLoaderData<typeof loader>();
+  const {page} = data;
   return (
     <div className="home">
-      <h2 className="text-center">Aktuelle Picknicks</h2>
+      {page?.hero && <Hero hero={page.hero} />}
+      <h2 className="text-center mt-8">Aktuelle Picknicks</h2>
       <RecommendedProducts products={data.recommendedProducts} />
     </div>
   );
@@ -65,7 +81,7 @@ function RecommendedProducts({
         <Await resolve={products}>
           {({products}) => {
             return (
-              <div className="grid grid-cols-[repeat(3,1fr)] gap-8">
+              <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8 content-padding content-max-width">
                 {products.nodes.map((product) => (
                   <Link
                     key={product.id}
