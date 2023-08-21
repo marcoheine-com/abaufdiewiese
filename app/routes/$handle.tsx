@@ -4,9 +4,10 @@ import {Await, Link, useLoaderData} from '@remix-run/react';
 import {PAGE_QUERY} from '~/queries/sanity/page';
 import {RECOMMENDED_PRODUCTS_QUERY} from '~/routes/_index';
 import {Suspense} from 'react';
-import {Image} from '@shopify/hydrogen';
+import {getPaginationVariables, Image} from '@shopify/hydrogen';
 import {PrimaryButton} from '~/components/PrimaryButton';
 import {formatGermanDate, notFound} from '~/utils';
+import {PRODUCT_COLLECTION_QUERY} from '~/queries/shopify/collection';
 
 export const meta: V2_MetaFunction = ({data}) => {
   return [
@@ -17,7 +18,7 @@ export const meta: V2_MetaFunction = ({data}) => {
   ];
 };
 
-export async function loader({params, context}: LoaderArgs) {
+export async function loader({request, params, context}: LoaderArgs) {
   const {handle} = params;
 
   if (!params.handle) {
@@ -40,19 +41,27 @@ export async function loader({params, context}: LoaderArgs) {
 
   const {storefront} = context;
 
-  const products = await storefront.query(RECOMMENDED_PRODUCTS_QUERY);
+  const paginationVariables = getPaginationVariables(request, {
+    pageBy: 8,
+  });
+  const collection = await storefront.query(PRODUCT_COLLECTION_QUERY, {
+    variables: {
+      handle: 'alle-picknicktermine',
+      ...paginationVariables,
+    },
+  });
 
   return json({
     page,
-    products: handle === 'unsere-picknicks' ? products : null,
+    collection: handle === 'unsere-picknicks' ? collection : null,
   });
 }
 
 export default function Page() {
-  const {page, products} = useLoaderData<typeof loader>();
+  const {page, collection} = useLoaderData<typeof loader>();
 
   const renderProducts =
-    page.slug.current === 'unsere-picknicks' && products !== null;
+    page.slug.current === 'unsere-picknicks' && collection !== null;
 
   return (
     <div className="">
@@ -61,12 +70,13 @@ export default function Page() {
       </header>
       {renderProducts && (
         <>
+          {/* TODO: remove suspense because we're already awaiting */}
           <Suspense fallback={<div>Loading...</div>}>
-            <Await resolve={products}>
-              {({products}) => {
+            <Await resolve={collection}>
+              {({collection}) => {
                 return (
                   <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8 content-padding content-max-width">
-                    {products.nodes.map((product) => (
+                    {collection?.products.nodes.map((product) => (
                       <Link
                         key={product.id}
                         className="recommended-product"

@@ -7,6 +7,7 @@ import type {
   ProductFragment,
   ProductVariantsQuery,
   ProductVariantFragment,
+  LatestProductFragment,
 } from 'storefrontapi.generated';
 
 import {
@@ -24,6 +25,7 @@ import type {
 import {formatGermanDate, getVariantUrl} from '~/utils';
 import {PrimaryButton} from '~/components/PrimaryButton';
 import {useState} from 'react';
+import {PRODUCT_COLLECTION_QUERY} from '~/queries/shopify/collection';
 
 export const meta: V2_MetaFunction = ({data}) => {
   return [{title: `${data.product.title}`}];
@@ -50,6 +52,13 @@ export async function loader({params, request, context}: LoaderArgs) {
   // await the query for the critical product data
   const {product} = await storefront.query(PRODUCT_QUERY, {
     variables: {handle, selectedOptions},
+  });
+
+  const {collection} = await storefront.query(PRODUCT_COLLECTION_QUERY, {
+    variables: {
+      handle: 'picknick-besonderheiten',
+      first: 3,
+    },
   });
 
   // In order to show which variants are available in the UI, we need to query
@@ -81,7 +90,7 @@ export async function loader({params, request, context}: LoaderArgs) {
       return redirectToFirstVariant({product, request});
     }
   }
-  return defer({product, variants});
+  return defer({product, variants, collection});
 }
 
 function redirectToFirstVariant({
@@ -108,7 +117,7 @@ function redirectToFirstVariant({
 }
 
 export default function Product() {
-  const {product, variants} = useLoaderData<typeof loader>();
+  const {product, variants, collection} = useLoaderData<typeof loader>();
   const {selectedVariant} = product;
   return (
     <div className="grid md:grid-cols-2 gap-16 w-full content-padding content-max-width mt-10 md:mt-24">
@@ -117,6 +126,7 @@ export default function Product() {
         selectedVariant={selectedVariant}
         product={product}
         variants={variants}
+        addOns={collection?.products.nodes || []}
       />
     </div>
   );
@@ -143,10 +153,12 @@ function ProductMain({
   selectedVariant,
   product,
   variants,
+  addOns,
 }: {
   product: ProductFragment;
   selectedVariant: ProductFragment['selectedVariant'];
   variants: Promise<ProductVariantsQuery>;
+  addOns: LatestProductFragment[];
 }) {
   const {title, descriptionHtml} = product;
   return (
@@ -188,6 +200,7 @@ function ProductMain({
               product={product}
               selectedVariant={selectedVariant}
               variants={data.product?.variants.nodes || []}
+              addOns={addOns}
             />
           )}
         </Await>
@@ -230,10 +243,12 @@ function ProductForm({
   product,
   selectedVariant,
   variants,
+  addOns,
 }: {
   product: ProductFragment;
   selectedVariant: ProductFragment['selectedVariant'];
   variants: Array<ProductVariantFragment>;
+  addOns?: LatestProductFragment[];
 }) {
   const [guests, setGuests] = useState<AttributeInput>({
     key: PICKNICK_GUESTS,
@@ -243,6 +258,8 @@ function ProductForm({
     key: PICKNICK_MENU,
     value: 'Klassisch',
   });
+
+  const [addOn, setAddOn] = useState<LatestProductFragment>();
 
   const onChangeHandler = (key: ATTRIBUTE_KEYS_TYPE, value: string) => {
     if (key === PICKNICK_GUESTS) {
@@ -259,6 +276,29 @@ function ProductForm({
   const buttonLabel = selectedVariant?.availableForSale
     ? 'Mein Picknick buchen'
     : 'Leider ausverkauft';
+
+  const linesToAdd = selectedVariant
+    ? [
+        {
+          merchandiseId: selectedVariant.id,
+          quantity: 1,
+          attributes: attributes,
+        },
+      ]
+    : [];
+
+  const linesWithAddOn = addOn
+    ? linesToAdd.concat({
+        merchandiseId: addOn.variants.edges[0].node.id,
+        quantity: 1,
+        attributes: [
+          {
+            key: 'Besonderheiten',
+            value: `Besonderheit ${addOn.title} für ${product?.title}`,
+          },
+        ],
+      })
+    : linesToAdd;
 
   return (
     <div className="flex flex-col gap-6">
@@ -345,21 +385,41 @@ function ProductForm({
         options={product.options}
         variants={variants}
       >
-        {({option}) => <ProductOptions key={option.name} option={option} />}
+        {({option}) => {
+          console.log(option);
+          return <ProductOptions key={option.name} option={option} />;
+        }}
       </VariantSelector>
+      <div>
+        <legend className="font-normal">Besonderheiten</legend>
+        <fieldset className="flex flex-wrap gap-4 items-start mt-1 xl:mt-0">
+          <select
+            name="addOns"
+            id="addOns"
+            className="w-full"
+            onChange={(e) => {
+              if (e.target.value === 'null') {
+                setAddOn(undefined);
+                return;
+              }
+              const addOn = addOns?.find(
+                (addOn) => addOn.id === e.target.value,
+              );
+              setAddOn(addOn);
+            }}
+          >
+            <option value="null">Keine</option>
+            {addOns?.map((addOn) => (
+              <option value={addOn.id} key={addOn.id}>
+                {addOn.title}
+              </option>
+            ))}
+          </select>
+        </fieldset>
+      </div>
       <AddToCartButton
         disabled={!selectedVariant || !selectedVariant.availableForSale}
-        lines={
-          selectedVariant
-            ? [
-                {
-                  merchandiseId: selectedVariant.id,
-                  quantity: 1,
-                  attributes: attributes,
-                },
-              ]
-            : []
-        }
+        lines={linesWithAddOn}
       >
         {buttonLabel}
       </AddToCartButton>

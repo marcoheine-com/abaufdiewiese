@@ -2,16 +2,14 @@ import type {V2_MetaFunction} from '@shopify/remix-oxygen';
 import {defer, type LoaderArgs} from '@shopify/remix-oxygen';
 import {Await, useLoaderData, Link} from '@remix-run/react';
 import {Suspense} from 'react';
-import {Image, Money} from '@shopify/hydrogen';
-import type {
-  FeaturedCollectionFragment,
-  RecommendedProductsQuery,
-} from 'storefrontapi.generated';
+import {Image} from '@shopify/hydrogen';
+import type {LatestProductCollectionQuery} from 'storefrontapi.generated';
 import {PrimaryButton} from '~/components/PrimaryButton';
 import {formatGermanDate} from '~/utils';
 import {HOME_PAGE_QUERY} from '~/queries/sanity/home';
 import Hero from '~/components/Hero';
 import {SanityHomePage} from '~/lib/sanity';
+import {PRODUCT_COLLECTION_QUERY} from '~/queries/shopify/collection';
 
 export const meta: V2_MetaFunction = () => {
   return [{title: 'Hydrogen | Home'}];
@@ -19,9 +17,13 @@ export const meta: V2_MetaFunction = () => {
 
 export async function loader({params, context}: LoaderArgs) {
   const {storefront} = context;
-  const {collections} = await storefront.query(FEATURED_COLLECTION_QUERY);
-  const featuredCollection = collections.nodes[0];
-  const recommendedProducts = storefront.query(RECOMMENDED_PRODUCTS_QUERY);
+
+  const collection = storefront.query(PRODUCT_COLLECTION_QUERY, {
+    variables: {
+      handle: 'alle-picknicktermine',
+      first: 3,
+    },
+  });
 
   const cache = context.storefront.CacheCustom({
     mode: 'public',
@@ -34,7 +36,10 @@ export async function loader({params, context}: LoaderArgs) {
     cache,
   });
 
-  return defer({featuredCollection, recommendedProducts, page});
+  return defer({
+    latestProductsCollection: collection,
+    page,
+  });
 }
 
 export default function Homepage() {
@@ -44,45 +49,26 @@ export default function Homepage() {
     <div className="home">
       {page?.hero && <Hero hero={page.hero} />}
       <h2 className="text-center mt-8">Aktuelle Picknicks</h2>
-      <RecommendedProducts products={data.recommendedProducts} />
+      <RecommendedProducts
+        latestProductsCollection={data?.latestProductsCollection}
+      />
     </div>
   );
 }
 
-function FeaturedCollection({
-  collection,
-}: {
-  collection: FeaturedCollectionFragment;
-}) {
-  const image = collection.image;
-  return (
-    <Link
-      className="featured-collection"
-      to={`/collections/${collection.handle}`}
-    >
-      {image && (
-        <div className="featured-collection-image">
-          <Image data={image} sizes="100vw" />
-        </div>
-      )}
-      <h1>{collection.title}</h1>
-    </Link>
-  );
-}
-
 function RecommendedProducts({
-  products,
+  latestProductsCollection,
 }: {
-  products: Promise<RecommendedProductsQuery>;
+  latestProductsCollection: Promise<LatestProductCollectionQuery>;
 }) {
   return (
     <div className="w-full content-max-width content-padding mt-4">
       <Suspense fallback={<div>Loading...</div>}>
-        <Await resolve={products}>
-          {({products}) => {
+        <Await resolve={latestProductsCollection}>
+          {({collection}) => {
             return (
               <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8 content-padding content-max-width">
-                {products.nodes.map((product) => (
+                {collection?.products.nodes.map((product) => (
                   <Link
                     key={product.id}
                     className="recommended-product"
@@ -116,29 +102,6 @@ function RecommendedProducts({
     </div>
   );
 }
-
-const FEATURED_COLLECTION_QUERY = `#graphql
-  fragment FeaturedCollection on Collection {
-    id
-    title
-    image {
-      id
-      url
-      altText
-      width
-      height
-    }
-    handle
-  }
-  query FeaturedCollection($country: CountryCode, $language: LanguageCode)
-    @inContext(country: $country, language: $language) {
-    collections(first: 1, sortKey: UPDATED_AT, reverse: true) {
-      nodes {
-        ...FeaturedCollection
-      }
-    }
-  }
-` as const;
 
 export const RECOMMENDED_PRODUCTS_QUERY = `#graphql
   fragment RecommendedProduct on Product {
