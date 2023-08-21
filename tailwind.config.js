@@ -17,6 +17,9 @@ export default {
         placeholderText: '#676767',
         radioBorder: '#262825',
       },
+      fontFamily: {
+        roboto: ['Roboto', 'sans-serif'],
+      },
     },
   },
   plugins: [formsPlugin, typographyPlugin],

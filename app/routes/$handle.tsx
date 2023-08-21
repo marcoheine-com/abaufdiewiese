@@ -75,7 +75,7 @@ export default function Page() {
             <Await resolve={collection}>
               {({collection}) => {
                 return (
-                  <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8 content-padding content-max-width">
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 content-padding content-max-width">
                     {collection?.products.nodes.map((product) => (
                       <Link
                         key={product.id}

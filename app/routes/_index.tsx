@@ -5,11 +5,12 @@ import {Suspense} from 'react';
 import {Image} from '@shopify/hydrogen';
 import type {LatestProductCollectionQuery} from 'storefrontapi.generated';
 import {PrimaryButton} from '~/components/PrimaryButton';
-import {formatGermanDate} from '~/utils';
+import {formatGermanDate, notFound} from '~/utils';
 import {HOME_PAGE_QUERY} from '~/queries/sanity/home';
 import Hero from '~/components/Hero';
 import {SanityHomePage} from '~/lib/sanity';
 import {PRODUCT_COLLECTION_QUERY} from '~/queries/shopify/collection';
+import PortableText from '~/components/PortableText';
 
 export const meta: V2_MetaFunction = () => {
   return [{title: 'Hydrogen | Home'}];
@@ -36,6 +37,10 @@ export async function loader({params, context}: LoaderArgs) {
     cache,
   });
 
+  if (!page) {
+    throw notFound();
+  }
+
   return defer({
     latestProductsCollection: collection,
     page,
@@ -45,13 +50,70 @@ export async function loader({params, context}: LoaderArgs) {
 export default function Homepage() {
   const data = useLoaderData<typeof loader>();
   const {page} = data;
+
   return (
     <div className="home">
       {page?.hero && <Hero hero={page.hero} />}
-      <h2 className="text-center mt-8">Aktuelle Picknicks</h2>
-      <RecommendedProducts
-        latestProductsCollection={data?.latestProductsCollection}
-      />
+      {page?.modules?.map((module) => {
+        switch (module._type) {
+          case 'module.features':
+            return (
+              <section
+                className="content-padding content-margin-top content-max-width grid gap-8 lg:gap-32 grid-cols-2 md:flex md:justify-between"
+                key={module._key}
+              >
+                {module?.feature?.map((feature) => {
+                  return (
+                    <div
+                      key={feature._key}
+                      className="flex flex-col items-center"
+                    >
+                      <Image
+                        data={feature.icon}
+                        aspectRatio="1/1"
+                        sizes="(min-width: 45em) 20vw, 50vw"
+                        className="max-w-[160px]"
+                      />
+                      <h3 className="uppercase max-w-[100px] text-center">
+                        {feature.title}
+                      </h3>
+                    </div>
+                  );
+                })}
+              </section>
+            );
+          case 'module.textmedia':
+            return (
+              <section
+                className="content-max-width grid sm:grid-cols-2 content-margin-top"
+                key={module._key}
+              >
+                <Image
+                  data={module.media}
+                  aspectRatio="1/1"
+                  className="object-cover"
+                  sizes="(min-width: 45em) 20vw, 50vw"
+                />
+
+                {module.text && (
+                  <div className="content-padding py-8 bg-primaryVariant flex flex-col justify-center items-center">
+                    <PortableText value={module.text} />
+                  </div>
+                )}
+              </section>
+            );
+
+          case 'module.showProducts':
+            return (
+              <RecommendedProducts
+                latestProductsCollection={data?.latestProductsCollection}
+                key={module._key}
+              />
+            );
+          default:
+            return null;
+        }
+      })}
     </div>
   );
 }
@@ -62,12 +124,13 @@ function RecommendedProducts({
   latestProductsCollection: Promise<LatestProductCollectionQuery>;
 }) {
   return (
-    <div className="w-full content-max-width content-padding mt-4">
+    <div className="w-full content-max-width content-padding content-margin-top">
+      <h2 className="text-center mt-8">Aktuelle Picknicks</h2>
       <Suspense fallback={<div>Loading...</div>}>
         <Await resolve={latestProductsCollection}>
           {({collection}) => {
             return (
-              <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8 content-padding content-max-width">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 mt-8 gap-8 content-padding content-max-width">
                 {collection?.products.nodes.map((product) => (
                   <Link
                     key={product.id}

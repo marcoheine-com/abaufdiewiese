@@ -386,7 +386,6 @@ function ProductForm({
         variants={variants}
       >
         {({option}) => {
-          console.log(option);
           return <ProductOptions key={option.name} option={option} />;
         }}
       </VariantSelector>

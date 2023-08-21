@@ -1,6 +1,14 @@
 import {useLocation} from '@remix-run/react';
-import type {SelectedOption} from '@shopify/hydrogen/storefront-api-types';
+import type {
+  Product,
+  ProductVariant,
+  SelectedOption,
+} from '@shopify/hydrogen/storefront-api-types';
+import {AppLoadContext} from '@shopify/remix-oxygen';
 import {useMemo} from 'react';
+import {SanityHomePage, SanityPage, SanityProductPage} from '~/lib/sanity';
+import {extract} from '@sanity/mutator';
+import {PRODUCTS_AND_COLLECTIONS} from '~/queries/shopify/product';
 
 export function useVariantUrl(
   handle: string,
@@ -55,3 +63,35 @@ export const notFound = (message = 'Not Found') =>
     status: 404,
     statusText: 'Not Found',
   });
+
+type StorefrontPayload = {
+  productsAndCollections: Product[];
+};
+
+/**
+ * Get data from Shopify for page components
+ */
+export async function fetchGids({
+  page,
+  context,
+}: {
+  page: SanityHomePage | SanityPage | SanityProductPage;
+  context: AppLoadContext;
+}) {
+  const productGids = extract(`..[_type == "productWithVariant"].gid`, page);
+
+  const {productsAndCollections} =
+    await context.storefront.query<StorefrontPayload>(
+      PRODUCTS_AND_COLLECTIONS,
+      {
+        variables: {
+          ids: [...productGids],
+        },
+      },
+    );
+
+  return extract(`..[id?]`, productsAndCollections) as (
+    | Product
+    | ProductVariant
+  )[];
+}

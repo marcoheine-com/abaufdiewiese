@@ -54,12 +54,16 @@ import moduleCollection from './objects/module/collection'
 import moduleGrid from './objects/module/grid'
 import gridItems from './objects/module/gridItem'
 import menu from './objects/global/menu'
+import moduleFeature from './objects/module/feature'
+import moduleFeatures from './objects/module/features'
 import moduleImage from './objects/module/image'
 import moduleImageAction from './objects/module/imageCallToAction'
 import moduleImages from './objects/module/images'
 import moduleInstagram from './objects/module/instagram'
 import moduleProduct from './objects/module/product'
 import moduleProducts from './objects/module/products'
+import moduleTextmedia from './objects/module/textmedia'
+import moduleShowproducts from './objects/module/showProducts'
 import placeholderString from './objects/shopify/placeholderString'
 import priceRange from './objects/shopify/priceRange'
 import spot from './objects/hotspot/spot'
@@ -105,12 +109,16 @@ const objects = [
   moduleCollection,
   moduleGrid,
   gridItems,
+  moduleFeature,
+  moduleFeatures,
   moduleImage,
   moduleImageAction,
   moduleImages,
   moduleInstagram,
   moduleProduct,
   moduleProducts,
+  moduleTextmedia,
+  moduleShowproducts,
   placeholderString,
   priceRange,
   spot,

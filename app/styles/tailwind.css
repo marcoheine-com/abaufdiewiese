@@ -3,13 +3,44 @@
 @tailwind utilities;
 
 @layer base {
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 100;
+    font-display: swap;
+    src: url('/fonts/Roboto-Thin.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/fonts/Roboto-Regular.ttf') format('truetype');
+  }
+
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('/fonts/Roboto-Bold.ttf') format('truetype');
+  }
   h1 {
-    @apply text-5xl md:text-[80px] font-bold;
+    @apply text-3xl md:text-[80px] md:leading-[80px] font-bold;
   }
 
   h2 {
-    @apply text-3xl md:text-[64px] md:leading-[64px] font-bold;
+    @apply text-2xl md:text-[64px] md:leading-[64px] font-bold;
   }
+
+  p,
+  a,
+  ul,
+  li,
+  button {
+    @apply font-roboto;
+  }
+
   input[type='radio'] {
     /* Add if not using autoprefixer */
     -webkit-appearance: none;
@@ -36,5 +67,9 @@
 
   .content-max-width {
     @apply max-w-[1920px] mx-auto;
+  }
+
+  .content-margin-top {
+    @apply mt-8 md:mt-16 lg:mt-32;
   }
 }

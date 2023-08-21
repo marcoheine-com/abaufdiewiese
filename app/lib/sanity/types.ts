@@ -41,7 +41,54 @@ export type SanityCollectionGroup = {
 
 export type SanityHomePage = {
   hero?: SanityHero;
-  // modules: (SanityModuleImage | SanityModuleInstagram)[];
+  modules?: (
+    | SanityModuleFeatures
+    | SanityModuleTextmedia
+    | SanityShowProducts
+  )[];
+  seo: SanitySeo;
+};
+
+export type SanityModuleFeatures = {
+  _key: string;
+  _type: 'module.features';
+  title: string;
+  feature: SanityFeature[];
+};
+
+export type SanityFeature = {
+  _key: string;
+  _type: 'feature';
+  title: string;
+  icon?: SanityAssetImage;
+};
+
+export type SanityShowProducts = {
+  _key: string;
+  _type: 'module.showProducts';
+  title: string;
+};
+
+export type SanityModuleTextmedia = {
+  _key: string;
+  _type: 'module.textmedia';
+  media?: SanityAssetImage;
+  text?: PortableTextBlock[];
+};
+
+export type SanityPage = {
+  body: PortableTextBlock[];
+  hero?: SanityHero;
+  seo: SanitySeo;
+  title: string;
+};
+
+export type SanityProductPage = {
+  _id: string;
+  available: boolean;
+  body: PortableTextBlock[];
+  gid: string;
+  slug?: string;
   seo: SanitySeo;
 };
 

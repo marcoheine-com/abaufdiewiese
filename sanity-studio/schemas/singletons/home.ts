@@ -32,14 +32,7 @@ export default defineField({
       name: 'modules',
       title: 'Modules',
       type: 'array',
-      of: [
-        {type: 'module.callout'},
-        {type: 'module.callToAction'},
-        {type: 'module.collection'},
-        {type: 'module.image'},
-        {type: 'module.instagram'},
-        {type: 'module.product'},
-      ],
+      of: [{type: 'module.features'}, {type: 'module.showProducts'}, {type: 'module.textmedia'}],
       group: 'editorial',
     }),
     // SEO
