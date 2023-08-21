@@ -59,7 +59,7 @@ export default function Homepage() {
           case 'module.features':
             return (
               <section
-                className="content-padding content-margin-top content-max-width grid gap-8 lg:gap-32 grid-cols-2 md:flex md:justify-between"
+                className="content-padding content-margin-top content-max-width grid gap-8 md:gap-16 lg:gap-32 xl:gap-64 grid-cols-2 md:grid-cols-4"
                 key={module._key}
               >
                 {module?.feature?.map((feature) => {
@@ -72,7 +72,6 @@ export default function Homepage() {
                         data={feature.icon}
                         aspectRatio="1/1"
                         sizes="(min-width: 45em) 20vw, 50vw"
-                        className="max-w-[160px]"
                       />
                       <h3 className="uppercase max-w-[100px] text-center">
                         {feature.title}

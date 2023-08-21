@@ -1,4 +1,4 @@
-import {Suspense} from 'react';
+import {ChangeEvent, Suspense} from 'react';
 import type {V2_MetaFunction} from '@shopify/remix-oxygen';
 import {defer, redirect, type LoaderArgs} from '@shopify/remix-oxygen';
 import type {FetcherWithComponents} from '@remix-run/react';
@@ -18,10 +18,7 @@ import {
   getSelectedProductOptions,
   CartForm,
 } from '@shopify/hydrogen';
-import type {
-  AttributeInput,
-  CartLineInput,
-} from '@shopify/hydrogen/storefront-api-types';
+import type {CartLineInput} from '@shopify/hydrogen/storefront-api-types';
 import {formatGermanDate, getVariantUrl} from '~/utils';
 import {PrimaryButton} from '~/components/PrimaryButton';
 import {useState} from 'react';
@@ -234,11 +231,6 @@ function ProductPrice({
   );
 }
 
-const PICKNICK_GUESTS = 'Picknickgäste';
-const PICKNICK_MENU = 'Picknickmenü';
-
-type ATTRIBUTE_KEYS_TYPE = 'Picknickgäste' | 'Picknickmenü';
-
 function ProductForm({
   product,
   selectedVariant,
@@ -250,28 +242,7 @@ function ProductForm({
   variants: Array<ProductVariantFragment>;
   addOns?: LatestProductFragment[];
 }) {
-  const [guests, setGuests] = useState<AttributeInput>({
-    key: PICKNICK_GUESTS,
-    value: '1 - 2',
-  });
-  const [menu, setMenu] = useState<AttributeInput>({
-    key: PICKNICK_MENU,
-    value: 'Klassisch',
-  });
-
-  const [addOn, setAddOn] = useState<LatestProductFragment>();
-
-  const onChangeHandler = (key: ATTRIBUTE_KEYS_TYPE, value: string) => {
-    if (key === PICKNICK_GUESTS) {
-      setGuests({key, value});
-    }
-
-    if (key === PICKNICK_MENU) {
-      setMenu({key, value});
-    }
-  };
-
-  const attributes = [guests, menu].filter(Boolean) as AttributeInput[];
+  const [addOnsForCart, setAddOnsForCart] = useState<LatestProductFragment[]>();
 
   const buttonLabel = selectedVariant?.availableForSale
     ? 'Mein Picknick buchen'
@@ -282,104 +253,47 @@ function ProductForm({
         {
           merchandiseId: selectedVariant.id,
           quantity: 1,
-          attributes: attributes,
         },
       ]
     : [];
 
-  const linesWithAddOn = addOn
-    ? linesToAdd.concat({
-        merchandiseId: addOn.variants.edges[0].node.id,
-        quantity: 1,
-        attributes: [
-          {
-            key: 'Besonderheiten',
-            value: `Besonderheit ${addOn.title} für ${product?.title}`,
-          },
-        ],
-      })
-    : linesToAdd;
+  const linesWithAddOns = addOnsForCart?.map((addOn) => ({
+    merchandiseId: addOn.variants.edges[0].node.id,
+    quantity: 1,
+    attributes: [
+      {
+        key: 'Besonderheiten',
+        value: `Besonderheit ${addOn.title} für ${product?.title} am ${
+          product?.date?.value && formatGermanDate(product.date?.value)
+        }}`,
+      },
+    ],
+  }));
+
+  if (linesWithAddOns) {
+    linesToAdd.push(...linesWithAddOns);
+  }
+
+  const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const addon = addOns?.find((item) => item.id === e.target.value);
+
+    if (!addon) {
+      return;
+    }
+
+    if (e.target.checked) {
+      setAddOnsForCart((prev) => [...(prev || []), addon]);
+    }
+
+    if (!e.target.checked) {
+      setAddOnsForCart((prev) =>
+        prev?.filter((item) => item.id !== e.target.value),
+      );
+    }
+  };
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="grid xl:grid-cols-[120px_auto]">
-        <legend className="font-normal">Picknickgäste</legend>
-        <fieldset className="flex flex-wrap gap-4 items-start mt-1 xl:mt-0">
-          <input
-            type="radio"
-            name="guests"
-            value="1 - 2"
-            id="1-2"
-            required
-            checked={guests?.value === '1 - 2'}
-            onChange={() => onChangeHandler(PICKNICK_GUESTS, '1 - 2')}
-          />
-          <label htmlFor="1-2" className="lg:flex-1 text-center">
-            1 -2
-          </label>
-          <input
-            type="radio"
-            name="guests"
-            value="3 - 4"
-            id="3-4"
-            checked={guests?.value === '3 - 4'}
-            onChange={() => onChangeHandler(PICKNICK_GUESTS, '3 - 4')}
-          />
-          <label htmlFor="3-4" className="lg:flex-1 text-center">
-            3 - 4
-          </label>
-          <input
-            type="radio"
-            name="guests"
-            value="5 - 6"
-            id="5-6"
-            checked={guests?.value === '5 - 6'}
-            onChange={() => onChangeHandler(PICKNICK_GUESTS, '5 - 6')}
-          />
-          <label htmlFor="5-6" className="lg:flex-1 text-center">
-            5 - 6
-          </label>
-        </fieldset>
-      </div>
-      <div className="grid xl:grid-cols-[120px_auto]">
-        <legend className="font-normal">Picknickmenü</legend>
-        <fieldset className="flex flex-wrap gap-4 items-start mt-1 xl:mt-0">
-          <input
-            type="radio"
-            name="menu"
-            value="Klassisch"
-            id="klassisch"
-            required
-            checked={menu?.value === 'Klassisch'}
-            onChange={() => onChangeHandler(PICKNICK_MENU, 'Klassisch')}
-          />
-          <label htmlFor="klassisch" className="lg:flex-1 text-center">
-            Klassisch
-          </label>
-          <input
-            type="radio"
-            name="menu"
-            value="Vegetarisch"
-            id="vegetarisch"
-            checked={menu?.value === 'Vegetarisch'}
-            onChange={() => onChangeHandler(PICKNICK_MENU, 'Vegetarisch')}
-          />
-          <label htmlFor="vegetarisch" className="lg:flex-1 text-center">
-            Vegetarisch
-          </label>
-          <input
-            type="radio"
-            name="menu"
-            value="Vegan"
-            id="vegan"
-            checked={menu?.value === 'Vegan'}
-            onChange={() => onChangeHandler(PICKNICK_MENU, 'Vegan')}
-          />
-          <label htmlFor="vegan" className="lg:flex-1 text-center">
-            Vegan
-          </label>
-        </fieldset>
-      </div>
       <VariantSelector
         handle={product.handle}
         options={product.options}
@@ -389,36 +303,28 @@ function ProductForm({
           return <ProductOptions key={option.name} option={option} />;
         }}
       </VariantSelector>
-      <div>
+      <div className="md:grid xl:grid-cols-[120px_auto] md:gap-1">
         <legend className="font-normal">Besonderheiten</legend>
         <fieldset className="flex flex-wrap gap-4 items-start mt-1 xl:mt-0">
-          <select
-            name="addOns"
-            id="addOns"
-            className="w-full"
-            onChange={(e) => {
-              if (e.target.value === 'null') {
-                setAddOn(undefined);
-                return;
-              }
-              const addOn = addOns?.find(
-                (addOn) => addOn.id === e.target.value,
-              );
-              setAddOn(addOn);
-            }}
-          >
-            <option value="null">Keine</option>
-            {addOns?.map((addOn) => (
-              <option value={addOn.id} key={addOn.id}>
+          {addOns?.map((addOn) => (
+            <div key={addOn.id} className="flex items-center">
+              <input
+                type="checkbox"
+                id={addOn.id}
+                name="addOns"
+                value={addOn.id}
+                onChange={(e) => handleCheckboxChange(e)}
+              />
+              <label className="ml-2" htmlFor={addOn.id}>
                 {addOn.title}
-              </option>
-            ))}
-          </select>
+              </label>
+            </div>
+          ))}
         </fieldset>
       </div>
       <AddToCartButton
         disabled={!selectedVariant || !selectedVariant.availableForSale}
-        lines={linesWithAddOn}
+        lines={linesToAdd}
       >
         {buttonLabel}
       </AddToCartButton>
