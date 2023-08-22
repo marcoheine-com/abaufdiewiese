@@ -36,12 +36,12 @@ export function HeaderMenu({
 }) {
   const className = `header-menu-${viewport}`;
 
-  // function closeAside(event: React.MouseEvent<HTMLAnchorElement>) {
-  //   if (viewport === 'mobile') {
-  //     event.preventDefault();
-  //     window.location.href = event.currentTarget.href;
-  //   }
-  // }
+  function closeAside(event: React.MouseEvent<HTMLAnchorElement>) {
+    if (viewport === 'mobile') {
+      event.preventDefault();
+      window.location.href = event.currentTarget.href;
+    }
+  }
 
   return (
     <nav className={className} role="navigation">
@@ -53,6 +53,7 @@ export function HeaderMenu({
             className="header-menu-item"
             end
             key={item._key}
+            onClick={closeAside}
             prefetch="intent"
             style={activeLinkStyle}
             to={item.slug}
