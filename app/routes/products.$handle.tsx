@@ -260,14 +260,6 @@ function ProductForm({
   const linesWithAddOns = addOnsForCart?.map((addOn) => ({
     merchandiseId: addOn.variants.edges[0].node.id,
     quantity: 1,
-    attributes: [
-      {
-        key: 'Besonderheiten',
-        value: `${addOn.title} für ${product?.title} am ${
-          product?.date?.value && formatGermanDate(product.date?.value)
-        }}`,
-      },
-    ],
   }));
 
   if (linesWithAddOns) {
