@@ -9,6 +9,13 @@ export default defineField({
     collapsible: true,
   },
   fields: [
+    // Social Links
+    defineField({
+      name: 'socialLinks',
+      title: 'Social links',
+      type: 'array',
+      of: [{type: 'linkSocial'}],
+    }),
     // Links
     defineField({
       name: 'links',

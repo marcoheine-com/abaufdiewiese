@@ -2,9 +2,6 @@ import {CogIcon} from '@sanity/icons'
 import {defineType, defineField} from 'sanity'
 
 const TITLE = 'Settings'
-interface ProductOptions {
-  title: string
-}
 
 export default defineType({
   name: 'settings',
@@ -16,10 +13,6 @@ export default defineType({
       default: true,
       name: 'navigation',
       title: 'Navigation',
-    },
-    {
-      name: 'productOptions',
-      title: 'Product options',
     },
     {
       name: 'notFoundPage',
@@ -44,34 +37,6 @@ export default defineType({
       title: 'Footer',
       type: 'footerSettings',
       group: 'navigation',
-    }),
-    // Custom product options
-    defineField({
-      name: 'customProductOptions',
-      title: 'Custom product options',
-      type: 'array',
-      group: 'productOptions',
-      of: [
-        {
-          name: 'customProductOption.color',
-          type: 'customProductOption.color',
-        },
-        {
-          name: 'customProductOption.size',
-          type: 'customProductOption.size',
-        },
-      ],
-      validation: (Rule) =>
-        Rule.custom((options: ProductOptions[] | undefined) => {
-          // Each product option type must have a unique title
-          if (options) {
-            const uniqueTitles = new Set(options.map((option) => option.title))
-            if (options.length > uniqueTitles.size) {
-              return 'Each product option type must have a unique title'
-            }
-          }
-          return true
-        }),
     }),
     // Not found page
     defineField({

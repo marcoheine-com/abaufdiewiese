@@ -25,12 +25,32 @@
     font-display: swap;
     src: url('/fonts/Roboto-Bold.ttf') format('truetype');
   }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    @apply leading-[1.2] font-bold;
+  }
   h1 {
-    @apply text-3xl md:text-[80px] md:leading-[80px] font-bold;
+    @apply text-[64px] md:text-[80px];
   }
 
   h2 {
-    @apply text-2xl md:text-[64px] md:leading-[64px] font-bold;
+    @apply text-[28px] md:text-[64px];
+  }
+
+  h3 {
+    @apply text-[28px];
+  }
+
+  h4 {
+    @apply text-[20px];
+  }
+
+  h5 {
+    @apply text-[16px];
   }
 
   p,
@@ -38,7 +58,7 @@
   ul,
   li,
   button {
-    @apply font-roboto;
+    @apply leading-[1.5];
   }
 
   input[type='radio'] {

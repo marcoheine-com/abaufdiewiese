@@ -1,10 +1,6 @@
 import {Await} from '@remix-run/react';
 import {Suspense} from 'react';
-import type {
-  CartApiQueryFragment,
-  FooterQuery,
-  HeaderQuery,
-} from 'storefrontapi.generated';
+import type {CartApiQueryFragment, HeaderQuery} from 'storefrontapi.generated';
 import {Aside} from '~/components/Aside';
 import {Footer} from '~/components/Footer';
 import {Header, HeaderMenu} from '~/components/Header';
@@ -13,7 +9,7 @@ import {
   PredictiveSearchForm,
   PredictiveSearchResults,
 } from '~/components/Search';
-import {SanityMenuLink} from '~/lib/sanity';
+import {SanityMenuLink, SanitySocialLink} from '~/lib/sanity';
 
 export type LayoutProps = {
   cart: Promise<CartApiQueryFragment | null>;
@@ -23,6 +19,7 @@ export type LayoutProps = {
   layout: {
     footer: {
       links: SanityMenuLink[];
+      socialLinks: SanitySocialLink[];
     };
     menuLinks: SanityMenuLink[];
   };
@@ -37,7 +34,10 @@ export function Layout({cart, children = null, header, layout}: LayoutProps) {
       <div className="flex flex-col items-start w-full min-h-screen">
         <Header header={header} menuLinks={layout?.menuLinks} cart={cart} />
         <main className="flex justify-center w-full mx-auto">{children}</main>
-        <Footer links={layout.footer.links} />
+        <Footer
+          links={layout.footer.links}
+          socialLinks={layout.footer.socialLinks}
+        />
       </div>
     </>
   );

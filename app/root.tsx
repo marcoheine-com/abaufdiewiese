@@ -89,7 +89,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="font-roboto font-thin">
         <Layout {...data}>
           <Outlet />
         </Layout>

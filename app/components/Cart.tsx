@@ -34,7 +34,6 @@ function CartDetails({layout, cart}: CartMainProps) {
       <CartLines lines={cart?.lines} layout={layout} />
       {cartHasItems && (
         <CartSummary cost={cart.cost} layout={layout}>
-          <CartDiscounts discountCodes={cart.discountCodes} />
           <CartCheckoutActions checkoutUrl={cart.checkoutUrl} />
         </CartSummary>
       )}
@@ -103,19 +102,18 @@ function CartLineItem({
         </Link>
         <CartLinePrice line={line} as="span" />
         <ul>
-          {selectedOptions.map((option) => (
-            <li key={option.name}>
-              <small>
+          {selectedOptions.map((option) => {
+            if (option.value === 'Default Title') return null;
+            return (
+              <li key={option.name}>
                 {option.name}: {option.value}
-              </small>
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ul>
         {line.attributes?.map((attribute) => (
           <div key={attribute.key}>
-            <small>
-              {attribute.key}: {attribute.value}
-            </small>
+            {attribute.key}: {attribute.value}
           </div>
         ))}
         <CartLineQuantity line={line} />
@@ -151,9 +149,8 @@ export function CartSummary({
 
   return (
     <div aria-labelledby="cart-summary" className={className}>
-      <h4>Totals</h4>
-      <dl className="cart-subtotal">
-        <dt>Subtotal</dt>
+      <dl className="cart-subtotal font-bold">
+        <dt>Zwischensumme: </dt>
         <dd>
           {cost?.subtotalAmount?.amount ? (
             <Money data={cost?.subtotalAmount} />
@@ -185,8 +182,7 @@ function CartLineQuantity({line}: {line: CartLine}) {
 
   return (
     <div className="cart-line-quantiy">
-      <small>Anzahl: {quantity} &nbsp;&nbsp;</small>
-
+      Anzahl: {quantity} &nbsp;&nbsp;
       <CartLineRemoveButton lineIds={[lineId]} />
     </div>
   );

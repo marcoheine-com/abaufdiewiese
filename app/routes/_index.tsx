@@ -1,6 +1,6 @@
 import type {V2_MetaFunction} from '@shopify/remix-oxygen';
 import {defer, type LoaderArgs} from '@shopify/remix-oxygen';
-import {Await, useLoaderData, Link} from '@remix-run/react';
+import {Await, useLoaderData, Link, NavLink} from '@remix-run/react';
 import {Suspense} from 'react';
 import {Image} from '@shopify/hydrogen';
 import type {LatestProductCollectionQuery} from 'storefrontapi.generated';
@@ -73,9 +73,9 @@ export default function Homepage() {
                         aspectRatio="1/1"
                         sizes="(min-width: 45em) 20vw, 50vw"
                       />
-                      <h3 className="uppercase max-w-[100px] text-center">
+                      <h5 className="uppercase max-w-[100px] text-center">
                         {feature.title}
-                      </h3>
+                      </h5>
                     </div>
                   );
                 })}
@@ -90,7 +90,7 @@ export default function Homepage() {
                 <Image
                   data={module.media}
                   aspectRatio="1/1"
-                  className="object-cover"
+                  className="object-cover max-h-[480px]"
                   sizes="(min-width: 45em) 20vw, 50vw"
                 />
 
@@ -123,7 +123,7 @@ function RecommendedProducts({
   latestProductsCollection: Promise<LatestProductCollectionQuery>;
 }) {
   return (
-    <div className="w-full content-max-width content-padding content-margin-top">
+    <div className="w-full content-max-width content-padding content-margin-top flex flex-col">
       <h2 className="text-center mt-8">Aktuelle Picknicks</h2>
       <Suspense fallback={<div>Loading...</div>}>
         <Await resolve={latestProductsCollection}>
@@ -160,6 +160,23 @@ function RecommendedProducts({
           }}
         </Await>
       </Suspense>
+      <NavLink
+        to="/unsere-picknicks"
+        className="self-center text-center mt-8 flex gap-2"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 448 512"
+          fill="#FFEC9B"
+          width={24}
+          height={24}
+        >
+          <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
+        </svg>
+        <span className="border-b-2 border-b-primaryVariant">
+          Zeige mir alle Picknicktermine
+        </span>
+      </NavLink>
       <br />
     </div>
   );

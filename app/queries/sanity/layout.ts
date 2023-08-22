@@ -2,7 +2,7 @@ import groq from 'groq';
 
 import {COLOR_THEME} from './fragments/colorTheme';
 import {LINKS} from './fragments/links';
-import {PORTABLE_TEXT} from './fragments/portableText/portableText';
+import {LINK_SOCIAL} from '~/queries/sanity/fragments/linkSocial';
 
 export const LAYOUT_QUERY = groq`
   *[_type == 'settings'] | order(_updatedAt desc) [0] {
@@ -11,6 +11,9 @@ export const LAYOUT_QUERY = groq`
       ${LINKS}
     },
     footer {
+      socialLinks[] {
+        ${LINK_SOCIAL}
+      },
       links[] {
         ${LINKS}
       },

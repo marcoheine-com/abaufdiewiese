@@ -263,7 +263,7 @@ function ProductForm({
     attributes: [
       {
         key: 'Besonderheiten',
-        value: `Besonderheit ${addOn.title} für ${product?.title} am ${
+        value: `${addOn.title} für ${product?.title} am ${
           product?.date?.value && formatGermanDate(product.date?.value)
         }}`,
       },

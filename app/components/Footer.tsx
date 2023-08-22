@@ -1,34 +1,52 @@
-import {useMatches, NavLink} from '@remix-run/react';
+import {NavLink} from '@remix-run/react';
+import {Image} from '@shopify/hydrogen';
 import {LayoutProps} from '~/components/Layout';
 
 type Props = {
   links: LayoutProps['layout']['footer']['links'];
+  socialLinks: LayoutProps['layout']['footer']['socialLinks'];
 };
-export function Footer({links}: Props) {
-  const [root] = useMatches();
-  const publicStoreDomain = root?.data?.publicStoreDomain;
-
+export function Footer({links, socialLinks}: Props) {
   return (
     <footer className="mt-auto w-full">
       <div className="content-margin-top bg-primaryVariant w-full">
         <nav
-          className="flex items-center gap-4 content-padding py-8 md:gap-8 mx-auto max-w-[1920px] justify-center uppercase text-primaryText"
+          className="flex flex-col items-center gap-8 sm:justify-center content-padding py-8 mx-auto content-max-width uppercase text-primaryText sm:relative"
           role="navigation"
         >
-          {links?.map((item) => {
-            if (!item.slug) return null;
-            return (
-              <NavLink
-                end
-                key={item._key}
-                prefetch="intent"
-                style={activeLinkStyle}
-                to={item.slug}
-              >
-                {item.title}
-              </NavLink>
-            );
-          })}
+          <div className="flex gap-4 sm:absolute sm:left-8">
+            {socialLinks?.map((item) => {
+              if (!item.url) return null;
+              return (
+                <NavLink
+                  end
+                  key={item._key}
+                  prefetch="none"
+                  style={activeLinkStyle}
+                  to={item.url}
+                  target={item.newWindow ? '_blank' : undefined}
+                >
+                  <Image className="w-8 h-8" sizes="8x8" data={item.icon} />
+                </NavLink>
+              );
+            })}
+          </div>
+          <div className="flex flex-col gap-4 text-center sm:flex-row sm:gap-8">
+            {links?.map((item) => {
+              if (!item.slug) return null;
+              return (
+                <NavLink
+                  end
+                  key={item._key}
+                  prefetch="intent"
+                  style={activeLinkStyle}
+                  to={item.slug}
+                >
+                  {item.title}
+                </NavLink>
+              );
+            })}
+          </div>
         </nav>
       </div>
     </footer>

@@ -40,6 +40,7 @@ import imageWithProductHotspots from './objects/hotspot/imageWithProductHotspots
 import inventory from './objects/shopify/inventory'
 import linkExternal from './objects/global/linkExternal'
 import linkInternal from './objects/global/linkInternal'
+import linkSocial from './objects/global/linkSocial'
 import links from './objects/global/links'
 import notFoundPage from './objects/global/notFoundPage'
 import heroCollection from './objects/hero/collection'
@@ -96,6 +97,7 @@ const objects = [
   links,
   linkExternal,
   linkInternal,
+  linkSocial,
   notFoundPage,
   heroCollection,
   heroHome,

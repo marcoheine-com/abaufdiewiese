@@ -112,3 +112,11 @@ export type SanitySeo = {
   image?: SanityAssetImage;
   title: string;
 };
+
+export type SanitySocialLink = {
+  _key: string;
+  _type: 'socialLinks';
+  icon?: SanityAssetImage;
+  url: string;
+  newWindow?: boolean;
+};
