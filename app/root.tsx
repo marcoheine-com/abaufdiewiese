@@ -95,6 +95,11 @@ export default function App() {
         </Layout>
         <ScrollRestoration />
         <Scripts />
+        <script
+          id="cookieyes"
+          type="text/javascript"
+          src="https://cdn-cookieyes.com/client_data/8835fa440bdfeacea2be81e8/script.js"
+        ></script>
       </body>
     </html>
   );
