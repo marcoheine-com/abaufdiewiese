@@ -1,4 +1,4 @@
-import type {V2_MetaFunction} from '@shopify/remix-oxygen';
+import type {ActionArgs, V2_MetaFunction} from '@shopify/remix-oxygen';
 import {defer, type LoaderArgs} from '@shopify/remix-oxygen';
 import {Await, useLoaderData, Link, NavLink} from '@remix-run/react';
 import {Suspense} from 'react';
@@ -11,6 +11,7 @@ import Hero from '~/components/Hero';
 import {SanityHomePage} from '~/lib/sanity';
 import {PRODUCT_COLLECTION_QUERY} from '~/queries/shopify/collection';
 import PortableText from '~/components/PortableText';
+import Contactform from '~/components/Contactform';
 
 export const meta: V2_MetaFunction = () => {
   return [{title: 'Hydrogen | Home'}];
@@ -103,12 +104,22 @@ export default function Homepage() {
             );
 
           case 'module.showProducts':
+            if (!module.showProducts) {
+              return null;
+            }
+
             return (
               <RecommendedProducts
                 latestProductsCollection={data?.latestProductsCollection}
                 key={module._key}
               />
             );
+          case 'module.showContactform':
+            if (!module.showContactform) {
+              return null;
+            }
+
+            return <Contactform key={module._key} />;
 
           case 'module.support':
             return (
@@ -170,7 +181,7 @@ function RecommendedProducts({
                     </h4>
                     <p className="text-center">{product.description}</p>
 
-                    <PrimaryButton>
+                    <PrimaryButton className="mt-4">
                       {product.metafield?.value
                         ? `Picknick am ${formatGermanDate(
                             product.metafield?.value,

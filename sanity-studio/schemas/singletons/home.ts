@@ -36,6 +36,7 @@ export default defineField({
         {type: 'module.features'},
         {type: 'module.showProducts'},
         {type: 'module.textmedia'},
+        {type: 'module.showContactform'},
         {type: 'module.support'},
       ],
       group: 'editorial',

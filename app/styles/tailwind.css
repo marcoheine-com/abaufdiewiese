@@ -78,6 +78,15 @@
   input[type='radio']:checked + label {
     @apply border-2 border-primary m-0;
   }
+
+  input,
+  textarea {
+    @apply border-2 border-primaryText rounded !important;
+  }
+
+  label {
+    @apply font-normal;
+  }
 }
 
 @layer components {

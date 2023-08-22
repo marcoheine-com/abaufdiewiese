@@ -2,13 +2,13 @@ import {TagIcon} from '@sanity/icons'
 import {defineField} from 'sanity'
 
 export default defineField({
-  name: 'module.showProducts',
-  title: 'Show Products',
+  name: 'module.showContactform',
+  title: 'Show Contactform',
   type: 'object',
   fields: [
     {
-      name: 'showProducts',
-      title: 'Show Products',
+      name: 'showContactform',
+      title: 'Show Contactform',
       type: 'boolean',
     },
   ],
@@ -17,7 +17,7 @@ export default defineField({
     prepare() {
       return {
         media: TagIcon,
-        title: 'Show Products',
+        title: 'Show Contactform',
       }
     },
   },

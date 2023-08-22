@@ -41,14 +41,16 @@ export type SanityCollectionGroup = {
 
 export type SanityHomePage = {
   hero?: SanityHero;
-  modules?: (
-    | SanityModuleFeatures
-    | SanityModuleTextmedia
-    | SanityShowProducts
-    | SanityModuleSupport
-  )[];
+  modules?: SanityHomePageModules[];
   seo: SanitySeo;
 };
+
+export type SanityHomePageModules =
+  | SanityModuleFeatures
+  | SanityModuleTextmedia
+  | SanityShowProducts
+  | SanityShowContactform
+  | SanityModuleSupport;
 
 export type SanityModuleFeatures = {
   _key: string;
@@ -67,7 +69,13 @@ export type SanityFeature = {
 export type SanityShowProducts = {
   _key: string;
   _type: 'module.showProducts';
-  title: string;
+  showProducts: boolean;
+};
+
+export type SanityShowContactform = {
+  _key: string;
+  _type: 'module.showContactform';
+  showContactform: boolean;
 };
 
 export type SanityModuleTextmedia = {

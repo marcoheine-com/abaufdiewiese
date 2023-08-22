@@ -92,7 +92,7 @@ export default function Page() {
                         </h4>
                         <p className="text-center">{product.description}</p>
 
-                        <PrimaryButton>
+                        <PrimaryButton className="mt-4">
                           {product.metafield?.value
                             ? `Picknick am ${formatGermanDate(
                                 product.metafield?.value,

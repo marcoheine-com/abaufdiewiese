@@ -65,6 +65,7 @@ import moduleProduct from './objects/module/product'
 import moduleProducts from './objects/module/products'
 import moduleTextmedia from './objects/module/textmedia'
 import moduleShowproducts from './objects/module/showProducts'
+import moduleShowContactform from './objects/module/showContactform'
 import moduleSupport from './objects/module/support'
 import moduleSupportItem from './objects/module/supportItem'
 import placeholderString from './objects/shopify/placeholderString'
@@ -123,6 +124,7 @@ const objects = [
   moduleProducts,
   moduleTextmedia,
   moduleShowproducts,
+  moduleShowContactform,
   moduleSupport,
   moduleSupportItem,
   placeholderString,

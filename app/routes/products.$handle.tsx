@@ -161,7 +161,7 @@ function ProductMain({
   return (
     <div className="product-main">
       <h2>{title}</h2>
-      <p className="grid grid-cols-2 ">
+      <p className="grid grid-cols-2 mt-4">
         {product.date?.value && (
           <time dateTime={product.date?.value}>
             {formatGermanDate(product.date?.value)}
@@ -305,7 +305,7 @@ function ProductForm({
       </VariantSelector>
       <div className="md:grid xl:grid-cols-[120px_auto] md:gap-1">
         <legend className="font-normal">Besonderheiten</legend>
-        <fieldset className="flex flex-wrap gap-4 items-start mt-1 xl:mt-0">
+        <fieldset className="flex flex-wrap gap-4 items-start mt-1 xl:mt-0 ">
           {addOns?.map((addOn) => (
             <div key={addOn.id} className="flex items-center">
               <input
@@ -315,7 +315,7 @@ function ProductForm({
                 value={addOn.id}
                 onChange={(e) => handleCheckboxChange(e)}
               />
-              <label className="ml-2" htmlFor={addOn.id}>
+              <label className="ml-2 font-thin" htmlFor={addOn.id}>
                 {addOn.title}
               </label>
             </div>
@@ -335,7 +335,7 @@ function ProductForm({
 function ProductOptions({option}: {option: VariantOption}) {
   return (
     <div className="md:grid xl:grid-cols-[120px_auto]" key={option.name}>
-      <h5 className="mt-0">{option.name}</h5>
+      <h5 className="mt-0 font-normal">{option.name}</h5>
       <div className="mt-1 flex items-start flex-wrap gap-4 xl:mt-0">
         {option.values.map(({value, isAvailable, isActive, to}) => {
           return (
