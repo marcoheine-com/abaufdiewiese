@@ -65,6 +65,8 @@ import moduleProduct from './objects/module/product'
 import moduleProducts from './objects/module/products'
 import moduleTextmedia from './objects/module/textmedia'
 import moduleShowproducts from './objects/module/showProducts'
+import moduleSupport from './objects/module/support'
+import moduleSupportItem from './objects/module/supportItem'
 import placeholderString from './objects/shopify/placeholderString'
 import priceRange from './objects/shopify/priceRange'
 import spot from './objects/hotspot/spot'
@@ -121,6 +123,8 @@ const objects = [
   moduleProducts,
   moduleTextmedia,
   moduleShowproducts,
+  moduleSupport,
+  moduleSupportItem,
   placeholderString,
   priceRange,
   spot,

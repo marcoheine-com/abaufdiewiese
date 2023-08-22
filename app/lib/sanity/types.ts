@@ -45,6 +45,7 @@ export type SanityHomePage = {
     | SanityModuleFeatures
     | SanityModuleTextmedia
     | SanityShowProducts
+    | SanityModuleSupport
   )[];
   seo: SanitySeo;
 };
@@ -74,6 +75,20 @@ export type SanityModuleTextmedia = {
   _type: 'module.textmedia';
   media?: SanityAssetImage;
   text?: PortableTextBlock[];
+};
+
+export type SanityModuleSupport = {
+  _key: string;
+  _type: 'module.support';
+  title: string;
+  text?: string;
+  supportItems?: SanitySupportItem[];
+};
+
+export type SanitySupportItem = {
+  _key: string;
+  _type: 'support';
+  image?: SanityAssetImage;
 };
 
 export type SanityPage = {

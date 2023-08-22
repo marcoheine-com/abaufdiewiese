@@ -109,6 +109,30 @@ export default function Homepage() {
                 key={module._key}
               />
             );
+
+          case 'module.support':
+            return (
+              <section
+                className="content-max-width content-margin-top content-padding flex items-center flex-col"
+                key={module._key}
+              >
+                <h2>{module.title}</h2>
+
+                {module.text && (
+                  <p className="max-w-2xl text-center mt-4">{module.text}</p>
+                )}
+                <div className="grid items-center sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {module?.supportItems?.map((support) => (
+                    <Image
+                      key={support._key}
+                      data={support.image}
+                      sizes="(min-width: 45em) 20vw, 50vw"
+                    />
+                  ))}
+                </div>
+              </section>
+            );
+
           default:
             return null;
         }
