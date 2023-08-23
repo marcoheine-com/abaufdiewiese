@@ -8,7 +8,7 @@ import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import {CartMain} from '~/components/Cart';
 
 export const meta: V2_MetaFunction = () => {
-  return [{title: `Hydrogen | Cart`}];
+  return [{title: `Warenkorb`}];
 };
 
 export async function action({request, context}: ActionArgs) {

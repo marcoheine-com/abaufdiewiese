@@ -8,7 +8,7 @@ export function PrimaryButton({
     <button
       onClick={onClick}
       {...props}
-      className={`bg-primary rounded-[4px] p-4 w-full ${
+      className={`bg-primary rounded-[4px] p-4 w-full font-normal ${
         props.disabled ? 'opacity-50 cursor-not-allowed' : ''
       } ${className}`}
     >

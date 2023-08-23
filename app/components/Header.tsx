@@ -2,16 +2,15 @@ import {Await, NavLink} from '@remix-run/react';
 import {Suspense} from 'react';
 import type {LayoutProps} from './Layout';
 
-type HeaderProps = Pick<LayoutProps, 'header' | 'cart'> & {
+type HeaderProps = Pick<LayoutProps, 'cart'> & {
   menuLinks: LayoutProps['layout']['menuLinks'];
 };
 
 type Viewport = 'desktop' | 'mobile';
 
-export function Header({header, cart, menuLinks}: HeaderProps) {
-  const {menu} = header;
+export function Header({cart, menuLinks}: HeaderProps) {
   return (
-    <header className="flex top-0 sticky p-4 w-full bg-white items-center mx-auto z-[1] max-w-[1920px]">
+    <header className="flex top-0 sticky w-full bg-white items-center mx-auto z-[1] content-max-width content-padding">
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
         <img
           src="/images/abaufdiewiese.png"
@@ -20,7 +19,7 @@ export function Header({header, cart, menuLinks}: HeaderProps) {
           height="100px"
         />
       </NavLink>
-      <HeaderMenu menu={menu} menuLinks={menuLinks} viewport="desktop" />
+      <HeaderMenu menuLinks={menuLinks} viewport="desktop" />
       <HeaderCtas cart={cart} />
     </header>
   );
@@ -30,7 +29,6 @@ export function HeaderMenu({
   menuLinks,
   viewport,
 }: {
-  menu: HeaderProps['header']['menu'];
   menuLinks: HeaderProps['menuLinks'];
   viewport: Viewport;
 }) {
@@ -66,10 +64,12 @@ export function HeaderMenu({
   );
 }
 
-function HeaderCtas({cart}: Pick<HeaderProps, 'cart'>) {
+export function HeaderCtas({cart}: Pick<HeaderProps, 'cart'>) {
   return (
     <nav className="header-ctas" role="navigation">
-      <HeaderMenuMobileToggle />
+      <a className="header-menu-mobile-toggle" href="#mobile-menu-aside">
+        <h3>☰</h3>
+      </a>
 
       <CartToggle cart={cart} />
     </nav>
@@ -101,7 +101,7 @@ function CartBadge({count}: {count: number}) {
   );
 }
 
-function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
+export function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
   return (
     <Suspense fallback={<CartBadge count={0} />}>
       <Await resolve={cart}>
@@ -114,7 +114,7 @@ function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
   );
 }
 
-function activeLinkStyle({
+export function activeLinkStyle({
   isActive,
   isPending,
 }: {

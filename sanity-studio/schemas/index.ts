@@ -70,6 +70,7 @@ import moduleSupport from './objects/module/support'
 import moduleSupportItem from './objects/module/supportItem'
 import placeholderString from './objects/shopify/placeholderString'
 import priceRange from './objects/shopify/priceRange'
+import productMenuitem from './objects/product/menuItem'
 import spot from './objects/hotspot/spot'
 import productHotspots from './objects/hotspot/productHotspots'
 import option from './objects/shopify/option'
@@ -132,6 +133,7 @@ const objects = [
   spot,
   productHotspots,
   option,
+  productMenuitem,
   productWithVariant,
   proxyString,
   seo,

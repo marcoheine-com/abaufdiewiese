@@ -2,7 +2,6 @@ import type {V2_MetaFunction} from '@shopify/remix-oxygen';
 import {json, type LoaderArgs} from '@shopify/remix-oxygen';
 import {Await, Link, useLoaderData} from '@remix-run/react';
 import {PAGE_QUERY} from '~/queries/sanity/page';
-import {RECOMMENDED_PRODUCTS_QUERY} from '~/routes/_index';
 import {Suspense} from 'react';
 import {getPaginationVariables, Image} from '@shopify/hydrogen';
 import {PrimaryButton} from '~/components/PrimaryButton';
@@ -13,7 +12,38 @@ export const meta: V2_MetaFunction = ({data}) => {
   return [
     {
       title: `${data.page?.seo?.title}`,
+    },
+    {
       description: `${data?.page?.seo?.description}`,
+    },
+    {
+      property: 'og:image',
+      content: `${data?.page?.seo?.image?.url}`,
+    },
+    {
+      property: 'og:image:alt',
+      content: `${data?.page?.seo?.image?.alt}`,
+    },
+    {
+      property: 'og:title',
+      content: `${data.page?.seo?.title}`,
+    },
+    {
+      property: 'og:description',
+      content: `${data?.page?.seo?.description}`,
+    },
+    {
+      property: 'og:type',
+      content: 'website',
+    },
+    {
+      property: 'og:url',
+      content: 'https://abaufdiewiese.de',
+    },
+    {
+      tagName: 'link',
+      rel: 'canonical',
+      href: 'https://abaufdiewiese.de',
     },
   ];
 };

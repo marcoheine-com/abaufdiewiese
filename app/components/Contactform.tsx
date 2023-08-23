@@ -12,10 +12,10 @@ export default function Contactform() {
       </p>
 
       <section className="grid lg:grid-cols-2 gap-8 mt-8">
-        <section className="bg-primaryVariant py-8 px-8 xl:px-52 flex flex-col items-center">
+        <section className="bg-primaryVariant py-8 px-8 md:px-32 xl:px-52 flex flex-col items-center">
           <img
             src="/images/Katharina_Madeira.webp"
-            alt="abaufdiewiese"
+            alt="Portrait Bild von Katharina Jäger"
             className="rounded-full object-cover aspect-square"
           />
           <p className="uppercase mt-8">Katharina Jäger</p>
@@ -39,7 +39,7 @@ export default function Contactform() {
         <form
           method="post"
           onSubmit={handleSubmit}
-          className="flex flex-col gap-4 md:grid md:grid-cols-[auto_auto]"
+          className="flex flex-col gap-8 md:grid md:grid-cols-[auto_auto] md:auto-rows-min"
         >
           <div className="flex flex-col md:col-span-1">
             <label htmlFor="name">Name</label>

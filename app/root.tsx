@@ -58,6 +58,7 @@ export async function loader({context}: LoaderArgs) {
 
   const layout = await context.sanity.query<any>({query: LAYOUT_QUERY, cache});
 
+  // TODO: can be removed, not used
   // await the header query (above the fold)
   const headerPromise = storefront.query(HEADER_QUERY, {
     cache: storefront.CacheLong(),
@@ -126,7 +127,7 @@ export function ErrorBoundary() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="font-roboto font-thin">
         <Layout {...root.data}>
           <div className="route-error">
             {errorStatus === 404 ? (

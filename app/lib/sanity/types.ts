@@ -110,9 +110,19 @@ export type SanityProductPage = {
   _id: string;
   available: boolean;
   body: PortableTextBlock[];
+  menuHeadline: string;
+  menus: SanityProductMenuItem[];
   gid: string;
   slug?: string;
   seo: SanitySeo;
+};
+
+export type SanityProductMenuItem = {
+  _key: string;
+  _type: 'product.menuItem';
+  title: string;
+  description: PortableTextBlock[];
+  image: SanityAssetImage;
 };
 
 export type SanityCollection = {

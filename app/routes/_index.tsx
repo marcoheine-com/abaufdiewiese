@@ -13,10 +13,46 @@ import {PRODUCT_COLLECTION_QUERY} from '~/queries/shopify/collection';
 import PortableText from '~/components/PortableText';
 import Contactform from '~/components/Contactform';
 
-export const meta: V2_MetaFunction = () => {
-  return [{title: 'Hydrogen | Home'}];
+export const meta: V2_MetaFunction = ({data}) => {
+  return [
+    {
+      title: `${data.page?.seo?.title}`,
+    },
+    {
+      name: 'description',
+      content: `${data?.page?.seo?.description}`,
+    },
+    {
+      property: 'og:image',
+      content: `${data?.page?.seo?.image?.url}`,
+    },
+    {
+      property: 'og:image:alt',
+      content: `${data?.page?.seo?.image?.alt}`,
+    },
+    {
+      property: 'og:title',
+      content: `${data.page?.seo?.title}`,
+    },
+    {
+      property: 'og:description',
+      content: `${data?.page?.seo?.description}`,
+    },
+    {
+      property: 'og:type',
+      content: 'website',
+    },
+    {
+      property: 'og:url',
+      content: 'https://abaufdiewiese.de',
+    },
+    {
+      tagName: 'link',
+      rel: 'canonical',
+      href: 'https://abaufdiewiese.de',
+    },
+  ];
 };
-
 export async function loader({params, context}: LoaderArgs) {
   const {storefront} = context;
 
@@ -85,14 +121,14 @@ export default function Homepage() {
           case 'module.textmedia':
             return (
               <section
-                className="content-max-width grid sm:grid-cols-2 content-margin-top"
+                className="content-max-width grid lg:grid-cols-2 content-margin-top"
                 key={module._key}
               >
                 <Image
                   data={module.media}
                   aspectRatio="1/1"
-                  className="object-cover max-h-[480px]"
-                  sizes="(min-width: 45em) 20vw, 50vw"
+                  className="object-cover md:max-h-[480px]"
+                  sizes="(min-width: 45em) 20vw, 100vw"
                 />
 
                 {module.text && (
@@ -164,7 +200,7 @@ function RecommendedProducts({
         <Await resolve={latestProductsCollection}>
           {({collection}) => {
             return (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 mt-8 gap-8 content-padding content-max-width">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 mt-8 gap-8">
                 {collection?.products.nodes.map((product) => (
                   <Link
                     key={product.id}
@@ -197,7 +233,8 @@ function RecommendedProducts({
       </Suspense>
       <NavLink
         to="/unsere-picknicks"
-        className="self-center text-center mt-8 flex gap-2"
+        className="self-center text-center mt-8 flex gap-2 border-0"
+        prefetch="intent"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

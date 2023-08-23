@@ -1,9 +1,9 @@
-import {Await} from '@remix-run/react';
+import {Await, NavLink} from '@remix-run/react';
 import {Suspense} from 'react';
 import type {CartApiQueryFragment, HeaderQuery} from 'storefrontapi.generated';
 import {Aside} from '~/components/Aside';
 import {Footer} from '~/components/Footer';
-import {Header, HeaderMenu} from '~/components/Header';
+import {Header, HeaderCtas, HeaderMenu} from '~/components/Header';
 import {CartMain} from '~/components/Cart';
 import {
   PredictiveSearchForm,
@@ -14,7 +14,6 @@ import {SanityMenuLink, SanitySocialLink} from '~/lib/sanity';
 export type LayoutProps = {
   cart: Promise<CartApiQueryFragment | null>;
   children?: React.ReactNode;
-  header: HeaderQuery;
   isLoggedIn: boolean;
   layout: {
     footer: {
@@ -25,14 +24,14 @@ export type LayoutProps = {
   };
 };
 
-export function Layout({cart, children = null, header, layout}: LayoutProps) {
+export function Layout({cart, children = null, layout}: LayoutProps) {
   return (
     <>
       <CartAside cart={cart} />
       <SearchAside />
-      <MobileMenuAside menu={header.menu} menuLinks={layout?.menuLinks} />
+      <MobileMenuAside menuLinks={layout?.menuLinks} />
       <div className="flex flex-col items-start w-full min-h-screen">
-        <Header header={header} menuLinks={layout?.menuLinks} cart={cart} />
+        <Header menuLinks={layout?.menuLinks} cart={cart} />
         <main className="flex justify-center w-full mx-auto">{children}</main>
         <Footer
           links={layout.footer.links}
@@ -85,15 +84,13 @@ function SearchAside() {
 }
 
 function MobileMenuAside({
-  menu,
   menuLinks,
 }: {
-  menu: HeaderQuery['menu'];
   menuLinks: LayoutProps['layout']['menuLinks'];
 }) {
   return (
     <Aside id="mobile-menu-aside" heading="MENU">
-      <HeaderMenu menu={menu} menuLinks={menuLinks} viewport="mobile" />
+      <HeaderMenu menuLinks={menuLinks} viewport="mobile" />
     </Aside>
   );
 }

@@ -3,7 +3,44 @@ import {json, type LoaderArgs} from '@shopify/remix-oxygen';
 import {useLoaderData} from '@remix-run/react';
 
 export const meta: V2_MetaFunction = ({data}) => {
-  return [{title: `${data.page.title}`}];
+  return [
+    {
+      title: `${data.page?.seo?.title}`,
+    },
+    {
+      name: 'description',
+      content: `${data?.page?.seo?.description}`,
+    },
+    {
+      property: 'og:image',
+      content: `${data?.page?.seo?.image?.url}`,
+    },
+    {
+      property: 'og:image:alt',
+      content: `${data?.page?.seo?.image?.alt}`,
+    },
+    {
+      property: 'og:title',
+      content: `${data.page?.seo?.title}`,
+    },
+    {
+      property: 'og:description',
+      content: `${data?.page?.seo?.description}`,
+    },
+    {
+      property: 'og:type',
+      content: 'website',
+    },
+    {
+      property: 'og:url',
+      content: 'https://abaufdiewiese.de',
+    },
+    {
+      tagName: 'link',
+      rel: 'canonical',
+      href: 'https://abaufdiewiese.de',
+    },
+  ];
 };
 
 export async function loader({params, context}: LoaderArgs) {

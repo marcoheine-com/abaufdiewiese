@@ -64,6 +64,19 @@ export default defineType({
       group: 'editorial',
     }),
     defineField({
+      name: 'menuHeadline',
+      title: 'Menu headline',
+      type: 'string',
+      group: 'editorial',
+    }),
+    defineField({
+      name: 'menus',
+      title: 'Menus',
+      type: 'array',
+      of: [{type: 'productmenuItem'}],
+      group: 'editorial',
+    }),
+    defineField({
       name: 'store',
       title: 'Shopify',
       type: 'shopifyProduct',

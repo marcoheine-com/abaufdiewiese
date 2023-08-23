@@ -122,7 +122,11 @@ function CartCheckoutActions({checkoutUrl}: {checkoutUrl: string}) {
 
   return (
     <div>
-      <a href={checkoutUrl} target="_self">
+      <a
+        href={checkoutUrl}
+        target="_self"
+        className="bg-primary rounded-[4px] p-4 flex justify-center font-normal mt-2"
+      >
         <p>Weiter zum Checkout &rarr;</p>
       </a>
       <br />

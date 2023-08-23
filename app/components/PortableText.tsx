@@ -13,6 +13,15 @@ const Block = (props: any) => {
 };
 const components: PortableTextComponents = {
   block: Block,
+  list: {
+    bullet: (props: any) => <ul className="mt-2">{props.children}</ul>,
+    number: (props: any) => <ol className="mt-2">{props.children}</ol>,
+  },
+  listItem: {
+    bullet: (props: any) => (
+      <li className="ml-4 list-disc">{props.children}</li>
+    ),
+  },
 };
 
 export default function PortableText({value}: Props) {
