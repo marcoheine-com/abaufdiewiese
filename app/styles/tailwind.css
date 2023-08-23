@@ -26,12 +26,28 @@
     src: url('/fonts/Roboto-Bold.ttf') format('truetype');
   }
 
+  @font-face {
+    font-family: 'QuattroCento Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/fonts/QuattrocentoSans-Regular.ttf') format('truetype');
+  }
+
+  @font-face {
+    font-family: 'QuattroCento Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('/fonts/QuattrocentoSans-Bold.ttf') format('truetype');
+  }
+
   h1,
   h2,
   h3,
   h4,
   h5 {
-    @apply leading-[1.2] font-bold;
+    @apply leading-[1.2] font-bold font-quattrocentosans;
   }
   h1 {
     @apply text-[64px] md:text-[80px];
@@ -59,6 +75,10 @@
   li,
   button {
     @apply leading-[1.5];
+  }
+
+  p > a {
+    @apply border-b-2 border-b-primaryVariant;
   }
 
   input[type='radio'] {
@@ -91,7 +111,7 @@
 
 @layer components {
   .content-padding {
-    @apply px-4 md:px-8;
+    @apply px-4 md:px-16 lg:px-24 xl:px-36;
   }
 
   .content-max-width {

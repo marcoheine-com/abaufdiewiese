@@ -19,6 +19,7 @@ export default {
       },
       fontFamily: {
         roboto: ['Roboto', 'sans-serif'],
+        quattrocentosans: ['Quattrocento Sans', 'sans-serif'],
       },
     },
   },
