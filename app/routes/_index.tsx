@@ -10,7 +10,7 @@ import {HOME_PAGE_QUERY} from '~/queries/sanity/home';
 import Hero from '~/components/Hero';
 import {SanityHomePage} from '~/lib/sanity';
 import {PRODUCT_COLLECTION_QUERY} from '~/queries/shopify/collection';
-import PortableText from '~/components/PortableText';
+import PortableText from '~/components/portableText/PortableText';
 import Contactform from '~/components/Contactform';
 
 export const meta: V2_MetaFunction = ({data}) => {

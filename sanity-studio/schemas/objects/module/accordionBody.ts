@@ -37,9 +37,15 @@ export default defineField({
         ],
       },
       // Regular styles
-      styles: [],
+      styles: [
+        {title: 'Normal', value: 'normal'},
+        {title: 'Heading 3', value: 'h3'},
+      ],
       // Paragraphs
       type: 'block',
+    },
+    {
+      type: 'image',
     },
   ],
 })

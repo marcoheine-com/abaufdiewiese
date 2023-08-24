@@ -22,12 +22,6 @@ export default defineField({
       name: 'heroImage',
       title: 'Hero image',
       type: 'image',
-      fields: [
-        {
-          name: 'alt',
-          type: 'string',
-        },
-      ],
     }),
   ],
 })

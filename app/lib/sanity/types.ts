@@ -99,9 +99,22 @@ export type SanitySupportItem = {
   image?: SanityAssetImage;
 };
 
+export type SanityModuleAccordion = {
+  _key?: string;
+  _type: 'module.accordion';
+  groups: {
+    _key: string;
+    _type: 'group';
+    body: PortableTextBlock[];
+    title: string;
+  }[];
+};
+
 export type SanityPage = {
   body: PortableTextBlock[];
   hero?: SanityHero;
+  showTitle: boolean;
+  modules?: SanityModuleAccordion[];
   slug: {
     current: string;
   };

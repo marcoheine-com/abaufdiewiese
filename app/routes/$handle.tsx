@@ -9,6 +9,7 @@ import {PRODUCT_COLLECTION_QUERY} from '~/queries/shopify/collection';
 import {SanityPage} from '~/lib/sanity';
 import Hero from '~/components/Hero';
 import {useState} from 'react';
+import PortableText from '~/components/portableText/PortableText';
 
 export const meta: V2_MetaFunction = ({data}) => {
   return [
@@ -114,6 +115,19 @@ export default function Page() {
   return (
     <div className="w-full">
       {page?.hero && <Hero hero={page.hero} />}
+
+      {page.showTitle && (
+        <h1 className="content-padding content-max-width content-margin-top">
+          {page.title}
+        </h1>
+      )}
+
+      {page?.body && (
+        <PortableText
+          className="content-max-width content-padding content-margin-top"
+          value={page.body}
+        />
+      )}
 
       {renderProducts && (
         <>

@@ -14,6 +14,7 @@ export const PAGE = groq`
       ${HERO_PAGE}
     },
   },
+  showTitle,
   ${SEO},
   title,
 `;

@@ -25,7 +25,7 @@ import {useState} from 'react';
 import {PRODUCT_COLLECTION_QUERY} from '~/queries/shopify/collection';
 import {SanityProductPage} from '~/lib/sanity';
 import {PRODUCT_PAGE_QUERY} from '~/queries/sanity/product';
-import PortableText from '~/components/PortableText';
+import PortableText from '~/components/portableText/PortableText';
 
 export const meta: V2_MetaFunction = ({data}) => {
   return [

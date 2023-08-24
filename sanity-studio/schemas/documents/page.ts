@@ -57,6 +57,14 @@ export default defineField({
       hidden: ({document}) => !document?.showHero,
       group: 'editorial',
     }),
+    defineField({
+      name: 'showTitle',
+      title: 'Show title',
+      type: 'boolean',
+      description: 'If disabled, page title will be hidden',
+      initialValue: false,
+      group: 'editorial',
+    }),
     // Body
     defineField({
       name: 'body',
