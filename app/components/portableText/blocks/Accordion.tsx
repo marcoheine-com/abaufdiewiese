@@ -11,6 +11,10 @@ type Props = {
 };
 
 export default function AccordionBlock({value}: Props) {
+  const renderTitleAsURL = (title: string) => {
+    const titleWithoutQuestionmark = title.replace(/\?/g, '');
+    return titleWithoutQuestionmark.toLowerCase().replace(/\s/g, '-');
+  };
   return (
     <div className={'first:mt-0 last:mb-0 my-8'}>
       {value?.groups?.map((group) => (
@@ -22,7 +26,9 @@ export default function AccordionBlock({value}: Props) {
                   'flex items-center justify-between py-4 text-lg font-bold transition-opacity duration-200 ease-out hover:opacity-60'
                 }
               >
-                <h2 className="text-start">{group.title}</h2>
+                <h2 className="text-start" id={renderTitleAsURL(group.title)}>
+                  {group.title}
+                </h2>
                 <div className="ml-4 shrink-0">
                   {open ? <MinusIcon /> : <PlusIcon />}
                 </div>

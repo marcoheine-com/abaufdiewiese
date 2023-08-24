@@ -4,6 +4,7 @@ import {
 } from '@portabletext/react';
 import type {PortableTextBlock} from '@sanity/types';
 import {Image} from '@shopify/hydrogen';
+import LinkInternalAnnotation from '~/components/portableText/annotations/LinkInternal';
 import AccordionBlock from '~/components/portableText/blocks/Accordion';
 
 type Props = {
@@ -43,6 +44,9 @@ const components: PortableTextComponents = {
         />
       );
     },
+  },
+  marks: {
+    annotationLinkInternal: LinkInternalAnnotation,
   },
 };
 
