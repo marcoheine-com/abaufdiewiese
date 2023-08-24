@@ -7,7 +7,7 @@ type Props = {
 
 export default function Hero({hero}: Props) {
   return (
-    <section className="relative">
+    <section className="relative content-max-width">
       <Image
         className="w-full max-h-[700px]"
         data={hero.heroImage}

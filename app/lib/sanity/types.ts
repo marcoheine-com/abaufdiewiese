@@ -102,6 +102,9 @@ export type SanitySupportItem = {
 export type SanityPage = {
   body: PortableTextBlock[];
   hero?: SanityHero;
+  slug: {
+    current: string;
+  };
   seo: SanitySeo;
   title: string;
 };

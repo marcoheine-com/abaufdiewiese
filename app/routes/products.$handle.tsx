@@ -172,7 +172,6 @@ export default function Product() {
     useLoaderData<typeof loader>();
   const {selectedVariant} = product;
 
-  console.log(sanityProduct);
   return (
     <section className="w-full mt-10 md:mt-24">
       <div className="grid lg:grid-cols-2 gap-16 w-full content-padding content-max-width">

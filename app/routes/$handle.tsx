@@ -1,12 +1,14 @@
 import type {V2_MetaFunction} from '@shopify/remix-oxygen';
 import {json, type LoaderArgs} from '@shopify/remix-oxygen';
-import {Await, Link, useLoaderData} from '@remix-run/react';
+import {Link, useLoaderData} from '@remix-run/react';
 import {PAGE_QUERY} from '~/queries/sanity/page';
-import {Suspense} from 'react';
 import {getPaginationVariables, Image} from '@shopify/hydrogen';
 import {PrimaryButton} from '~/components/PrimaryButton';
 import {formatGermanDate, notFound} from '~/utils';
 import {PRODUCT_COLLECTION_QUERY} from '~/queries/shopify/collection';
+import {SanityPage} from '~/lib/sanity';
+import Hero from '~/components/Hero';
+import {useState} from 'react';
 
 export const meta: V2_MetaFunction = ({data}) => {
   return [
@@ -57,7 +59,7 @@ export async function loader({request, params, context}: LoaderArgs) {
 
   const cache = context.storefront.CacheLong();
 
-  const page = await context.sanity.query<any>({
+  const page = await context.sanity.query<SanityPage>({
     query: PAGE_QUERY,
     params: {
       slug: handle,
@@ -90,52 +92,94 @@ export async function loader({request, params, context}: LoaderArgs) {
 export default function Page() {
   const {page, collection} = useLoaderData<typeof loader>();
 
+  const [date, setDate] = useState<Date | null>(null);
+
   const renderProducts =
     page.slug.current === 'unsere-picknicks' && collection !== null;
 
+  const products = date
+    ? collection?.collection?.products.nodes.filter((product) => {
+        if (!date) {
+          return true;
+        }
+
+        const productDate = new Date(
+          product.metafield?.value as string,
+        ).toUTCString();
+
+        return productDate === date.toUTCString();
+      })
+    : collection?.collection?.products.nodes;
+
   return (
-    <div className="">
-      <header className="content-padding content-max-width">
-        <h1>{page.title}</h1>
-      </header>
+    <div className="w-full">
+      {page?.hero && <Hero hero={page.hero} />}
+
       {renderProducts && (
         <>
-          {/* TODO: remove suspense because we're already awaiting */}
-          <Suspense fallback={<div>Loading...</div>}>
-            <Await resolve={collection}>
-              {({collection}) => {
-                return (
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 content-padding content-max-width">
-                    {collection?.products.nodes.map((product) => (
-                      <Link
-                        key={product.id}
-                        className="recommended-product"
-                        to={`/products/${product.handle}`}
-                      >
-                        <Image
-                          data={product.images.nodes[0]}
-                          aspectRatio="1/1"
-                          sizes="(min-width: 45em) 20vw, 50vw"
-                        />
-                        <h4 className="uppercase text-center mt-4">
-                          {product.title}
-                        </h4>
-                        <p className="text-center">{product.description}</p>
+          <section className="content-padding content-max-width content-margin-top flex justify-end items-center gap-2">
+            <label htmlFor="date">Nach Datum filtern:</label>
+            <input
+              type="date"
+              id="date"
+              name="date"
+              placeholder="Datum auswählen"
+              onChange={(e) => {
+                if (!e.target.value) {
+                  setDate(null);
+                  return;
+                }
 
-                        <PrimaryButton className="mt-4">
-                          {product.metafield?.value
-                            ? `Picknick am ${formatGermanDate(
-                                product.metafield?.value,
-                              )} buchen`
-                            : 'Picknick buchen'}
-                        </PrimaryButton>
-                      </Link>
-                    ))}
-                  </div>
-                );
+                setDate(new Date(e.target.value));
               }}
-            </Await>
-          </Suspense>
+            />
+          </section>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 xl:gap-16 content-padding content-max-width">
+            {products
+              ?.filter((product) => {
+                if (!date) {
+                  return true;
+                }
+
+                const productDate = new Date(
+                  product.metafield?.value as string,
+                ).toUTCString();
+
+                return productDate === date.toUTCString();
+              })
+              .map((product) => (
+                <Link
+                  key={product.id}
+                  className="recommended-product"
+                  to={`/products/${product.handle}`}
+                >
+                  <Image
+                    data={product.images.nodes[0]}
+                    aspectRatio="1/1"
+                    sizes="(min-width: 45em) 20vw, 50vw"
+                  />
+                  <h4 className="uppercase text-center mt-4">
+                    {product.title}
+                  </h4>
+                  <p className="text-center">{product.description}</p>
+
+                  <PrimaryButton className="mt-4">
+                    {product.metafield?.value
+                      ? `Picknick am ${formatGermanDate(
+                          product.metafield?.value,
+                        )} buchen`
+                      : 'Picknick buchen'}
+                  </PrimaryButton>
+                </Link>
+              ))}
+          </div>
+          {products?.length === 0 && (
+            <p className="text-center content-padding">
+              Für dieses Datum sind leider keine Picknicks verfügbar. Probiere
+              es einfach mit einem anderen Datum.
+            </p>
+          )}
         </>
       )}
     </div>

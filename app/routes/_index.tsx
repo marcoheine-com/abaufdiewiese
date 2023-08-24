@@ -200,8 +200,8 @@ function RecommendedProducts({
         <Await resolve={latestProductsCollection}>
           {({collection}) => {
             return (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 mt-8 gap-8">
-                {collection?.products.nodes.map((product) => (
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 mt-8 xl:gap-16 gap-8">
+                {collection?.products?.nodes?.map((product) => (
                   <Link
                     key={product.id}
                     className="recommended-product"
