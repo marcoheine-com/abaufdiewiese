@@ -72,6 +72,18 @@ export default defineField({
       type: 'body',
       group: 'editorial',
     }),
+    // Modules
+    defineField({
+      name: 'modules',
+      title: 'Modules',
+      type: 'array',
+      of: [
+        {type: 'module.accordion'},
+        {type: 'module.textmedia'},
+        {type: 'module.showContactform'},
+      ],
+      group: 'editorial',
+    }),
     // SEO
     defineField({
       name: 'seo',

@@ -114,7 +114,7 @@ export type SanityPage = {
   body: PortableTextBlock[];
   hero?: SanityHero;
   showTitle: boolean;
-  modules?: SanityModuleAccordion[];
+  modules?: (SanityModuleAccordion | SanityShowContactform)[];
   slug: {
     current: string;
   };
@@ -168,4 +168,20 @@ export type SanitySocialLink = {
   icon?: SanityAssetImage;
   url: string;
   newWindow?: boolean;
+};
+
+export type SanitySettings = {
+  footer: {
+    links: SanityMenuLink[];
+    socialLinks: SanitySocialLink[];
+  };
+  menuLinks: SanityMenuLink[];
+  contactForm: SanityContactform;
+};
+
+export type SanityContactform = {
+  title: string;
+  subtitle: string;
+  text: PortableTextBlock[];
+  image: SanityAssetImage;
 };

@@ -3,6 +3,8 @@ import groq from 'groq';
 import {COLOR_THEME} from './fragments/colorTheme';
 import {LINKS} from './fragments/links';
 import {LINK_SOCIAL} from '~/queries/sanity/fragments/linkSocial';
+import {IMAGE} from '~/queries/sanity/fragments/image';
+import {PORTABLE_TEXT} from '~/queries/sanity/fragments/portableText/portableText';
 
 export const LAYOUT_QUERY = groq`
   *[_type == 'settings'] | order(_updatedAt desc) [0] {
@@ -16,6 +18,16 @@ export const LAYOUT_QUERY = groq`
       },
       links[] {
         ${LINKS}
+      },
+    },
+    contactForm {
+      title,
+      subtitle,
+      image {
+        ${IMAGE}
+      },
+      text[]{
+        ${PORTABLE_TEXT}
       },
     },
     notFoundPage {

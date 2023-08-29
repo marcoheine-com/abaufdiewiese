@@ -47,6 +47,12 @@ const components: PortableTextComponents = {
   },
   marks: {
     annotationLinkInternal: LinkInternalAnnotation,
+    annotationLinkEmail: (props: any) => {
+      return <a href={`mailto:${props.value.email}`}>{props.children}</a>;
+    },
+    annotationLinkPhone: (props: any) => {
+      return <a href={`tel:${props.value.phone}`}>{props.children}</a>;
+    },
   },
 };
 

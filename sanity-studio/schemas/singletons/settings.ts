@@ -15,6 +15,10 @@ export default defineType({
       title: 'Navigation',
     },
     {
+      name: 'contactForm',
+      title: 'Contact form',
+    },
+    {
       name: 'notFoundPage',
       title: '404 page',
     },
@@ -37,6 +41,12 @@ export default defineType({
       title: 'Footer',
       type: 'footerSettings',
       group: 'navigation',
+    }),
+    defineField({
+      name: 'contactForm',
+      title: 'Contact Form',
+      type: 'contactFormSettings',
+      group: 'contactForm',
     }),
     // Not found page
     defineField({

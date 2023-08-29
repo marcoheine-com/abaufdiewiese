@@ -2,12 +2,14 @@
 import annotationLinkEmail from './annotations/linkEmail'
 import annotationLinkExternal from './annotations/linkExternal'
 import annotationLinkInternal from './annotations/linkInternal'
+import annotationLinkPhone from './annotations/linkPhone'
 import annotationProduct from './annotations/product'
 
 const annotations = [
   annotationLinkEmail,
   annotationLinkExternal,
   annotationLinkInternal,
+  annotationLinkPhone,
   annotationProduct,
 ]
 
@@ -35,6 +37,7 @@ import customProductOptionColor from './objects/customProductOption/color'
 import customProductOptionColorObject from './objects/customProductOption/colorObject'
 import customProductOptionSize from './objects/customProductOption/size'
 import customProductOptionSizeObject from './objects/customProductOption/sizeObject'
+import contactForm from './objects/global/contactForm'
 import footer from './objects/global/footer'
 import imageWithProductHotspots from './objects/hotspot/imageWithProductHotspots'
 import inventory from './objects/shopify/inventory'
@@ -95,6 +98,7 @@ const objects = [
   customProductOptionColorObject,
   customProductOptionSize,
   customProductOptionSizeObject,
+  contactForm,
   footer,
   imageWithProductHotspots,
   inventory,

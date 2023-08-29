@@ -9,19 +9,13 @@ import {
   PredictiveSearchForm,
   PredictiveSearchResults,
 } from '~/components/Search';
-import {SanityMenuLink, SanitySocialLink} from '~/lib/sanity';
+import {SanitySettings} from '~/lib/sanity';
 
 export type LayoutProps = {
   cart: Promise<CartApiQueryFragment | null>;
   children?: React.ReactNode;
   isLoggedIn: boolean;
-  layout: {
-    footer: {
-      links: SanityMenuLink[];
-      socialLinks: SanitySocialLink[];
-    };
-    menuLinks: SanityMenuLink[];
-  };
+  layout: SanitySettings;
 };
 
 export function Layout({cart, children = null, layout}: LayoutProps) {
@@ -34,8 +28,8 @@ export function Layout({cart, children = null, layout}: LayoutProps) {
         <Header menuLinks={layout?.menuLinks} cart={cart} />
         <main className="flex justify-center w-full mx-auto">{children}</main>
         <Footer
-          links={layout.footer.links}
-          socialLinks={layout.footer.socialLinks}
+          links={layout?.footer.links}
+          socialLinks={layout?.footer.socialLinks}
         />
       </div>
     </>

@@ -1,38 +1,30 @@
 import {useForm} from '@formspree/react';
+import {Image} from '@shopify/hydrogen';
 import {PrimaryButton} from '~/components/PrimaryButton';
+import PortableText from '~/components/portableText/PortableText';
+import {SanityContactform} from '~/lib/sanity';
 
-export default function Contactform() {
-  const [state, handleSubmit] = useForm('xjvqwrbk');
+interface Props {
+  content: SanityContactform;
+}
+export default function Contactform({content}: Props) {
+  const [state, handleSubmit] = useForm('xyyqwqoz');
 
   return (
     <section className="content-max-width content-padding content-margin-top">
-      <h2 className="text-center uppercase">Melde dich bei mir!</h2>
-      <p className="text-center uppercase">
-        Du kannst mich telefonisch oder per Mail erreichen
-      </p>
+      <h2 className="text-center uppercase">{content.title}</h2>
+      <p className="text-center uppercase">{content.subtitle}</p>
 
       <section className="grid lg:grid-cols-2 gap-8 mt-8">
-        <section className="bg-primaryVariant py-8 px-8 md:px-32 xl:px-52 flex flex-col items-center">
-          <img
-            src="/images/Katharina_Madeira.webp"
-            alt="Portrait Bild von Katharina Jäger"
-            className="rounded-full object-cover aspect-square"
+        <section className="bg-primaryVariant py-8 px-8 md:px-32 gap-8 flex flex-col items-center">
+          <Image
+            data={content.image}
+            sizes="(min-width: 45em) 50vw, 100vw"
+            className="object-cover rounded-full"
+            aspectRatio="1/1"
           />
-          <p className="uppercase mt-8">Katharina Jäger</p>
-          <dl className="flex gap-1 flex-col mt-2">
-            <div className="flex gap-1">
-              <dt>Mobil</dt>
-              <dd>
-                <a href="tel:+4915735988888">+49 1573 5988888</a>
-              </dd>
-            </div>
-            <div className="flex gap-1">
-              <dt>Email</dt>
-              <dd>
-                <a href="mailto:info@abaufdiewiese.de">info@abaufdiewiese.de</a>
-              </dd>
-            </div>
-          </dl>
+
+          <PortableText value={content.text} />
         </section>
 
         {state.succeeded ? <p>Vielen Dank für deine Nachricht!</p> : null}

@@ -1,22 +1,21 @@
 import {Disclosure} from '@headlessui/react';
-import {PortableTextBlock} from '@portabletext/types';
-
 import MinusIcon from '~/components/icons/Minus';
 import PlusIcon from '~/components/icons/Plus';
 import PortableText from '~/components/portableText/PortableText';
 import type {SanityModuleAccordion} from '~/lib/sanity';
 
 type Props = {
-  value: PortableTextBlock & SanityModuleAccordion;
+  className?: string;
+  value: SanityModuleAccordion;
 };
 
-export default function AccordionBlock({value}: Props) {
+export default function AccordionBlock({className, value}: Props) {
   const renderTitleAsURL = (title: string) => {
     const titleWithoutQuestionmark = title.replace(/\?/g, '');
     return titleWithoutQuestionmark.toLowerCase().replace(/\s/g, '-');
   };
   return (
-    <div className={'first:mt-0 last:mb-0 my-8'}>
+    <div className={`first:mt-0 last:mb-0 my-8 ${className}`}>
       {value?.groups?.map((group) => (
         <Disclosure key={group._key}>
           {({open}: {open: boolean}) => (

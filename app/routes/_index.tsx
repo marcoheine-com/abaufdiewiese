@@ -1,6 +1,12 @@
 import type {ActionArgs, V2_MetaFunction} from '@shopify/remix-oxygen';
 import {defer, type LoaderArgs} from '@shopify/remix-oxygen';
-import {Await, useLoaderData, Link, NavLink} from '@remix-run/react';
+import {
+  Await,
+  useLoaderData,
+  Link,
+  NavLink,
+  useMatches,
+} from '@remix-run/react';
 import {Suspense} from 'react';
 import {Image} from '@shopify/hydrogen';
 import type {LatestProductCollectionQuery} from 'storefrontapi.generated';
@@ -88,6 +94,10 @@ export default function Homepage() {
   const data = useLoaderData<typeof loader>();
   const {page} = data;
 
+  const [root] = useMatches();
+
+  const layout = root.data?.layout;
+
   return (
     <div className="home">
       {page?.hero && <Hero hero={page.hero} />}
@@ -155,7 +165,9 @@ export default function Homepage() {
               return null;
             }
 
-            return <Contactform key={module._key} />;
+            return (
+              <Contactform key={module._key} content={layout?.contactForm} />
+            );
 
           case 'module.support':
             return (

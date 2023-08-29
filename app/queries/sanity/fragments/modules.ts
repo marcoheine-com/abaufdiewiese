@@ -1,4 +1,5 @@
 import groq from 'groq';
+import {MODULE_ACCORDION} from '~/queries/sanity/fragments/modules/accordion';
 
 import {MODULE_FEATURES} from '~/queries/sanity/fragments/modules/features';
 import {MODULE_SHOW_CONTACTFORM} from '~/queries/sanity/fragments/modules/showContactform';
@@ -11,6 +12,9 @@ export const MODULES = groq`
   _type,
   (_type == "module.features") => {
     ${MODULE_FEATURES}
+  },
+  (_type == "module.accordion") => {
+    ${MODULE_ACCORDION}
   },
   (_type == "module.textmedia") => {
     ${MODULE_TEXTMEDIA}

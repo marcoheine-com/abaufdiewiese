@@ -18,6 +18,7 @@ import appStyles from './styles/app.css';
 import {Layout} from '~/components/Layout';
 import tailwindCss from './styles/tailwind.css';
 import {LAYOUT_QUERY} from '~/queries/sanity/layout';
+import {SanitySettings} from '~/lib/sanity';
 
 export function links() {
   return [
@@ -56,7 +57,10 @@ export async function loader({context}: LoaderArgs) {
     staleWhileRevalidate: 60,
   });
 
-  const layout = await context.sanity.query<any>({query: LAYOUT_QUERY, cache});
+  const layout = await context.sanity.query<SanitySettings>({
+    query: LAYOUT_QUERY,
+    cache,
+  });
 
   // TODO: can be removed, not used
   // await the header query (above the fold)

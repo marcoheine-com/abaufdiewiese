@@ -1,6 +1,6 @@
 import type {V2_MetaFunction} from '@shopify/remix-oxygen';
 import {json, type LoaderArgs} from '@shopify/remix-oxygen';
-import {Link, useLoaderData} from '@remix-run/react';
+import {Link, useLoaderData, useMatches} from '@remix-run/react';
 import {PAGE_QUERY} from '~/queries/sanity/page';
 import {getPaginationVariables, Image} from '@shopify/hydrogen';
 import {PrimaryButton} from '~/components/PrimaryButton';
@@ -10,6 +10,8 @@ import {SanityPage} from '~/lib/sanity';
 import Hero from '~/components/Hero';
 import {useState} from 'react';
 import PortableText from '~/components/portableText/PortableText';
+import AccordionBlock from '~/components/portableText/blocks/Accordion';
+import Contactform from '~/components/Contactform';
 
 export const meta: V2_MetaFunction = ({data}) => {
   return [
@@ -92,6 +94,8 @@ export async function loader({request, params, context}: LoaderArgs) {
 
 export default function Page() {
   const {page, collection} = useLoaderData<typeof loader>();
+  const [root] = useMatches();
+  const layout = root.data?.layout;
 
   const [date, setDate] = useState<Date | null>(null);
 
@@ -128,6 +132,29 @@ export default function Page() {
           value={page.body}
         />
       )}
+
+      {page?.modules?.map((module) => {
+        switch (module._type) {
+          case 'module.accordion':
+            return (
+              <AccordionBlock
+                className="content-max-width content-padding content-margin-top"
+                key={module._key}
+                value={module}
+              />
+            );
+          case 'module.showContactform':
+            if (!module.showContactform) {
+              return null;
+            }
+
+            return (
+              <Contactform key={module._key} content={layout?.contactForm} />
+            );
+          default:
+            return null;
+        }
+      })}
 
       {renderProducts && (
         <>
