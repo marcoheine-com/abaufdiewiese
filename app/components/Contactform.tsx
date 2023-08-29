@@ -78,9 +78,11 @@ export default function Contactform({content}: Props) {
                 : 'Nachricht absenden'}
             </PrimaryButton>
           </fieldset>
-          <p className="mt-8 font-normal text-center">
-            Vielen Dank für deine Nachricht!
-          </p>
+          {state.succeeded ? (
+            <p className="mt-8 font-normal text-center">
+              Vielen Dank für deine Nachricht!
+            </p>
+          ) : null}
         </form>
       </section>
     </section>
