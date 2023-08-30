@@ -8,14 +8,16 @@
     font-style: normal;
     font-weight: 100;
     font-display: swap;
-    src: url('/fonts/Roboto-Thin.ttf') format('truetype');
+    src: url('https://cdn.shopify.com/s/files/1/0771/3583/9578/files/Roboto-Thin.ttf?v=1693378360')
+      format('truetype');
   }
   @font-face {
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: url('/fonts/Roboto-Regular.ttf') format('truetype');
+    src: url('https://cdn.shopify.com/s/files/1/0771/3583/9578/files/Roboto-Regular.ttf?v=1693378360')
+      format('truetype');
   }
 
   @font-face {
@@ -23,7 +25,8 @@
     font-style: normal;
     font-weight: 700;
     font-display: swap;
-    src: url('/fonts/Roboto-Bold.ttf') format('truetype');
+    src: url('https://cdn.shopify.com/s/files/1/0771/3583/9578/files/Roboto-Bold.ttf?v=1693378360.ttf')
+      format('truetype');
   }
 
   @font-face {
@@ -31,7 +34,8 @@
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: url('/fonts/QuattrocentoSans-Regular.ttf') format('truetype');
+    src: url('https://cdn.shopify.com/s/files/1/0771/3583/9578/files/QuattrocentoSans-Regular.ttf?v=1693378360.ttf')
+      format('truetype');
   }
 
   @font-face {
@@ -39,7 +43,8 @@
     font-style: normal;
     font-weight: 700;
     font-display: swap;
-    src: url('/fonts/QuattrocentoSans-Bold.ttf') format('truetype');
+    src: url('https://cdn.shopify.com/s/files/1/0771/3583/9578/files/QuattrocentoSans-Bold.ttf?v=1693378360.ttf')
+      format('truetype');
   }
 
   h1,
