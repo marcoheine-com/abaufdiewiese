@@ -15,7 +15,7 @@ export default function Hero({hero}: Props) {
       />
       <section className="content-padding content-max-width absolute top-0 left-0 bg-backgroundVariant opacity-[70%] h-full flex flex-col justify-center lg:w-2/4 lg:left-20 lg:p-16">
         {hero.title && <h1>{hero.title}</h1>}
-        {hero.subTitle && <h2 className="mt-4">{hero.subTitle}</h2>}
+        {hero.subTitle && <h2 className="mt-4 font-normal">{hero.subTitle}</h2>}
       </section>
     </section>
   );
