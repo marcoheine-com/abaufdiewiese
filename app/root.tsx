@@ -26,6 +26,10 @@ export function links() {
     {rel: 'stylesheet', href: resetStyles},
     {rel: 'stylesheet', href: appStyles},
     {
+      rel: 'preconnect',
+      href: 'https://cdn.shopify.com',
+    },
+    {
       rel: 'preload',
       as: 'font',
       href: '/fonts/Roboto-Thin.ttf',
@@ -59,10 +63,6 @@ export function links() {
       href: '/fonts/QuattrocentoSans-Bold.ttf',
       type: 'font/ttf',
       crossOrigin: 'anonymous',
-    },
-    {
-      rel: 'preconnect',
-      href: 'https://cdn.shopify.com',
     },
     {
       rel: 'preconnect',
