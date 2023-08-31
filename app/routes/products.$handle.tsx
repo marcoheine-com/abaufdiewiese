@@ -382,9 +382,21 @@ function ProductForm({
       ]
     : [];
 
+  const selectedOptions = product?.selectedVariant?.selectedOptions
+    ?.map((option) => `${option.name}: ${option.value}`)
+    ?.join(', ');
+
   const linesWithAddOns = addOnsForCart?.map((addOn) => ({
     merchandiseId: addOn.variants.edges[0].node.id,
     quantity: 1,
+    attributes: [
+      {
+        key: 'Besonderheit für:',
+        value: `${product?.title} ${selectedOptions} am ${
+          product?.date?.value && formatGermanDate(product.date?.value)
+        }`,
+      },
+    ],
   }));
 
   if (linesWithAddOns) {

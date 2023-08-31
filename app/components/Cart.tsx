@@ -111,6 +111,11 @@ function CartLineItem({
             );
           })}
         </ul>
+        {line.attributes?.map((attribute) => (
+          <div key={attribute.key}>
+            {attribute.key} {attribute.value}
+          </div>
+        ))}
         <CartLineQuantity line={line} />
       </div>
     </li>
