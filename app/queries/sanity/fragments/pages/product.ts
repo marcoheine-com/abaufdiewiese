@@ -20,6 +20,9 @@ export const PRODUCT_PAGE = groq`
       ${IMAGE}
     },
   },
+  allergens[]{
+    ${PORTABLE_TEXT}
+  },
   "gid": store.gid,
   ${SEO_SHOPIFY},
   "slug": store.slug.current,

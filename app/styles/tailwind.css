@@ -124,6 +124,6 @@
   }
 
   .content-margin-top {
-    @apply mt-8 md:mt-16 lg:mt-32;
+    @apply mt-8 md:mt-16;
   }
 }

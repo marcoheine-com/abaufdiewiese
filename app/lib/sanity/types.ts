@@ -128,6 +128,7 @@ export type SanityProductPage = {
   body: PortableTextBlock[];
   menuHeadline: string;
   menus: SanityProductMenuItem[];
+  allergens: PortableTextBlock[];
   gid: string;
   slug?: string;
   seo: SanitySeo;

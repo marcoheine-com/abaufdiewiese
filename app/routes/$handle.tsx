@@ -189,31 +189,34 @@ export default function Page() {
 
                 return productDate === date.toUTCString();
               })
-              .map((product) => (
-                <Link
-                  key={product.id}
-                  className="recommended-product"
-                  to={`/products/${product.handle}`}
-                >
-                  <Image
-                    data={product.images.nodes[0]}
-                    aspectRatio="1/1"
-                    sizes="(min-width: 45em) 20vw, 50vw"
-                  />
-                  <h4 className="uppercase text-center mt-4">
-                    {product.title}
-                  </h4>
-                  <p className="text-center">{product.description}</p>
+              .map((product) => {
+                const firstSentence = product.description.split('.')[0];
+                return (
+                  <Link
+                    key={product.id}
+                    className="recommended-product"
+                    to={`/products/${product.handle}`}
+                  >
+                    <Image
+                      data={product.images.nodes[0]}
+                      aspectRatio="1/1"
+                      sizes="(min-width: 45em) 20vw, 50vw"
+                    />
+                    <h4 className="uppercase text-center mt-4">
+                      {product.title}
+                    </h4>
+                    <p className="text-center">{`${firstSentence}.`}</p>
 
-                  <PrimaryButton className="mt-4">
-                    {product.metafield?.value
-                      ? `Picknick am ${formatGermanDate(
-                          product.metafield?.value,
-                        )} buchen`
-                      : 'Picknick buchen'}
-                  </PrimaryButton>
-                </Link>
-              ))}
+                    <PrimaryButton className="mt-4">
+                      {product.metafield?.value
+                        ? `Picknick am ${formatGermanDate(
+                            product.metafield?.value,
+                          )} buchen`
+                        : 'Picknick buchen'}
+                    </PrimaryButton>
+                  </Link>
+                );
+              })}
           </div>
           {products?.length === 0 && (
             <p className="text-center content-padding">

@@ -77,6 +77,12 @@ export default defineType({
       group: 'editorial',
     }),
     defineField({
+      name: 'allergens',
+      title: 'Allergens',
+      type: 'body',
+      group: 'editorial',
+    }),
+    defineField({
       name: 'store',
       title: 'Shopify',
       type: 'shopifyProduct',
