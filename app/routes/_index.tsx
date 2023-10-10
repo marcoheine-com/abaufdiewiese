@@ -213,31 +213,34 @@ function RecommendedProducts({
           {({collection}) => {
             return (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 mt-8 xl:gap-16 gap-8">
-                {collection?.products?.nodes?.map((product) => (
-                  <Link
-                    key={product.id}
-                    className="recommended-product"
-                    to={`/products/${product.handle}`}
-                  >
-                    <Image
-                      data={product.images.nodes[0]}
-                      aspectRatio="1/1"
-                      sizes="(min-width: 45em) 20vw, 50vw"
-                    />
-                    <h4 className="uppercase text-center mt-4">
-                      {product.title}
-                    </h4>
-                    <p className="text-center">{product.description}</p>
+                {collection?.products?.nodes?.map((product) => {
+                  const firstSentence = product.description.split('.')[0];
+                  return (
+                    <Link
+                      key={product.id}
+                      className="recommended-product"
+                      to={`/products/${product.handle}`}
+                    >
+                      <Image
+                        data={product.images.nodes[0]}
+                        aspectRatio="1/1"
+                        sizes="(min-width: 45em) 20vw, 50vw"
+                      />
+                      <h4 className="uppercase text-center mt-4">
+                        {product.title}
+                      </h4>
+                      <p className="text-center">{firstSentence}</p>
 
-                    <PrimaryButton className="mt-4">
-                      {product.metafield?.value
-                        ? `Picknick am ${formatGermanDate(
-                            product.metafield?.value,
-                          )} buchen`
-                        : 'Picknick buchen'}
-                    </PrimaryButton>
-                  </Link>
-                ))}
+                      <PrimaryButton className="mt-4">
+                        {product.metafield?.value
+                          ? `Picknick am ${formatGermanDate(
+                              product.metafield?.value,
+                            )} buchen`
+                          : 'Picknick buchen'}
+                      </PrimaryButton>
+                    </Link>
+                  );
+                })}
               </div>
             );
           }}
