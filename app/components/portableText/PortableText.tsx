@@ -47,6 +47,13 @@ const components: PortableTextComponents = {
   },
   marks: {
     annotationLinkInternal: LinkInternalAnnotation,
+    annotationLinkExternal: (props: any) => {
+      return (
+        <a href={props.value.url} target="_blank" rel="noopener noreferrer">
+          {props.children}
+        </a>
+      );
+    },
     annotationLinkEmail: (props: any) => {
       return <a href={`mailto:${props.value.email}`}>{props.children}</a>;
     },

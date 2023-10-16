@@ -14,7 +14,9 @@ export default function Hero({hero}: Props) {
         sizes="(min-width: 1024px) 1024px, 100vw"
       />
       <section className="content-padding content-max-width absolute top-0 left-0 bg-backgroundVariant opacity-[70%] h-full flex flex-col justify-center lg:w-2/4 lg:left-20 lg:p-16">
-        {hero.title && <h1>{hero.title}</h1>}
+        {hero.title && (
+          <h1 className="text-[40px] md:text-[64px]">{hero.title}</h1>
+        )}
         {hero.subTitle && (
           <h2 className="mt-4 font-normal md:text-[48px]">{hero.subTitle}</h2>
         )}

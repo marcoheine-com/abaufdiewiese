@@ -210,10 +210,13 @@ export default function Product() {
                   />
                 </article>
               ))}
-              {sanityProduct?.allergens && (
-                <PortableText value={sanityProduct.allergens} />
-              )}
             </section>
+            {sanityProduct?.allergens && (
+              <PortableText
+                className="content-padding pb-4"
+                value={sanityProduct.allergens}
+              />
+            )}
           </section>
         </section>
       ) : null}
@@ -435,9 +438,10 @@ function ProductForm({
 }) {
   const [addOnsForCart, setAddOnsForCart] = useState<LatestProductFragment[]>();
 
-  const buttonLabel = selectedVariant?.availableForSale
-    ? 'Mein Picknick buchen'
-    : 'Leider ausverkauft';
+  const buttonLabel =
+    selectedVariant?.availableForSale && product.canBeSold?.value === 'true'
+      ? 'Mein Picknick buchen'
+      : 'Leider ausverkauft';
 
   const linesToAdd = selectedVariant
     ? [
@@ -538,7 +542,11 @@ function ProductForm({
         </fieldset>
       </div>
       <AddToCartButton
-        disabled={!selectedVariant || !selectedVariant.availableForSale}
+        disabled={
+          !selectedVariant ||
+          !selectedVariant.availableForSale ||
+          product.canBeSold?.value === 'false'
+        }
         lines={linesToAdd}
       >
         {buttonLabel}
@@ -678,6 +686,9 @@ const PRODUCT_FRAGMENT = `#graphql
       value
     }
     location: metafield(namespace: "custom", key: "location") {
+      value
+    }
+    canBeSold: metafield(namespace: "custom", key: "verfuegbar") {
       value
     }
     media(first: 4) {

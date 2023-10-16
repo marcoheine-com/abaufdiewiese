@@ -1,4 +1,4 @@
-export const PRODUCT_VARIANT_FIELDS = `
+export const PRODUCT_VARIANT_FIELDS = `#graphql
   fragment ProductVariantFields on ProductVariant {
     availableForSale
     compareAtPrice {
@@ -108,7 +108,7 @@ fragment LatestProduct on Product {
 }
 ` as const;
 
-export const PRODUCT_FIELDS = `
+export const PRODUCT_FIELDS = `#graphql
   fragment ProductFields on Product {
     handle
     id
