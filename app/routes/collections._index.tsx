@@ -1,5 +1,5 @@
 import {useLoaderData, Link} from '@remix-run/react';
-import {json, type LoaderArgs} from '@shopify/remix-oxygen';
+import {json, redirect, type LoaderArgs} from '@shopify/remix-oxygen';
 import {Pagination, getPaginationVariables, Image} from '@shopify/hydrogen';
 import type {CollectionFragment} from 'storefrontapi.generated';
 
@@ -11,6 +11,8 @@ export async function loader({context, request}: LoaderArgs) {
   const {collections} = await context.storefront.query(COLLECTIONS_QUERY, {
     variables: paginationVariables,
   });
+  // not used by now, therefore redirect
+  return redirect('/');
 
   return json({collections});
 }

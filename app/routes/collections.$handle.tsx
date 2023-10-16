@@ -35,17 +35,23 @@ export async function loader({request, params, context}: LoaderArgs) {
       status: 404,
     });
   }
+  // not used by now, therefore redirect
+  return redirect('/');
   return json({collection});
 }
 
 export default function Collection() {
   const {collection} = useLoaderData<typeof loader>();
 
+  if (!collection) {
+    return null;
+  }
+
   return (
     <div className="collection">
-      <h1>{collection.title}</h1>
-      <p className="collection-description">{collection.description}</p>
-      <Pagination connection={collection.products}>
+      <h1>{collection?.title}</h1>
+      <p className="collection-description">{collection?.description}</p>
+      <Pagination connection={collection?.products}>
         {({nodes, isLoading, PreviousLink, NextLink}) => (
           <>
             <PreviousLink>
