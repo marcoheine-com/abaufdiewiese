@@ -101,6 +101,12 @@ export default function App() {
         <ScrollRestoration />
         <Scripts />
         <script
+          defer
+          data-domain="abaufdiewiese.de"
+          src="https://plausible.io/js/script.js"
+        ></script>
+
+        <script
           id="cookieyes"
           type="text/javascript"
           src="https://cdn-cookieyes.com/client_data/8835fa440bdfeacea2be81e8/script.js"
