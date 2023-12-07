@@ -11,10 +11,10 @@ export function Footer({links, socialLinks}: Props) {
     <footer className="mt-auto w-full content-max-width">
       <div className="content-margin-top bg-primaryVariant w-full">
         <nav
-          className="flex flex-col items-center gap-8 sm:justify-center content-padding py-8 mx-auto content-max-width uppercase text-primaryText sm:relative"
+          className="flex flex-col items-center gap-8 md:justify-center content-padding py-8 mx-auto content-max-width uppercase text-primaryText md:relative"
           role="navigation"
         >
-          <div className="flex gap-4 sm:absolute md:left-16 lg:left-24 xl:left-36">
+          <div className="flex gap-4 md:absolute md:left-16 lg:left-24 xl:left-36">
             {socialLinks?.map((item) => {
               if (!item.url) return null;
               return (
@@ -31,7 +31,7 @@ export function Footer({links, socialLinks}: Props) {
               );
             })}
           </div>
-          <div className="flex flex-col gap-4 text-center sm:flex-row sm:gap-8">
+          <div className="flex flex-col gap-4 text-center md:flex-row md:gap-8">
             {links?.map((item) => {
               if (!item.slug) return null;
               return (

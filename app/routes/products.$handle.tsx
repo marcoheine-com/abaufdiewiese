@@ -406,7 +406,7 @@ function ProductPrice({
   selectedVariant: ProductFragment['selectedVariant'];
 }) {
   return (
-    <div className="product-price font-normal">
+    <div className="product-price font-normal text-2xl">
       {selectedVariant?.compareAtPrice ? (
         <>
           <p>Sale</p>
