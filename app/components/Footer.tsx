@@ -14,7 +14,7 @@ export function Footer({links, socialLinks}: Props) {
           className="flex flex-col items-center gap-8 md:justify-center content-padding py-8 mx-auto content-max-width uppercase text-primaryText md:relative"
           role="navigation"
         >
-          <div className="flex gap-4 md:absolute md:left-16 lg:left-24 xl:left-36">
+          <div className="flex gap-4 lg:absolute lg:left-24 xl:left-36">
             {socialLinks?.map((item) => {
               if (!item.url) return null;
               return (
@@ -31,7 +31,7 @@ export function Footer({links, socialLinks}: Props) {
               );
             })}
           </div>
-          <div className="flex flex-col gap-4 text-center md:flex-row md:gap-8">
+          <div className="flex flex-col gap-4 text-center lg:flex-row lg:gap-8">
             {links?.map((item) => {
               if (!item.slug) return null;
               return (

@@ -114,7 +114,11 @@ export type SanityPage = {
   body: PortableTextBlock[];
   hero?: SanityHero;
   showTitle: boolean;
-  modules?: (SanityModuleAccordion | SanityShowContactform)[];
+  modules?: (
+    | SanityModuleAccordion
+    | SanityShowContactform
+    | SanityModuleTextmedia
+  )[];
   slug: {
     current: string;
   };

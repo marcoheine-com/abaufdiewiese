@@ -151,6 +151,26 @@ export default function Page() {
             return (
               <Contactform key={module._key} content={layout?.contactForm} />
             );
+          case 'module.textmedia':
+            return (
+              <section
+                className="content-max-width grid lg:grid-cols-2 content-margin-top"
+                key={module._key}
+              >
+                <Image
+                  data={module.media}
+                  aspectRatio="1/1"
+                  className="object-cover md:max-h-[480px]"
+                  sizes="(min-width: 45em) 20vw, 100vw"
+                />
+
+                {module.text && (
+                  <div className="content-padding py-8 bg-primaryVariant flex flex-col justify-center items-center">
+                    <PortableText value={module.text} />
+                  </div>
+                )}
+              </section>
+            );
           default:
             return null;
         }

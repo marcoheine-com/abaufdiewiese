@@ -46,17 +46,17 @@ export default function Contactform({content}: Props) {
                 name="surname"
                 id="surname"
                 placeholder="Wie ist dein Vorname?"
-                // required
+                required
               />
             </div>
-            <div className="flex flex-col md:col-start-1 md:col-span-1">
+            <div className="flex flex-col md:col-start-1 md:col-span-2">
               <label htmlFor="email">Email</label>
               <input
                 type="email"
                 name="email"
                 id="email"
                 placeholder="Unter welcher Email bist du erreichbar?"
-                // required
+                required
               />
             </div>
 
@@ -66,7 +66,7 @@ export default function Contactform({content}: Props) {
                 name="message"
                 id="message"
                 placeholder="Was möchtest du uns mitteilen?"
-                // required
+                required
               />
             </div>
             <PrimaryButton

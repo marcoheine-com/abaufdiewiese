@@ -55,11 +55,11 @@
     @apply leading-[1.2] font-bold font-quattrocentosans;
   }
   h1 {
-    @apply text-[64px] md:text-[80px];
+    @apply text-[48px];
   }
 
   h2 {
-    @apply text-[28px] md:text-[64px];
+    @apply text-[28px] md:text-[40px];
   }
 
   h3 {
