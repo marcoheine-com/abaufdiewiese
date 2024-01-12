@@ -1,6 +1,7 @@
 import {flattenConnection} from '@shopify/hydrogen';
 import type {LoaderArgs} from '@shopify/remix-oxygen';
 import type {SitemapQuery} from 'storefrontapi.generated';
+import groq from 'groq';
 
 /**
  * the google limit is 50K, however, the storefront API
@@ -19,7 +20,8 @@ type Entry = {
   };
 };
 
-export async function loader({request, context: {storefront}}: LoaderArgs) {
+export async function loader({request, context}: LoaderArgs) {
+  const {storefront} = context;
   const data = await storefront.query(SITEMAP_QUERY, {
     variables: {
       urlLimits: MAX_URLS,
@@ -27,11 +29,19 @@ export async function loader({request, context: {storefront}}: LoaderArgs) {
     },
   });
 
+  const query = `*[_type == 'page']`;
+
+  const sanityPages = await context.sanity.query({query});
+
   if (!data) {
     throw new Response('No data found', {status: 404});
   }
 
-  const sitemap = generateSitemap({data, baseUrl: new URL(request.url).origin});
+  const sitemap = generateSitemap({
+    data,
+    sanityPages,
+    baseUrl: new URL(request.url).origin,
+  });
 
   return new Response(sitemap, {
     headers: {
@@ -48,13 +58,15 @@ function xmlEncode(string: string) {
 
 function generateSitemap({
   data,
+  sanityPages,
   baseUrl,
 }: {
   data: SitemapQuery;
+  sanityPages: any;
   baseUrl: string;
 }) {
   const products = flattenConnection(data.products)
-    .filter((product) => product.onlineStoreUrl)
+    // .filter((product) => product.onlineStoreUrl)
     .map((product) => {
       const url = `${baseUrl}/products/${xmlEncode(product.handle)}`;
 
@@ -105,7 +117,17 @@ function generateSitemap({
       };
     });
 
-  const urls = [...products, ...collections, ...pages];
+  const sanityPagesUrls = sanityPages?.map((page: any) => {
+    const url = `${baseUrl}/${page.slug.current}`;
+
+    return {
+      url,
+      lastMod: page._updatedAt,
+      changeFreq: 'weekly',
+    };
+  });
+
+  const urls = [...products, ...collections, ...pages, ...sanityPagesUrls];
 
   return `
     <urlset

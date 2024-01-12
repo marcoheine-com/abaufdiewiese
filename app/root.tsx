@@ -19,6 +19,7 @@ import {Layout} from '~/components/Layout';
 import tailwindCss from './styles/tailwind.css';
 import {LAYOUT_QUERY} from '~/queries/sanity/layout';
 import {SanitySettings} from '~/lib/sanity';
+import {Seo} from '@shopify/hydrogen';
 
 export function links() {
   return [
@@ -91,6 +92,7 @@ export default function App() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <Seo />
         <Meta />
         <Links />
       </head>
