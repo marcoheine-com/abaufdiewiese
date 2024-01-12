@@ -27,7 +27,7 @@ export const meta: V2_MetaFunction = ({data}) => {
     },
     {
       property: 'og:image:alt',
-      content: `${data?.page?.seo?.image?.alt}`,
+      content: `${data?.page?.seo?.image?.altText}`,
     },
     {
       property: 'og:title',
@@ -48,7 +48,7 @@ export const meta: V2_MetaFunction = ({data}) => {
     {
       tagName: 'link',
       rel: 'canonical',
-      href: 'https://abaufdiewiese.de',
+      href: `https://abaufdiewiese.de/${data.page?.slug?.current}`,
     },
   ];
 };

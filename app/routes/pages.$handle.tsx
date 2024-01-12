@@ -3,6 +3,7 @@ import {json, type LoaderArgs} from '@shopify/remix-oxygen';
 import {useLoaderData} from '@remix-run/react';
 
 export const meta: V2_MetaFunction = ({data}) => {
+  console.log(data);
   return [
     {
       title: `${data.page?.seo?.title}`,
@@ -17,7 +18,7 @@ export const meta: V2_MetaFunction = ({data}) => {
     },
     {
       property: 'og:image:alt',
-      content: `${data?.page?.seo?.image?.alt}`,
+      content: `${data?.page?.seo?.image?.altText}`,
     },
     {
       property: 'og:title',
@@ -38,12 +39,12 @@ export const meta: V2_MetaFunction = ({data}) => {
     {
       tagName: 'link',
       rel: 'canonical',
-      href: 'https://abaufdiewiese.de',
+      href: `https://abaufdiewiese.de/${data.page?.slug?.current}`,
     },
   ];
 };
 
-export async function loader({params, context}: LoaderArgs) {
+export async function loader({request, params, context}: LoaderArgs) {
   if (!params.handle) {
     throw new Error('Missing page handle');
   }

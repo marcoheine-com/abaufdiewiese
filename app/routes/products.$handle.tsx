@@ -63,7 +63,7 @@ export const meta: V2_MetaFunction = ({data}) => {
     {
       tagName: 'link',
       rel: 'canonical',
-      href: `https://abaufdiewiese.de/${data.sanityProduct?.slug}`,
+      href: `https://abaufdiewiese.de/${data.page?.slug?.current}`,
     },
   ];
 };
