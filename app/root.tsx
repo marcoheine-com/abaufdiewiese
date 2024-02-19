@@ -12,7 +12,12 @@ import {
 } from '@remix-run/react';
 import type {CustomerAccessToken} from '@shopify/hydrogen-react/storefront-api-types';
 import type {HydrogenSession} from '../server';
-import favicon from '../public/favicon.svg';
+import favicon from '../public/favicon.ico';
+import favicon16x16 from '../public/favicon-16x16.png';
+import favicon32x32 from '../public/favicon-32x32.png';
+import appleTouchIcon from '../public/apple-touch-icon.png';
+import androidChrome192x192 from '../public/android-chrome-192x192.png';
+import androidChrome512x512 from '../public/android-chrome-512x512.png';
 import resetStyles from './styles/reset.css';
 import appStyles from './styles/app.css';
 import {Layout} from '~/components/Layout';
@@ -34,7 +39,40 @@ export function links() {
       rel: 'preconnect',
       href: 'https://shop.app',
     },
-    {rel: 'icon', type: 'image/svg+xml', href: favicon},
+    {
+      rel: 'icon',
+      type: 'image/x-icon',
+      href: favicon,
+    },
+    {
+      rel: 'icon',
+      type: 'image/png',
+      sizes: '16x16',
+      href: favicon16x16,
+    },
+    {
+      rel: 'icon',
+      type: 'image/png',
+      sizes: '32x32',
+      href: favicon32x32,
+    },
+    {
+      rel: 'apple-touch-icon',
+      sizes: '180x180',
+      href: appleTouchIcon,
+    },
+    {
+      rel: 'icon',
+      type: 'image/png',
+      sizes: '192x192',
+      href: androidChrome192x192,
+    },
+    {
+      rel: 'icon',
+      type: 'image/png',
+      sizes: '512x512',
+      href: androidChrome512x512,
+    },
   ];
 }
 
