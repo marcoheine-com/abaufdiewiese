@@ -27,6 +27,9 @@ export function Footer({links, socialLinks}: Props) {
                   target={item.newWindow ? '_blank' : undefined}
                 >
                   <Image className="w-8 h-8" sizes="8x8" data={item.icon} />
+                  <span className="absolute top-auto h-[1px] w-[1px] overflow-hidden whitespace-nowrap">
+                    Link to {item.url}
+                  </span>
                 </NavLink>
               );
             })}

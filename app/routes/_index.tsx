@@ -120,9 +120,9 @@ export default function Homepage() {
                         aspectRatio="1/1"
                         sizes="(min-width: 45em) 20vw, 50vw"
                       />
-                      <h5 className="uppercase max-w-[100px] text-center">
+                      <h4 className="uppercase text-[16px] max-w-[100px] text-center">
                         {feature.title}
-                      </h5>
+                      </h4>
                     </div>
                   );
                 })}
@@ -138,7 +138,7 @@ export default function Homepage() {
                   data={module.media}
                   aspectRatio="1/1"
                   className="object-cover md:max-h-[480px]"
-                  sizes="(min-width: 45em) 20vw, 100vw"
+                  sizes="(min-width: 45em) 20vw, 50vw"
                 />
 
                 {module.text && (

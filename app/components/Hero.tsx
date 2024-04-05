@@ -9,9 +9,10 @@ export default function Hero({hero}: Props) {
   return (
     <section className="relative content-max-width">
       <Image
-        className="w-full max-h-[700px]"
+        className="w-full max-h-[700px] object-cover"
         data={hero.heroImage}
         sizes="(min-width: 1024px) 1024px, 100vw"
+        loading='eager'
       />
       <section className="content-padding content-max-width absolute top-0 left-0 bg-backgroundVariant opacity-[70%] h-full flex flex-col justify-center lg:w-2/4 lg:left-20 lg:p-16">
         {hero.title && (
