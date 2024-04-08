@@ -63,7 +63,7 @@ export const meta: V2_MetaFunction = ({data}) => {
     {
       tagName: 'link',
       rel: 'canonical',
-      href: `https://abaufdiewiese.de/${data.page?.slug?.current}`,
+      href: `https://abaufdiewiese.de/${data.product?.handle}`,
     },
   ];
 };
@@ -168,8 +168,9 @@ function redirectToFirstVariant({
 }
 
 export default function Product() {
-  const {product, variants, collection, sanityProduct} =
-    useLoaderData<typeof loader>();
+  const data = useLoaderData<typeof loader>();
+  const {product, variants, collection, sanityProduct} = data;
+
 
   const {selectedVariant} = product;
 
