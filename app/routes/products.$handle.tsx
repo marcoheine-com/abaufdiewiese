@@ -115,7 +115,11 @@ export async function loader({params, request, context}: LoaderArgs) {
     throw new Error('Missing page handle');
   }
 
-  const cache = context.storefront.CacheLong();
+  const cache = context.storefront.CacheCustom({
+    mode: 'public',
+    maxAge: 60,
+    staleWhileRevalidate: 60,
+  });
 
   const sanityProduct = await context.sanity.query<SanityProductPage>({
     query: PRODUCT_PAGE_QUERY,

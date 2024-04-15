@@ -3,7 +3,6 @@ import {json, type LoaderArgs} from '@shopify/remix-oxygen';
 import {useLoaderData} from '@remix-run/react';
 
 export const meta: V2_MetaFunction = ({data}) => {
-  console.log(data);
   return [
     {
       title: `${data.page?.seo?.title}`,
