@@ -19,7 +19,7 @@ import {
   CartForm,
 } from '@shopify/hydrogen';
 import type {CartLineInput} from '@shopify/hydrogen/storefront-api-types';
-import {formatGermanDate, getVariantUrl} from '~/utils';
+import {formatGermanDate, getVariantUrl, useVariantUrl} from '~/utils';
 import {PrimaryButton} from '~/components/PrimaryButton';
 import {useState} from 'react';
 import {PRODUCT_COLLECTION_QUERY} from '~/queries/shopify/collection';
@@ -28,6 +28,8 @@ import {PRODUCT_PAGE_QUERY} from '~/queries/sanity/product';
 import PortableText from '~/components/portableText/PortableText';
 
 export const meta: V2_MetaFunction = ({data}) => {
+  const variant = data.product.variants.nodes[0];
+  const variantUrl = useVariantUrl(data.product.handle, variant.selectedOptions);
   return [
     {
       title: `${data.product?.title}`,
@@ -63,7 +65,7 @@ export const meta: V2_MetaFunction = ({data}) => {
     {
       tagName: 'link',
       rel: 'canonical',
-      href: `https://abaufdiewiese.de/${data.product?.handle}`,
+      href: `https://abaufdiewiese.de/${variantUrl}`,
     },
   ];
 };
@@ -174,7 +176,6 @@ function redirectToFirstVariant({
 export default function Product() {
   const data = useLoaderData<typeof loader>();
   const {product, variants, collection, sanityProduct} = data;
-
 
   const {selectedVariant} = product;
 
