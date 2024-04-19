@@ -65,7 +65,7 @@ export const meta: V2_MetaFunction = ({data}) => {
     {
       tagName: 'link',
       rel: 'canonical',
-      href: `https://abaufdiewiese.de/${variantUrl}`,
+      href: `https://abaufdiewiese.de${variantUrl}`,
     },
   ];
 };
@@ -211,7 +211,7 @@ export default function Product() {
                   )}
                   <Image
                     data={item.image}
-                    sizes="(min-width: 45em) 20vw, 50vw"
+                    sizes="(min-width: 768px) 400px, 702px"
                     className="max-h-[376px] object-cover mt-4"
                   />
                 </article>
@@ -280,7 +280,8 @@ function ProductImage({
           aspectRatio="1/1"
           data={activeImage}
           key={activeImage.id}
-          sizes="(min-width: 45em) 50vw, 100vw"
+          sizes="(min-width: 1024) 400px, 900px"
+          loading='eager'
         />
       </div>
       <div className="flex gap-4 mt-4 justify-center">
@@ -304,7 +305,7 @@ function ProductImage({
                 data={thumbnail}
                 key={thumbnail.id}
                 className="max-h-[100px] object-cover"
-                sizes="(min-width: 45em) 50vw, 100vw"
+                sizes="(min-width: 768px) 100px, 100px"
               />
             </button>
           );
