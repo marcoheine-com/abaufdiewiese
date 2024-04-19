@@ -60,7 +60,7 @@ export const meta: V2_MetaFunction = ({data}) => {
     },
     {
       property: 'og:url',
-      content: 'https://abaufdiewiese.de',
+      content: `https://abaufdiewiese.de${variantUrl}`,
     },
     {
       tagName: 'link',
@@ -280,7 +280,7 @@ function ProductImage({
           aspectRatio="1/1"
           data={activeImage}
           key={activeImage.id}
-          sizes="(min-width: 1024) 400px, 900px"
+          sizes="(min-width: 1024px) 400px, 900px"
           loading='eager'
         />
       </div>
