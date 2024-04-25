@@ -149,8 +149,8 @@ export default function Homepage() {
               </section>
             );
 
-          case 'module.showProducts':
-            if (!module.showProducts) {
+          case 'module.showLatestProducts':
+            if (!module.showLatestProducts) {
               return null;
             }
 
@@ -200,7 +200,7 @@ export default function Homepage() {
   );
 }
 
-function RecommendedProducts({
+export function RecommendedProducts({
   latestProductsCollection,
 }: {
   latestProductsCollection: Promise<LatestProductCollectionQuery>;

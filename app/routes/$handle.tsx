@@ -1,6 +1,6 @@
 import type {V2_MetaFunction} from '@shopify/remix-oxygen';
 import {json, type LoaderArgs} from '@shopify/remix-oxygen';
-import {Link, useLoaderData, useMatches} from '@remix-run/react';
+import {Link, NavLink, useLoaderData, useMatches} from '@remix-run/react';
 import {PAGE_QUERY} from '~/queries/sanity/page';
 import {getPaginationVariables, Image} from '@shopify/hydrogen';
 import {PrimaryButton} from '~/components/PrimaryButton';
@@ -83,6 +83,20 @@ export async function loader({request, params, context}: LoaderArgs) {
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 8,
   });
+
+  const showProducts = page.modules?.find(
+    (module) => module._type === 'module.showLatestProducts',
+  ) || page.modules?.find(
+    (module) => module._type === 'module.showAllProducts',
+  );
+
+  if (!showProducts) {
+    return json({
+      page,
+      collection: null,
+    });
+  }
+
   const collection = await storefront.query(PRODUCT_COLLECTION_QUERY, {
     variables: {
       handle: 'alle-picknicktermine',
@@ -92,7 +106,7 @@ export async function loader({request, params, context}: LoaderArgs) {
 
   return json({
     page,
-    collection: handle === 'unsere-picknicks' ? collection : null,
+    collection,
   });
 }
 
@@ -102,9 +116,6 @@ export default function Page() {
   const layout = root.data?.layout;
 
   const [date, setDate] = useState<Date | null>(null);
-
-  const renderProducts =
-    page.slug.current === 'unsere-picknicks' && collection !== null;
 
   const products = date
     ? collection?.collection?.products.nodes.filter((product) => {
@@ -155,6 +166,141 @@ export default function Page() {
             return (
               <Contactform key={module._key} content={layout?.contactForm} />
             );
+
+          case 'module.showLatestProducts':
+            if (!module.showLatestProducts) {
+              return null;
+            }
+
+            return (
+              <div className="w-full content-max-width content-padding content-margin-top flex flex-col" key={module._key}>
+                <h2 className="text-center mt-8">Aktuelle Picknicks</h2>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:gap-16 gap-8 mt-8">
+                  {collection?.collection?.products?.nodes.slice(0, 3).
+                  map((product) => {
+                    const firstSentence = product.description.split('.')[0];
+                    return (
+                      <Link
+                        key={product.id}
+                        className="recommended-product"
+                        to={`/products/${product.handle}`}
+                      >
+                        <Image
+                          data={product.images.nodes[0]}
+                          aspectRatio="1/1"
+                          sizes="(min-width: 45em) 20vw, 50vw"
+                          />
+                        <h4 className="uppercase text-center mt-4">
+                          {product.title}
+                        </h4>
+                        <p className="text-center">{firstSentence}</p>
+
+                        <PrimaryButton className="mt-4">
+                          {product.metafield?.value
+                            ? `Picknick am ${formatGermanDate(
+                              product.metafield?.value,
+                            )} buchen`
+                            : 'Picknick buchen'}
+                        </PrimaryButton>
+                      </Link>
+                    );
+                  })}
+                </div>
+                <NavLink
+                  to="/unsere-picknicks"
+                  className="self-center text-center mt-8 flex gap-2 border-0"
+                  prefetch="intent"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 448 512"
+                    fill="#FFEC9B"
+                    width={24}
+                    height={24}
+                    >
+                    <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
+                  </svg>
+                  <span className="border-b-2 border-b-primaryVariant">
+                    Zeige mir alle Picknicktermine
+                  </span>
+                </NavLink>
+              </div>
+            );
+          case 'module.showAllProducts':
+            if (!module.showAllProducts) {
+              return null;
+            }
+
+            return (
+              <>
+                <section className="content-padding content-max-width content-margin-top flex justify-end items-center gap-2" key={module._key}>
+                  <label htmlFor="date">Nach Datum filtern:</label>
+                  <input
+                    type="date"
+                    id="date"
+                    name="date"
+                    placeholder="Datum auswählen"
+                    onChange={(e) => {
+                      if (!e.target.value) {
+                        setDate(null);
+                        return;
+                      }
+
+                      setDate(new Date(e.target.value));
+                    }}
+                  />
+                </section>
+
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 xl:gap-16 content-padding content-max-width">
+                  {products
+                    ?.filter((product) => {
+                      if (!date) {
+                        return true;
+                      }
+
+                      const productDate = new Date(
+                        product.metafield?.value as string,
+                      ).toUTCString();
+
+                      return productDate === date.toUTCString();
+                    })
+                    .map((product) => {
+                      const firstSentence = product.description.split('.')[0];
+                      return (
+                        <Link
+                          key={product.id}
+                          className="recommended-product"
+                          to={`/products/${product.handle}`}
+                        >
+                          <Image
+                            data={product.images.nodes[0]}
+                            aspectRatio="1/1"
+                            sizes="(min-width: 45em) 20vw, 50vw"
+                          />
+                          <h4 className="uppercase text-center mt-4">
+                            {product.title}
+                          </h4>
+                          <p className="text-center">{`${firstSentence}.`}</p>
+
+                          <PrimaryButton className="mt-4">
+                            {product.metafield?.value
+                              ? `Picknick am ${formatGermanDate(
+                                  product.metafield?.value,
+                                )} buchen`
+                              : 'Picknick buchen'}
+                          </PrimaryButton>
+                        </Link>
+                      );
+                    })}
+                </div>
+                {products?.length === 0 && (
+                  <p className="text-center content-padding">
+                    Für dieses Datum sind leider keine Picknicks verfügbar. Probiere
+                    es einfach mit einem anderen Datum.
+                  </p>
+                )}
+              </>
+            );
           case 'module.textmedia':
             return (
               <section
@@ -179,77 +325,6 @@ export default function Page() {
             return null;
         }
       })}
-
-      {renderProducts && (
-        <>
-          <section className="content-padding content-max-width content-margin-top flex justify-end items-center gap-2">
-            <label htmlFor="date">Nach Datum filtern:</label>
-            <input
-              type="date"
-              id="date"
-              name="date"
-              placeholder="Datum auswählen"
-              onChange={(e) => {
-                if (!e.target.value) {
-                  setDate(null);
-                  return;
-                }
-
-                setDate(new Date(e.target.value));
-              }}
-            />
-          </section>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 xl:gap-16 content-padding content-max-width">
-            {products
-              ?.filter((product) => {
-                if (!date) {
-                  return true;
-                }
-
-                const productDate = new Date(
-                  product.metafield?.value as string,
-                ).toUTCString();
-
-                return productDate === date.toUTCString();
-              })
-              .map((product) => {
-                const firstSentence = product.description.split('.')[0];
-                return (
-                  <Link
-                    key={product.id}
-                    className="recommended-product"
-                    to={`/products/${product.handle}`}
-                  >
-                    <Image
-                      data={product.images.nodes[0]}
-                      aspectRatio="1/1"
-                      sizes="(min-width: 45em) 20vw, 50vw"
-                    />
-                    <h4 className="uppercase text-center mt-4">
-                      {product.title}
-                    </h4>
-                    <p className="text-center">{`${firstSentence}.`}</p>
-
-                    <PrimaryButton className="mt-4">
-                      {product.metafield?.value
-                        ? `Picknick am ${formatGermanDate(
-                            product.metafield?.value,
-                          )} buchen`
-                        : 'Picknick buchen'}
-                    </PrimaryButton>
-                  </Link>
-                );
-              })}
-          </div>
-          {products?.length === 0 && (
-            <p className="text-center content-padding">
-              Für dieses Datum sind leider keine Picknicks verfügbar. Probiere
-              es einfach mit einem anderen Datum.
-            </p>
-          )}
-        </>
-      )}
     </div>
   );
 }
