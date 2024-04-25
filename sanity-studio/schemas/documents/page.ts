@@ -80,6 +80,8 @@ export default defineField({
       of: [
         {type: 'module.accordion'},
         {type: 'module.textmedia'},
+        {type: 'module.showAllProducts'},
+        {type: 'module.showLatestProducts'},
         {type: 'module.showContactform'},
       ],
       group: 'editorial',

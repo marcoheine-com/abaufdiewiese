@@ -329,7 +329,7 @@ function ProductMain({
   const {title, descriptionHtml} = product;
   return (
     <div className="product-main flex flex-col gap-4">
-      <h2>{title}</h2>
+      <h1 className='text-[28px] md:text-[40px]'>{title}</h1>
       <p className="grid grid-cols-2">
         {product.date?.value && (
           <time

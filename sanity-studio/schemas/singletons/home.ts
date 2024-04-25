@@ -34,7 +34,7 @@ export default defineField({
       type: 'array',
       of: [
         {type: 'module.features'},
-        {type: 'module.showProducts'},
+        {type: 'module.showLatestProducts'},
         {type: 'module.textmedia'},
         {type: 'module.showContactform'},
         {type: 'module.support'},

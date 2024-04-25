@@ -3,9 +3,10 @@ import {MODULE_ACCORDION} from '~/queries/sanity/fragments/modules/accordion';
 
 import {MODULE_FEATURES} from '~/queries/sanity/fragments/modules/features';
 import {MODULE_SHOW_CONTACTFORM} from '~/queries/sanity/fragments/modules/showContactform';
-import {MODULE_SHOW_PRODUCTS} from '~/queries/sanity/fragments/modules/showproducts';
+import {MODULE_SHOW_ALL_PRODUCTS} from '~/queries/sanity/fragments/modules/showAllProducts';
 import {MODULE_SUPPORT} from '~/queries/sanity/fragments/modules/support';
 import {MODULE_TEXTMEDIA} from '~/queries/sanity/fragments/modules/textmedia';
+import { MODULE_SHOW_LATEST_PRODUCTS } from './modules/showLatestProducts';
 
 export const MODULES = groq`
   _key,
@@ -19,8 +20,11 @@ export const MODULES = groq`
   (_type == "module.textmedia") => {
     ${MODULE_TEXTMEDIA}
   },
-  (_type == "module.showProducts") => {
-    ${MODULE_SHOW_PRODUCTS}
+  (_type == "module.showAllProducts") => {
+    ${MODULE_SHOW_ALL_PRODUCTS}
+  },
+  (_type == "module.showLatestProducts") => {
+    ${MODULE_SHOW_LATEST_PRODUCTS}
   },
   (_type == "module.showContactform") => {
     ${MODULE_SHOW_CONTACTFORM}

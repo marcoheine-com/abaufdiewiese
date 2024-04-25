@@ -67,7 +67,8 @@ import moduleInstagram from './objects/module/instagram'
 import moduleProduct from './objects/module/product'
 import moduleProducts from './objects/module/products'
 import moduleTextmedia from './objects/module/textmedia'
-import moduleShowproducts from './objects/module/showProducts'
+import moduleShowAllProducts from './objects/module/showAllProducts'
+import moduleShowLatestProducts from './objects/module/showLatestProducts'
 import moduleShowContactform from './objects/module/showContactform'
 import moduleSupport from './objects/module/support'
 import moduleSupportItem from './objects/module/supportItem'
@@ -128,7 +129,8 @@ const objects = [
   moduleProduct,
   moduleProducts,
   moduleTextmedia,
-  moduleShowproducts,
+  moduleShowAllProducts,
+  moduleShowLatestProducts,
   moduleShowContactform,
   moduleSupport,
   moduleSupportItem,
