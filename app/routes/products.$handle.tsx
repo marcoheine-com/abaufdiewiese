@@ -96,7 +96,7 @@ export async function loader({params, request, context}: LoaderArgs) {
   const {collection} = await storefront.query(PRODUCT_COLLECTION_QUERY, {
     variables: {
       handle: 'picknick-besonderheiten',
-      first: 3,
+      first: 5,
     },
   });
 
