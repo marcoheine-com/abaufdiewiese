@@ -46,6 +46,9 @@ export default defineField({
     },
     {
       type: 'image',
+      options: {
+        hotspot: true
+      },
     },
   ],
 })
