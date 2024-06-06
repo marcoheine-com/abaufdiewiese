@@ -7,6 +7,7 @@ import {MODULE_SHOW_ALL_PRODUCTS} from '~/queries/sanity/fragments/modules/showA
 import {MODULE_SUPPORT} from '~/queries/sanity/fragments/modules/support';
 import {MODULE_TEXTMEDIA} from '~/queries/sanity/fragments/modules/textmedia';
 import { MODULE_SHOW_LATEST_PRODUCTS } from './modules/showLatestProducts';
+import { MODULE_GRID } from './modules/grid';
 
 export const MODULES = groq`
   _key,
@@ -19,6 +20,9 @@ export const MODULES = groq`
   },
   (_type == "module.textmedia") => {
     ${MODULE_TEXTMEDIA}
+  },
+  (_type == "module.grid") => {
+    ${MODULE_GRID}
   },
   (_type == "module.showAllProducts") => {
     ${MODULE_SHOW_ALL_PRODUCTS}

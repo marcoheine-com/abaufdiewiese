@@ -48,6 +48,7 @@ export type SanityHomePage = {
 export type SanityHomePageModules =
   | SanityModuleFeatures
   | SanityModuleTextmedia
+  | SanityModuleGrid
   | SanityShowLatestProducts
   | SanityShowContactform
   | SanityModuleSupport;
@@ -116,6 +117,19 @@ export type SanityModuleAccordion = {
   }[];
 };
 
+export type SanityModuleGrid = {
+  _key: string;
+  _type: 'module.grid';
+  items: {
+    _key: string;
+    _type: 'gridItem';
+    body: PortableTextBlock[];
+    image: SanityAssetImage;
+    imageAtTop: boolean;
+    title: string;
+  }[];
+};
+
 export type SanityPage = {
   body: PortableTextBlock[];
   hero?: SanityHero;
@@ -126,6 +140,7 @@ export type SanityPage = {
     | SanityShowAllProducts
     | SanityShowLatestProducts
     | SanityModuleTextmedia
+    | SanityModuleGrid
   )[];
   slug: {
     current: string;

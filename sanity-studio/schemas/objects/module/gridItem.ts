@@ -14,14 +14,6 @@ export default defineField({
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
-    // Image
-    defineField({
-      name: 'image',
-      title: 'Image',
-      type: 'image',
-      options: {hotspot: true},
-      validation: (Rule) => Rule.required(),
-    }),
     // Body
     defineField({
       name: 'body',
@@ -72,7 +64,24 @@ export default defineField({
       ],
       validation: (Rule) => Rule.required(),
     }),
+    // Image
+    defineField({
+      name: 'image',
+      title: 'Image',
+      type: 'image',
+      options: {hotspot: true},
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'imageAtTop',
+      title: 'Image at top',
+      type: 'boolean',
+      
+    }),
   ],
+  initialValue: {
+    imageAtTop: true,
+  },
   preview: {
     select: {
       body: 'body',

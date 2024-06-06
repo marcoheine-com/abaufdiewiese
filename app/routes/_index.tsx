@@ -18,6 +18,7 @@ import {SanityHomePage} from '~/lib/sanity';
 import {PRODUCT_COLLECTION_QUERY} from '~/queries/shopify/collection';
 import PortableText from '~/components/portableText/PortableText';
 import Contactform from '~/components/Contactform';
+import Grid from '~/components/Grid';
 
 export const meta: V2_MetaFunction = ({data}) => {
   return [
@@ -191,6 +192,9 @@ export default function Homepage() {
                 </div>
               </section>
             );
+          
+          case 'module.grid':
+            return <Grid key={module._key} grid={module} />;
 
           default:
             return null;

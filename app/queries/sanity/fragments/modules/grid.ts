@@ -12,9 +12,10 @@ export const MODULE_GRID = groq`
         ${MARK_DEFS}
       }
     },
+    title,
     image {
       ${IMAGE}
     },
-    title
+    imageAtTop
   }
 `;

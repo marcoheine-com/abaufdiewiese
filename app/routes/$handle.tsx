@@ -12,6 +12,7 @@ import {useState} from 'react';
 import PortableText from '~/components/portableText/PortableText';
 import AccordionBlock from '~/components/portableText/blocks/Accordion';
 import Contactform from '~/components/Contactform';
+import Grid from '~/components/Grid';
 
 export const meta: V2_MetaFunction = ({data}) => {
   return [
@@ -321,6 +322,8 @@ export default function Page() {
                 )}
               </section>
             );
+            case 'module.grid':
+              return <Grid key={module._key} grid={module} />;
           default:
             return null;
         }

@@ -18,7 +18,7 @@ const Block = (props: any) => {
       <h3 className={'first:mt-0 last:mb-0 mb-4 mt-16'}>{props.children}</h3>
     );
   }
-  return <p className="first:mt-0 last:mb-0' mb-4">{props.children}</p>;
+  return <p className="first:mt-0 last:mb-0 mb-4">{props.children}</p>;
 };
 
 const components: PortableTextComponents = {
