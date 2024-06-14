@@ -81,6 +81,7 @@ export default defineField({
         {type: 'module.accordion'},
         {type: 'module.textmedia'},
         {type: 'module.showAllProducts'},
+        {type: 'module.grid'},
         {type: 'module.showLatestProducts'},
         {type: 'module.showContactform'},
       ],
