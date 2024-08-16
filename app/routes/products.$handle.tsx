@@ -226,6 +226,12 @@ export default function Product() {
           </section>
         </section>
       ) : null}
+      {sanityProduct?.body && (
+        <PortableText
+          className="content-max-width content-padding content-margin-top"
+          value={sanityProduct.body}
+        />
+      )}
       <section className="content-margin-top content-padding content-max-width">
         <h3 className="font-normal uppercase">Nichts für dich dabei?</h3>
         <p>
