@@ -13,12 +13,21 @@ type Props = {
 };
 
 const Block = (props: any) => {
-  if (props.value.style === 'h3') {
-    return (
-      <h3 className={'first:mt-0 last:mb-0 mb-4 mt-16'}>{props.children}</h3>
-    );
+
+  switch (props.value.style) {
+    case 'h2':
+      return <h2 className="first:mt-0 last:mb-0 mb-4">{props.children}</h2>;
+    case 'h3':
+      return <h3 className="first:mt-0 last:mb-0 mb-4">{props.children}</h3>;
+    case 'h4':
+      return <h4 className="first:mt-0 last:mb-0 mb-4">{props.children}</h4>;
+    case 'h5':
+      return <h5 className="first:mt-0 last:mb-0 mb-4">{props.children}</h5>;
+    case 'h6':
+      return <h6 className="first:mt-0 last:mb-0 mb-4">{props.children}</h6>;
+    default:
+      return <p className="first:mt-0 last:mb-0 mb-4">{props.children}</p>;
   }
-  return <p className="first:mt-0 last:mb-0 mb-4">{props.children}</p>;
 };
 
 const components: PortableTextComponents = {

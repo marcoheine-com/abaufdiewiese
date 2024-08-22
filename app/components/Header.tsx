@@ -11,7 +11,7 @@ type Viewport = 'desktop' | 'mobile';
 export function Header({cart, menuLinks}: HeaderProps) {
   return (
     <header className="flex top-0 sticky w-full bg-white items-center mx-auto z-[1] content-max-width content-padding">
-      <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
+      <NavLink prefetch="intent" to="/" end>
         <img
           src="/images/abaufdiewiese.png"
           alt="abaufdiewiese"
@@ -53,7 +53,6 @@ export function HeaderMenu({
             key={item._key}
             onClick={closeAside}
             prefetch="intent"
-            style={activeLinkStyle}
             to={item.slug}
           >
             {item.title}
@@ -77,14 +76,6 @@ export function HeaderCtas({cart}: Pick<HeaderProps, 'cart'>) {
 
       <CartToggle cart={cart} />
     </nav>
-  );
-}
-
-function HeaderMenuMobileToggle() {
-  return (
-    <a className="header-menu-mobile-toggle" href="#mobile-menu-aside">
-      <h3>☰</h3>
-    </a>
   );
 }
 
@@ -119,17 +110,4 @@ export function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
       </Await>
     </Suspense>
   );
-}
-
-export function activeLinkStyle({
-  isActive,
-  isPending,
-}: {
-  isActive: boolean;
-  isPending: boolean;
-}) {
-  return {
-    fontWeight: isActive ? 'bold' : '',
-    color: isPending ? 'grey' : 'black',
-  };
 }

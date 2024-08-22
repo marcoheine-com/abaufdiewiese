@@ -137,7 +137,7 @@ aside li {
 }
 
 .header-menu-mobile-toggle {
-  @media (min-width: 48em) {
+  @media (min-width: 1080px) {
     display: none;
   }
 }
@@ -151,7 +151,7 @@ aside li {
 .header-menu-desktop {
   display: none;
   grid-gap: 1rem;
-  @media (min-width: 45em) {
+  @media (min-width: 1080px) {
     display: flex;
     grid-gap: 1rem;
     margin-left: 3rem;
@@ -160,6 +160,10 @@ aside li {
 
 .header-menu-item {
   cursor: pointer;
+}
+
+.active {
+  font-weight: bold;
 }
 
 .header-ctas {

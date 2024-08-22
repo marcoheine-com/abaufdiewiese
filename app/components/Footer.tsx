@@ -22,7 +22,6 @@ export function Footer({links, socialLinks}: Props) {
                   end
                   key={item._key}
                   prefetch="none"
-                  style={activeLinkStyle}
                   to={item.url}
                   target={item.newWindow ? '_blank' : undefined}
                 >
@@ -42,7 +41,6 @@ export function Footer({links, socialLinks}: Props) {
                   end
                   key={item._key}
                   prefetch="intent"
-                  style={activeLinkStyle}
                   to={item.slug}
                 >
                   {item.title}
@@ -54,10 +52,4 @@ export function Footer({links, socialLinks}: Props) {
       </div>
     </footer>
   );
-}
-
-function activeLinkStyle({isActive}: {isActive: boolean; isPending: boolean}) {
-  return {
-    fontWeight: isActive ? 'bold' : '',
-  };
 }

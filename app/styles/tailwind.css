@@ -86,6 +86,20 @@
     @apply border-b-2 border-b-primaryVariant;
   }
 
+  /* Reset shopify html embed styling */
+  
+  .product-main span {
+    @apply text-base;
+  }
+  strong > a,
+  .product-main li > a {
+    @apply border-b-2 border-b-primaryVariant;
+  }
+
+  .product-main li {
+      @apply list-disc ml-8;
+  }
+
   input[type='radio'] {
     /* Add if not using autoprefixer */
     -webkit-appearance: none;

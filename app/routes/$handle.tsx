@@ -13,6 +13,7 @@ import PortableText from '~/components/portableText/PortableText';
 import AccordionBlock from '~/components/portableText/blocks/Accordion';
 import Contactform from '~/components/Contactform';
 import Grid from '~/components/Grid';
+import * as React from 'react';
 
 export const meta: V2_MetaFunction = ({data}) => {
   return [
@@ -233,7 +234,7 @@ export default function Page() {
             }
 
             return (
-              <>
+              <React.Fragment key={module._key}>
                 <section className="content-padding content-max-width content-margin-top flex justify-end items-center gap-2" key={module._key}>
                   <label htmlFor="date">Nach Datum filtern:</label>
                   <input
@@ -300,7 +301,7 @@ export default function Page() {
                     es einfach mit einem anderen Datum.
                   </p>
                 )}
-              </>
+              </React.Fragment>
             );
           case 'module.textmedia':
             return (
