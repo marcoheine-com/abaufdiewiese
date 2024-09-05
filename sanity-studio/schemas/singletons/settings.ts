@@ -26,6 +26,10 @@ export default defineType({
       name: 'seo',
       title: 'SEO',
     },
+    {
+      name: 'newsletter',
+      title: 'Newsletter',
+    },
   ],
   fields: [
     // Menu
@@ -61,6 +65,12 @@ export default defineType({
       title: 'SEO',
       type: 'seo',
       group: 'seo',
+    }),
+    defineField({
+      name: 'newsletter',
+      title: 'Newsletter',
+      type: 'newsletterSettings',
+      group: 'newsletter',
     }),
   ],
   preview: {

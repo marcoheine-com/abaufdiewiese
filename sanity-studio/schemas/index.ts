@@ -39,6 +39,7 @@ import customProductOptionSize from './objects/customProductOption/size'
 import customProductOptionSizeObject from './objects/customProductOption/sizeObject'
 import contactForm from './objects/global/contactForm'
 import footer from './objects/global/footer'
+import newsletter from './objects/global/newsletter'
 import imageWithProductHotspots from './objects/hotspot/imageWithProductHotspots'
 import inventory from './objects/shopify/inventory'
 import linkExternal from './objects/global/linkExternal'
@@ -64,6 +65,7 @@ import moduleImage from './objects/module/image'
 import moduleImageAction from './objects/module/imageCallToAction'
 import moduleImages from './objects/module/images'
 import moduleInstagram from './objects/module/instagram'
+import moduleShowNewsLetter from './objects/module/showNewsletter'
 import moduleProduct from './objects/module/product'
 import moduleProducts from './objects/module/products'
 import moduleTextmedia from './objects/module/textmedia'
@@ -101,6 +103,7 @@ const objects = [
   customProductOptionSizeObject,
   contactForm,
   footer,
+  newsletter,
   imageWithProductHotspots,
   inventory,
   links,
@@ -126,6 +129,7 @@ const objects = [
   moduleImageAction,
   moduleImages,
   moduleInstagram,
+  moduleShowNewsLetter,
   moduleProduct,
   moduleProducts,
   moduleTextmedia,

@@ -39,6 +39,7 @@ export default defineField({
         {type: 'module.grid'},
         {type: 'module.showContactform'},
         {type: 'module.support'},
+        {type: 'module.showNewsletter'},
       ],
       group: 'editorial',
     }),

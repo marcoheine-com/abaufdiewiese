@@ -84,6 +84,7 @@ export default defineField({
         {type: 'module.grid'},
         {type: 'module.showLatestProducts'},
         {type: 'module.showContactform'},
+        {type: 'module.showNewsletter'},
       ],
       group: 'editorial',
     }),
