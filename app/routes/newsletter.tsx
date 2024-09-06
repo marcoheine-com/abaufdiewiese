@@ -78,7 +78,7 @@ export async function loader({request, context}: LoaderArgs) {
     // TO DO: Also remove from list 5
     try {
       const response = await fetch(
-        ' https://api.brevo.com/v3/contacts/lists/4/contacts/add',
+        'https://api.brevo.com/v3/contacts/lists/4/contacts/add',
         {
           method: 'POST',
           headers: {
