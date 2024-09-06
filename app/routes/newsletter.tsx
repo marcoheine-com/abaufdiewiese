@@ -92,8 +92,11 @@ export async function loader({request, context}: LoaderArgs) {
         },
       );
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error(`Could not subscribe user: ${response.statusText}`);
+        // @ts-ignore
+        throw new Error(`Could not subscribe user: ${data.message}`);
       }
 
       return json({success: true});
@@ -129,8 +132,8 @@ export default function Subscribe() {
     <section className="content-max-width content-padding content-margin-top">
       <h1>Deine Newsletter Anmeldung: nur noch ein Schritt!</h1>
       <p>
-        Wir haben dir soeben eine E-Mail an {actionData.email} geschickt. Bitte
-        bestätige dort nochmals, dass du meinen Newsletter erhalten möchtest.
+        Wir haben dir soeben eine E-Mail geschickt. Bitte bestätige dort
+        nochmals, dass du meinen Newsletter erhalten möchtest.
       </p>
     </section>
   );
