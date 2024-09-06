@@ -32,6 +32,8 @@ export async function action({request, context}: ActionArgs) {
       throw new Error('Could not create contact');
     }
 
+    const {id} = (await createContactResponse.json()) as {id: string};
+
     const sendMailResponse = await fetch(
       'https://api.brevo.com/v3/smtp/email',
       {
@@ -50,6 +52,7 @@ export async function action({request, context}: ActionArgs) {
           subject: 'Bitte bestätige deine Anmeldung zum Newsletter',
           params: {
             FIRSTNAME: name,
+            USER_ID: id,
           },
         }),
       },
@@ -66,11 +69,40 @@ export async function action({request, context}: ActionArgs) {
   }
 }
 
-export async function loader({request}: LoaderArgs) {
+export async function loader({request, context}: LoaderArgs) {
+  const apiKey = context.env.BREVO_NEWSLETTER_API_KEY;
   const url = new URL(request.url);
-  const successParam = url.searchParams.get('subscribe');
+  const user = url.searchParams.get('user');
 
-  return json({success: successParam === 'true'});
+  if (user) {
+    try {
+      const response = await fetch(
+        ' https://api.brevo.com/v3/contacts/lists/4/contacts/add',
+        {
+          method: 'POST',
+          headers: {
+            accept: 'application/json',
+            'api-key': apiKey,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            emails: [user],
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error('Could not subscribe user');
+      }
+
+      return json({success: true});
+    } catch (error) {
+      console.error(error);
+      return json({success: false});
+    }
+  }
+
+  return json({success: false});
 }
 
 export default function Subscribe() {
