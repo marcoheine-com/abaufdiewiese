@@ -86,11 +86,11 @@ export async function loader({request, params, context}: LoaderArgs) {
     pageBy: 8,
   });
 
-  const showProducts = page.modules?.find(
-    (module) => module._type === 'module.showLatestProducts',
-  ) || page.modules?.find(
-    (module) => module._type === 'module.showAllProducts',
-  );
+  const showProducts =
+    page.modules?.find(
+      (module) => module._type === 'module.showLatestProducts',
+    ) ||
+    page.modules?.find((module) => module._type === 'module.showAllProducts');
 
   if (!showProducts) {
     return json({
@@ -175,38 +175,42 @@ export default function Page() {
             }
 
             return (
-              <div className="w-full content-max-width content-padding content-margin-top flex flex-col" key={module._key}>
+              <div
+                className="w-full content-max-width content-padding content-margin-top flex flex-col"
+                key={module._key}
+              >
                 <h2 className="text-center mt-8">Aktuelle Picknicks</h2>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:gap-16 gap-8 mt-8">
-                  {collection?.collection?.products?.nodes.slice(0, 3).
-                  map((product) => {
-                    const firstSentence = product.description.split('.')[0];
-                    return (
-                      <Link
-                        key={product.id}
-                        className="recommended-product"
-                        to={`/products/${product.handle}`}
-                      >
-                        <Image
-                          data={product.images.nodes[0]}
-                          aspectRatio="1/1"
-                          sizes="(min-width: 45em) 20vw, 50vw"
+                  {collection?.collection?.products?.nodes
+                    .slice(0, 3)
+                    .map((product) => {
+                      const firstSentence = product.description.split('.')[0];
+                      return (
+                        <Link
+                          key={product.id}
+                          className="recommended-product"
+                          to={`/products/${product.handle}`}
+                        >
+                          <Image
+                            data={product.images.nodes[0]}
+                            aspectRatio="1/1"
+                            sizes="(min-width: 45em) 20vw, 50vw"
                           />
-                        <h4 className="uppercase text-center mt-4">
-                          {product.title}
-                        </h4>
-                        <p className="text-center">{firstSentence}</p>
+                          <h4 className="uppercase text-center mt-4">
+                            {product.title}
+                          </h4>
+                          <p className="text-center">{firstSentence}</p>
 
-                        <PrimaryButton className="mt-4">
-                          {product.metafield?.value
-                            ? `Picknick am ${formatGermanDate(
-                              product.metafield?.value,
-                            )} buchen`
-                            : 'Picknick buchen'}
-                        </PrimaryButton>
-                      </Link>
-                    );
-                  })}
+                          <PrimaryButton className="mt-4 w-full">
+                            {product.metafield?.value
+                              ? `Picknick am ${formatGermanDate(
+                                  product.metafield?.value,
+                                )} buchen`
+                              : 'Picknick buchen'}
+                          </PrimaryButton>
+                        </Link>
+                      );
+                    })}
                 </div>
                 <NavLink
                   to="/unsere-picknicks"
@@ -219,7 +223,7 @@ export default function Page() {
                     fill="#FFEC9B"
                     width={24}
                     height={24}
-                    >
+                  >
                     <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
                   </svg>
                   <span className="border-b-2 border-b-primaryVariant">
@@ -235,7 +239,10 @@ export default function Page() {
 
             return (
               <React.Fragment key={module._key}>
-                <section className="content-padding content-max-width content-margin-top flex justify-end items-center gap-2" key={module._key}>
+                <section
+                  className="content-padding content-max-width content-margin-top flex justify-end items-center gap-2"
+                  key={module._key}
+                >
                   <label htmlFor="date">Nach Datum filtern:</label>
                   <input
                     type="date"
@@ -297,8 +304,8 @@ export default function Page() {
                 </div>
                 {products?.length === 0 && (
                   <p className="text-center content-padding">
-                    Für dieses Datum sind leider keine Picknicks verfügbar. Probiere
-                    es einfach mit einem anderen Datum.
+                    Für dieses Datum sind leider keine Picknicks verfügbar.
+                    Probiere es einfach mit einem anderen Datum.
                   </p>
                 )}
               </React.Fragment>
@@ -323,8 +330,8 @@ export default function Page() {
                 )}
               </section>
             );
-            case 'module.grid':
-              return <Grid key={module._key} grid={module} />;
+          case 'module.grid':
+            return <Grid key={module._key} grid={module} />;
           default:
             return null;
         }

@@ -51,7 +51,8 @@ export type SanityHomePageModules =
   | SanityModuleGrid
   | SanityShowLatestProducts
   | SanityShowContactform
-  | SanityModuleSupport;
+  | SanityModuleSupport
+  | SanityShowNewsletter
 
 export type SanityModuleFeatures = {
   _key: string;
@@ -83,6 +84,12 @@ export type SanityShowContactform = {
   _key: string;
   _type: 'module.showContactform';
   showContactform: boolean;
+};
+
+export type SanityShowNewsletter = {
+  _key: string;
+  _type: 'module.showNewsletter';
+  showNewsletter: boolean;
 };
 
 export type SanityModuleTextmedia = {
@@ -210,6 +217,12 @@ export type SanitySettings = {
 export type SanityContactform = {
   title: string;
   subtitle: string;
+  text: PortableTextBlock[];
+  image: SanityAssetImage;
+};
+
+export type SanityNewsletter = {
+  title: string;
   text: PortableTextBlock[];
   image: SanityAssetImage;
 };

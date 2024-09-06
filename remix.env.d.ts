@@ -29,6 +29,7 @@ declare global {
     SANITY_PROJECT_ID: string;
     SANITY_DATASET: string;
     SANITY_API_VERSION: string;
+    BREVO_NEWSLETTER_API_KEY: string;
   }
 }
 

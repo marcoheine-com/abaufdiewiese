@@ -37,6 +37,15 @@ export const LAYOUT_QUERY = groq`
         ${COLOR_THEME}
       },
       title
-    }
+    },
+    newsletter {
+      title,
+      image {
+        ${IMAGE}
+      },
+      text[]{
+        ${PORTABLE_TEXT}
+      },
+    },
   }
 `;

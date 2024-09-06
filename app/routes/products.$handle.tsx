@@ -29,7 +29,10 @@ import PortableText from '~/components/portableText/PortableText';
 
 export const meta: V2_MetaFunction = ({data}) => {
   const variant = data.product.variants.nodes[0];
-  const variantUrl = useVariantUrl(data.product.handle, variant.selectedOptions);
+  const variantUrl = useVariantUrl(
+    data.product.handle,
+    variant.selectedOptions,
+  );
   return [
     {
       title: `${data.product?.title}`,
@@ -287,7 +290,7 @@ function ProductImage({
           data={activeImage}
           key={activeImage.id}
           sizes="(min-width: 1024px) 400px, 900px"
-          loading='eager'
+          loading="eager"
         />
       </div>
       <div className="flex gap-4 mt-4 justify-center">
@@ -335,7 +338,7 @@ function ProductMain({
   const {title, descriptionHtml} = product;
   return (
     <div className="product-main flex flex-col gap-4">
-      <h1 className='text-[28px] md:text-[40px]'>{title}</h1>
+      <h1 className="text-[28px] md:text-[40px]">{title}</h1>
       <p className="grid grid-cols-2">
         {product.date?.value && (
           <time
@@ -628,7 +631,7 @@ function AddToCartButton({
             type="submit"
             onClick={handleOnClick}
             disabled={disabled ?? fetcher.state !== 'idle'}
-            className="flex justify-center gap-2"
+            className="flex justify-center gap-2 w-full"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

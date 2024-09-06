@@ -24,44 +24,7 @@ export default defineField({
     defineField({
       name: 'text',
       title: 'Text',
-      type: 'array',
-      of: [
-        {
-          lists: [],
-          marks: {
-            annotations: [
-              // Email
-              {
-                title: 'Email',
-                name: 'annotationLinkEmail',
-                type: 'annotationLinkEmail',
-              },
-              // Phone
-              {
-                title: 'Phone',
-                name: 'annotationLinkPhone',
-                type: 'annotationLinkPhone',
-              },
-              // Internal link
-              {
-                title: 'Internal page',
-                name: 'annotationLinkInternal',
-                type: 'annotationLinkInternal',
-              },
-              // URL
-              {
-                title: 'URL',
-                name: 'annotationLinkExternal',
-                type: 'annotationLinkExternal',
-              },
-            ],
-            decorators: [],
-          },
-          // Block styles
-          styles: [{title: 'Normal', value: 'normal'}],
-          type: 'block',
-        },
-      ],
+      type: 'body',
     }),
   ],
 

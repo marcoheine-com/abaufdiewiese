@@ -71,7 +71,7 @@ export default function Contactform({content}: Props) {
             </div>
             <PrimaryButton
               type="submit"
-              className="md:col-start-1 md:col-span-1 md:self-start"
+              className="md:col-start-1 md:justify-self-start"
             >
               {state.submitting
                 ? 'Nachricht wird gesendet...'

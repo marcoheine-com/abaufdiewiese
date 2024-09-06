@@ -19,6 +19,7 @@ import {PRODUCT_COLLECTION_QUERY} from '~/queries/shopify/collection';
 import PortableText from '~/components/portableText/PortableText';
 import Contactform from '~/components/Contactform';
 import Grid from '~/components/Grid';
+import Newsletter from '~/components/Newsletter';
 
 export const meta: V2_MetaFunction = ({data}) => {
   return [
@@ -170,6 +171,15 @@ export default function Homepage() {
               <Contactform key={module._key} content={layout?.contactForm} />
             );
 
+          case 'module.showNewsletter':
+            if (!module.showNewsletter) {
+              return null;
+            }
+
+            return (
+              <Newsletter key={module._key} content={layout?.newsletter} />
+            );
+
           case 'module.support':
             return (
               <section
@@ -192,7 +202,7 @@ export default function Homepage() {
                 </div>
               </section>
             );
-          
+
           case 'module.grid':
             return <Grid key={module._key} grid={module} />;
 

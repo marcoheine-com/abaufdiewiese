@@ -8,6 +8,7 @@ import {MODULE_SUPPORT} from '~/queries/sanity/fragments/modules/support';
 import {MODULE_TEXTMEDIA} from '~/queries/sanity/fragments/modules/textmedia';
 import { MODULE_SHOW_LATEST_PRODUCTS } from './modules/showLatestProducts';
 import { MODULE_GRID } from './modules/grid';
+import { MODULE_SHOW_NEWSLETTER } from './modules/showNewsletter';
 
 export const MODULES = groq`
   _key,
@@ -32,6 +33,9 @@ export const MODULES = groq`
   },
   (_type == "module.showContactform") => {
     ${MODULE_SHOW_CONTACTFORM}
+  },
+  (_type == "module.showNewsletter") => {
+    ${MODULE_SHOW_NEWSLETTER}
   },
   (_type == "module.support") => {
     ${MODULE_SUPPORT}
