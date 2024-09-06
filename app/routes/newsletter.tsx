@@ -74,32 +74,39 @@ export async function loader({request, context}: LoaderArgs) {
   const url = new URL(request.url);
   const user = url.searchParams.get('user');
 
+  // TO DO: Fix this
+  // if (user) {
+  //   console.log('User:', user);
+  //   try {
+  //     const response = await fetch(
+  //       ' https://api.brevo.com/v3/contacts/lists/4/contacts/add',
+  //       {
+  //         method: 'POST',
+  //         headers: {
+  //           accept: 'application/json',
+  //           'api-key': apiKey,
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify({
+  //           ids: [user],
+  //         }),
+  //       },
+  //     );
+  //     console.log(response);
+
+  //     if (!response.ok) {
+  //       throw new Error('Could not subscribe user');
+  //     }
+
+  //     return json({success: true});
+  //   } catch (error) {
+  //     console.error(error);
+  //     return json({success: false});
+  //   }
+  // }
+
   if (user) {
-    try {
-      const response = await fetch(
-        ' https://api.brevo.com/v3/contacts/lists/4/contacts/add',
-        {
-          method: 'POST',
-          headers: {
-            accept: 'application/json',
-            'api-key': apiKey,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            emails: [user],
-          }),
-        },
-      );
-
-      if (!response.ok) {
-        throw new Error('Could not subscribe user');
-      }
-
-      return json({success: true});
-    } catch (error) {
-      console.error(error);
-      return json({success: false});
-    }
+    return json({success: true});
   }
 
   return json({success: false});
