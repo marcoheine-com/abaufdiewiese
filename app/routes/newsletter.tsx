@@ -74,8 +74,7 @@ export async function loader({request, context}: LoaderArgs) {
   const url = new URL(request.url);
   const user = url.searchParams.get('user');
 
-  if (user) {
-    // TO DO: Also remove from list 5
+  const addUserToFinalList = async (user: string) => {
     try {
       const response = await fetch(
         'https://api.brevo.com/v3/contacts/lists/4/contacts/add',
@@ -99,10 +98,46 @@ export async function loader({request, context}: LoaderArgs) {
         throw new Error(`Could not subscribe user: ${data.message}`);
       }
 
-      return json({success: true});
+      return true;
     } catch (error) {
       console.error(error);
-      return json({success: false});
+      return false;
+    }
+  };
+
+  const removeUserFromWaitingList = async (user: string) => {
+    try {
+      const response = await fetch(
+        `https://api.brevo.com/v3/contacts/lists/5/contacts/remove`,
+        {
+          method: 'POST',
+          headers: {
+            accept: 'application/json',
+            'api-key': apiKey,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ids: [parseInt(user)],
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error(`Could not remove user from waiting list`);
+      }
+
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+
+  if (user) {
+    const success = await addUserToFinalList(user);
+    if (success) {
+      await removeUserFromWaitingList(user);
+      return json({success: true});
     }
   }
 

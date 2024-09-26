@@ -2,7 +2,7 @@ import {Image} from '@shopify/hydrogen';
 import {SanityNewsletter} from '~/lib/sanity';
 import PortableText from './portableText/PortableText';
 import {PrimaryButton} from './PrimaryButton';
-import {Form, useNavigation} from '@remix-run/react';
+import {Form, Link, useNavigation} from '@remix-run/react';
 
 interface Props {
   content: SanityNewsletter;
@@ -49,6 +49,20 @@ export default function Newsletter({content}: Props) {
             autoComplete="on"
             className="placeholder-gray-400 font-thin md:w-1/2"
           />
+        </label>
+        <label className="flex items-center gap-2">
+          <input type="checkbox" name="privacy" required />
+          <span>
+            Ich habe die{' '}
+            <Link
+              to="/datenschutzerklaerung"
+              target="_blank"
+              className="underline"
+            >
+              Datenschutzerklärung
+            </Link>{' '}
+            gelesen und bin damit einverstanden.
+          </span>
         </label>
         <PrimaryButton type="submit" className="md:w-auto md:self-start">
           {navigation.state === 'submitting'
