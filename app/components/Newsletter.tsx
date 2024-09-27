@@ -48,6 +48,7 @@ export default function Newsletter({content}: Props) {
             required
             autoComplete="on"
             className="placeholder-gray-400 font-thin md:w-1/2"
+            pattern="[\p{L} ]+"
           />
         </label>
         <label className="flex items-center gap-2">
