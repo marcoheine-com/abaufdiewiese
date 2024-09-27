@@ -72,7 +72,8 @@ export async function action({request, context}: ActionArgs) {
 export async function loader({request, context}: LoaderArgs) {
   const apiKey = context.env.BREVO_NEWSLETTER_API_KEY;
   const url = new URL(request.url);
-  const user = url.searchParams.get('user');
+  const subscribeUser = url.searchParams.get('subscribe');
+  const unsubscribeUser = url.searchParams.get('unsubscribe');
 
   const addUserToFinalList = async (user: string) => {
     try {
@@ -133,12 +134,42 @@ export async function loader({request, context}: LoaderArgs) {
     }
   };
 
-  if (user) {
-    const success = await addUserToFinalList(user);
+  const deleteContact = async (user: string) => {
+    try {
+      const response = await fetch(
+        `https://api.brevo.com/v3/contacts/${user}`,
+        {
+          method: 'DELETE',
+          headers: {
+            accept: 'application/json',
+            'api-key': apiKey,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error(`Could not delete contact`);
+      }
+
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+
+  if (subscribeUser) {
+    const success = await addUserToFinalList(subscribeUser);
     if (success) {
-      await removeUserFromWaitingList(user);
+      await removeUserFromWaitingList(subscribeUser);
       return json({success: true});
     }
+  }
+
+  if (unsubscribeUser) {
+    const success = await deleteContact(unsubscribeUser);
+    return json({success});
   }
 
   return json({success: false});
