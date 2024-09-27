@@ -168,8 +168,8 @@ export async function loader({request, context}: LoaderArgs) {
   }
 
   if (unsubscribeUser) {
-    const success = await deleteContact(unsubscribeUser);
-    return json({success});
+    const unsubscribe = await deleteContact(unsubscribeUser);
+    return json({unsubscribe});
   }
 
   return json({success: false});
@@ -186,6 +186,14 @@ export default function Subscribe() {
     return (
       <section className="content-max-width content-padding content-margin-top">
         <h1>Das hat geklappt! Deine Newsletter Anmeldung war erfolgreich!</h1>
+      </section>
+    );
+  }
+
+  if (loaderData.unsubscribe) {
+    return (
+      <section className="content-max-width content-padding content-margin-top">
+        <h1>Deine Newsletter Abmeldung war erfolgreich!</h1>
       </section>
     );
   }
