@@ -7,6 +7,11 @@ export async function action({request, context}: ActionArgs) {
   const formData = await request.formData();
   const email = String(formData.get('email'));
   const name = String(formData.get('name'));
+  const honeypot = String(formData.get('dont_fill_this_out_if_you_are_human'));
+
+  if (honeypot && honeypot === '1') {
+    return json({success: false});
+  }
 
   try {
     const createContactResponse = await fetch(
@@ -16,17 +21,22 @@ export async function action({request, context}: ActionArgs) {
         headers: {
           'api-key': apiKey,
           'Content-Type': 'application/json',
+          accept: 'application/json',
         },
         body: JSON.stringify({
-          email,
+          updateEnabled: true,
           listIds: [5],
+          email,
           attributes: {
             FIRSTNAME: name,
           },
-          updateEnabled: true,
         }),
       },
     );
+
+    if (createContactResponse.status === 204) {
+      return json({contactAlreadyExists: 'User already exists'});
+    }
 
     if (!createContactResponse.ok) {
       throw new Error('Could not create contact');
@@ -53,6 +63,7 @@ export async function action({request, context}: ActionArgs) {
           params: {
             FIRSTNAME: name,
             USER_ID: id,
+            EMAIL: email,
           },
         }),
       },
@@ -194,6 +205,25 @@ export default function Subscribe() {
     return (
       <section className="content-max-width content-padding content-margin-top">
         <h1>Deine Newsletter Abmeldung war erfolgreich!</h1>
+      </section>
+    );
+  }
+
+  if (actionData?.success === false) {
+    return (
+      <section className="content-max-width content-padding content-margin-top">
+        <h1>Das hat leider nicht geklappt! Bitte versuche es erneut.</h1>
+      </section>
+    );
+  }
+
+  if (actionData?.contactAlreadyExists) {
+    return (
+      <section className="content-max-width content-padding content-margin-top">
+        <h1>
+          Es scheint als wärst du bereits angemeldet! Falls du meinen Newsletter
+          nicht erhalten hast, prüfe bitte deinen Spam-Ordner.
+        </h1>
       </section>
     );
   }

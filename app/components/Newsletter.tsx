@@ -51,6 +51,16 @@ export default function Newsletter({content}: Props) {
             pattern="[\p{L} ]+"
           />
         </label>
+        <label className="hidden" aria-hidden>
+          <input
+            type="checkbox"
+            name="dont_fill_this_out_if_you_are_human"
+            tabIndex={-1}
+            autoComplete="off"
+            className="hidden"
+            value="1"
+          />
+        </label>
         <label className="flex items-center gap-2">
           <input type="checkbox" name="privacy" required />
           <span>
