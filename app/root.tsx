@@ -90,15 +90,8 @@ export async function loader({context}: LoaderArgs) {
   // defer the cart query by not awaiting it
   const cartPromise = cart.get();
 
-  const cache = storefront.CacheCustom({
-    mode: 'public',
-    maxAge: 60,
-    staleWhileRevalidate: 60,
-  });
-
   const layout = await context.sanity.query<SanitySettings>({
     query: LAYOUT_QUERY,
-    cache,
   });
 
   // TODO: can be removed, not used

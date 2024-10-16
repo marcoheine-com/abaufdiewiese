@@ -13,7 +13,6 @@ type Props = {
 };
 
 const Block = (props: any) => {
-
   switch (props.value.style) {
     case 'h2':
       return <h2 className="first:mt-0 last:mb-0 mb-4">{props.children}</h2>;

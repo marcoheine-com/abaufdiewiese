@@ -1567,6 +1567,9 @@ export type ProductFragment = Pick<
     >;
   };
   seo: Pick<StorefrontAPI.Seo, 'description' | 'title'>;
+  collections: {
+    nodes: Array<Pick<StorefrontAPI.Collection, 'id' | 'title' | 'handle'>>;
+  };
 };
 
 export type ProductQueryVariables = StorefrontAPI.Exact<{
@@ -1657,6 +1660,9 @@ export type ProductQuery = {
         >;
       };
       seo: Pick<StorefrontAPI.Seo, 'description' | 'title'>;
+      collections: {
+        nodes: Array<Pick<StorefrontAPI.Collection, 'id' | 'title' | 'handle'>>;
+      };
     }
   >;
 };
@@ -2006,7 +2012,7 @@ interface GeneratedQueryTypes {
     return: PoliciesQuery;
     variables: PoliciesQueryVariables;
   };
-  '#graphql\n  query Product(\n    $country: CountryCode\n    $handle: String!\n    $language: LanguageCode\n    $selectedOptions: [SelectedOptionInput!]!\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      ...Product\n    }\n  }\n  #graphql\n  fragment Product on Product {\n    id\n    title\n    vendor\n    handle\n    descriptionHtml\n    description\n    timeRange: metafield(namespace: "custom", key: "time_range") {\n      value\n    }\n    date:  metafield(namespace: "custom", key: "date") {\n      value\n    }\n    location: metafield(namespace: "custom", key: "location") {\n      value\n    }\n    canBeSold: metafield(namespace: "custom", key: "verfuegbar") {\n      value\n    }\n    media(first: 4) {\n      nodes {\n        ... on MediaImage {\n          mediaContentType\n          image {\n            id\n            url\n            altText\n            width\n            height\n          }\n        }\n        ... on Model3d {\n          id\n          mediaContentType\n          sources {\n            mimeType\n            url\n          }\n        }\n      }\n    }\n    options {\n      name\n      values\n    }\n    selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions) {\n      ...ProductVariant\n    }\n    variants(first: 1) {\n      nodes {\n        ...ProductVariant\n      }\n    }\n    seo {\n      description\n      title\n    }\n  }\n  #graphql\n  fragment ProductVariant on ProductVariant {\n    availableForSale\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    id\n    image {\n      __typename\n      id\n      url\n      altText\n      width\n      height\n    }\n    price {\n      amount\n      currencyCode\n    }\n    product {\n      title\n      handle\n    }\n    quantityAvailable\n    selectedOptions {\n      name\n      value\n    }\n    sku\n    title\n    unitPrice {\n      amount\n      currencyCode\n    }\n  }\n\n\n': {
+  '#graphql\n  query Product(\n    $country: CountryCode\n    $handle: String!\n    $language: LanguageCode\n    $selectedOptions: [SelectedOptionInput!]!\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      ...Product\n    }\n  }\n  #graphql\n  fragment Product on Product {\n    id\n    title\n    vendor\n    handle\n    descriptionHtml\n    description\n    timeRange: metafield(namespace: "custom", key: "time_range") {\n      value\n    }\n    date:  metafield(namespace: "custom", key: "date") {\n      value\n    }\n    location: metafield(namespace: "custom", key: "location") {\n      value\n    }\n    canBeSold: metafield(namespace: "custom", key: "verfuegbar") {\n      value\n    }\n    media(first: 4) {\n      nodes {\n        ... on MediaImage {\n          mediaContentType\n          image {\n            id\n            url\n            altText\n            width\n            height\n          }\n        }\n        ... on Model3d {\n          id\n          mediaContentType\n          sources {\n            mimeType\n            url\n          }\n        }\n      }\n    }\n    options {\n      name\n      values\n    }\n    selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions) {\n      ...ProductVariant\n    }\n    variants(first: 1) {\n      nodes {\n        ...ProductVariant\n      }\n    }\n    seo {\n      description\n      title\n    }\n    collections(first: 5) {   # This field retrieves the collections the product belongs to\n      nodes {\n        id\n        title\n        handle\n      }\n    }\n  }\n  #graphql\n  fragment ProductVariant on ProductVariant {\n    availableForSale\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    id\n    image {\n      __typename\n      id\n      url\n      altText\n      width\n      height\n    }\n    price {\n      amount\n      currencyCode\n    }\n    product {\n      title\n      handle\n    }\n    quantityAvailable\n    selectedOptions {\n      name\n      value\n    }\n    sku\n    title\n    unitPrice {\n      amount\n      currencyCode\n    }\n  }\n\n\n': {
     return: ProductQuery;
     variables: ProductQueryVariables;
   };

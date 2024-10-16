@@ -14,6 +14,8 @@ import AccordionBlock from '~/components/portableText/blocks/Accordion';
 import Contactform from '~/components/Contactform';
 import Grid from '~/components/Grid';
 import * as React from 'react';
+import Textmedia from '~/components/Textmedia';
+import HomeProducts from '~/components/HomeProducts';
 
 export const meta: V2_MetaFunction = ({data}) => {
   return [
@@ -62,18 +64,11 @@ export async function loader({request, params, context}: LoaderArgs) {
     throw new Error('Missing page handle');
   }
 
-  const cache = context.storefront.CacheCustom({
-    mode: 'public',
-    maxAge: 60,
-    staleWhileRevalidate: 60,
-  });
-
   const page = await context.sanity.query<SanityPage>({
     query: PAGE_QUERY,
     params: {
       slug: handle,
     },
-    cache,
   });
 
   if (!page) {
@@ -86,19 +81,6 @@ export async function loader({request, params, context}: LoaderArgs) {
     pageBy: 8,
   });
 
-  const showProducts =
-    page.modules?.find(
-      (module) => module._type === 'module.showLatestProducts',
-    ) ||
-    page.modules?.find((module) => module._type === 'module.showAllProducts');
-
-  if (!showProducts) {
-    return json({
-      page,
-      collection: null,
-    });
-  }
-
   const collection = await storefront.query(PRODUCT_COLLECTION_QUERY, {
     variables: {
       handle: 'alle-picknicktermine',
@@ -106,14 +88,22 @@ export async function loader({request, params, context}: LoaderArgs) {
     },
   });
 
+  const homeCollection = await storefront.query(PRODUCT_COLLECTION_QUERY, {
+    variables: {
+      handle: 'fur-zuhause',
+      ...paginationVariables,
+    },
+  });
+
   return json({
     page,
     collection,
+    homeCollection,
   });
 }
 
 export default function Page() {
-  const {page, collection} = useLoaderData<typeof loader>();
+  const {page, collection, homeCollection} = useLoaderData<typeof loader>();
   const [root] = useMatches();
   const layout = root.data?.layout;
 
@@ -311,27 +301,20 @@ export default function Page() {
               </React.Fragment>
             );
           case 'module.textmedia':
-            return (
-              <section
-                className="content-max-width grid lg:grid-cols-2 content-margin-top"
-                key={module._key}
-              >
-                <Image
-                  data={module.media}
-                  aspectRatio="1/1"
-                  className="object-cover md:max-h-[480px]"
-                  sizes="(min-width: 45em) 20vw, 100vw"
-                />
+            return <Textmedia key={module._key} data={module} />;
 
-                {module.text && (
-                  <div className="content-padding py-8 bg-primaryVariant flex flex-col justify-center items-center">
-                    <PortableText value={module.text} />
-                  </div>
-                )}
-              </section>
-            );
           case 'module.grid':
             return <Grid key={module._key} grid={module} />;
+
+          case 'module.showHomeProducts':
+            if (!module.showHomeProducts) {
+              return null;
+            }
+
+            return (
+              <HomeProducts homeCollection={homeCollection} key={module._key} />
+            );
+
           default:
             return null;
         }

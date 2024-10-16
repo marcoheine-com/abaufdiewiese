@@ -6,9 +6,10 @@ import {MODULE_SHOW_CONTACTFORM} from '~/queries/sanity/fragments/modules/showCo
 import {MODULE_SHOW_ALL_PRODUCTS} from '~/queries/sanity/fragments/modules/showAllProducts';
 import {MODULE_SUPPORT} from '~/queries/sanity/fragments/modules/support';
 import {MODULE_TEXTMEDIA} from '~/queries/sanity/fragments/modules/textmedia';
-import { MODULE_SHOW_LATEST_PRODUCTS } from './modules/showLatestProducts';
-import { MODULE_GRID } from './modules/grid';
-import { MODULE_SHOW_NEWSLETTER } from './modules/showNewsletter';
+import {MODULE_SHOW_LATEST_PRODUCTS} from './modules/showLatestProducts';
+import {MODULE_GRID} from './modules/grid';
+import {MODULE_SHOW_NEWSLETTER} from './modules/showNewsletter';
+import {MODULE_SHOW_HOME_PRODUCTS} from './modules/showHomeProducts';
 
 export const MODULES = groq`
   _key,
@@ -39,5 +40,8 @@ export const MODULES = groq`
   },
   (_type == "module.support") => {
     ${MODULE_SUPPORT}
+  },
+  (_type == "module.showHomeProducts") => {
+    ${MODULE_SHOW_HOME_PRODUCTS}
   },
 `;

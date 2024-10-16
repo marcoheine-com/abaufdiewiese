@@ -53,6 +53,7 @@ export type SanityHomePageModules =
   | SanityShowContactform
   | SanityModuleSupport
   | SanityShowNewsletter
+  | SanityModuleShowHomeProducts;
 
 export type SanityModuleFeatures = {
   _key: string;
@@ -78,6 +79,12 @@ export type SanityShowLatestProducts = {
   _key: string;
   _type: 'module.showLatestProducts';
   showLatestProducts: boolean;
+};
+
+export type SanityModuleShowHomeProducts = {
+  _key: string;
+  _type: 'module.showHomeProducts';
+  showHomeProducts: boolean;
 };
 
 export type SanityShowContactform = {
@@ -148,6 +155,7 @@ export type SanityPage = {
     | SanityShowLatestProducts
     | SanityModuleTextmedia
     | SanityModuleGrid
+    | SanityModuleShowHomeProducts
   )[];
   slug: {
     current: string;

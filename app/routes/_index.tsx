@@ -1,4 +1,4 @@
-import type {ActionArgs, V2_MetaFunction} from '@shopify/remix-oxygen';
+import type {V2_MetaFunction} from '@shopify/remix-oxygen';
 import {defer, type LoaderArgs} from '@shopify/remix-oxygen';
 import {
   Await,
@@ -8,7 +8,7 @@ import {
   useMatches,
 } from '@remix-run/react';
 import {Suspense} from 'react';
-import {Image} from '@shopify/hydrogen';
+import {getPaginationVariables, Image} from '@shopify/hydrogen';
 import type {LatestProductCollectionQuery} from 'storefrontapi.generated';
 import {PrimaryButton} from '~/components/PrimaryButton';
 import {formatGermanDate, notFound} from '~/utils';
@@ -16,10 +16,11 @@ import {HOME_PAGE_QUERY} from '~/queries/sanity/home';
 import Hero from '~/components/Hero';
 import {SanityHomePage} from '~/lib/sanity';
 import {PRODUCT_COLLECTION_QUERY} from '~/queries/shopify/collection';
-import PortableText from '~/components/portableText/PortableText';
 import Contactform from '~/components/Contactform';
 import Grid from '~/components/Grid';
 import Newsletter from '~/components/Newsletter';
+import Textmedia from '~/components/Textmedia';
+import HomeProducts from '~/components/HomeProducts';
 
 export const meta: V2_MetaFunction = ({data}) => {
   return [
@@ -61,7 +62,7 @@ export const meta: V2_MetaFunction = ({data}) => {
     },
   ];
 };
-export async function loader({params, context}: LoaderArgs) {
+export async function loader({context, request}: LoaderArgs) {
   const {storefront} = context;
 
   const collection = storefront.query(PRODUCT_COLLECTION_QUERY, {
@@ -71,15 +72,19 @@ export async function loader({params, context}: LoaderArgs) {
     },
   });
 
-  const cache = context.storefront.CacheCustom({
-    mode: 'public',
-    maxAge: 60,
-    staleWhileRevalidate: 60,
+  const paginationVariables = getPaginationVariables(request, {
+    pageBy: 8,
+  });
+
+  const homeCollection = await storefront.query(PRODUCT_COLLECTION_QUERY, {
+    variables: {
+      handle: 'fur-zuhause',
+      ...paginationVariables,
+    },
   });
 
   const page = await context.sanity.query<SanityHomePage>({
     query: HOME_PAGE_QUERY,
-    cache,
   });
 
   if (!page) {
@@ -88,13 +93,14 @@ export async function loader({params, context}: LoaderArgs) {
 
   return defer({
     latestProductsCollection: collection,
+    homeCollection,
     page,
   });
 }
 
 export default function Homepage() {
   const data = useLoaderData<typeof loader>();
-  const {page} = data;
+  const {page, homeCollection} = data;
 
   const [root] = useMatches();
 
@@ -131,25 +137,7 @@ export default function Homepage() {
               </section>
             );
           case 'module.textmedia':
-            return (
-              <section
-                className="content-max-width grid lg:grid-cols-2 content-margin-top"
-                key={module._key}
-              >
-                <Image
-                  data={module.media}
-                  aspectRatio="1/1"
-                  className="object-cover md:max-h-[480px]"
-                  sizes="(min-width: 45em) 20vw, 50vw"
-                />
-
-                {module.text && (
-                  <div className="content-padding py-8 bg-primaryVariant flex flex-col justify-center items-center">
-                    <PortableText value={module.text} />
-                  </div>
-                )}
-              </section>
-            );
+            return <Textmedia key={module._key} data={module} />;
 
           case 'module.showLatestProducts':
             if (!module.showLatestProducts) {
@@ -205,6 +193,14 @@ export default function Homepage() {
 
           case 'module.grid':
             return <Grid key={module._key} grid={module} />;
+
+          case 'module.showHomeProducts':
+            if (!module.showHomeProducts) {
+              return null;
+            }
+            return (
+              <HomeProducts homeCollection={homeCollection} key={module._key} />
+            );
 
           default:
             return null;

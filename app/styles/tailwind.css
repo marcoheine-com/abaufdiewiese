@@ -6,14 +6,6 @@
   @font-face {
     font-family: 'Roboto';
     font-style: normal;
-    font-weight: 100;
-    font-display: swap;
-    src: url('https://cdn.shopify.com/s/files/1/0771/3583/9578/files/Roboto-Thin.ttf?v=1693378360')
-      format('truetype');
-  }
-  @font-face {
-    font-family: 'Roboto';
-    font-style: normal;
     font-weight: 400;
     font-display: swap;
     src: url('https://cdn.shopify.com/s/files/1/0771/3583/9578/files/Roboto-Regular.ttf?v=1693378360')
@@ -86,8 +78,13 @@
     @apply border-b-2 border-b-primaryVariant;
   }
 
+  b,
+  strong {
+    @apply font-bold;
+  }
+
   /* Reset shopify html embed styling */
-  
+
   .product-main span {
     @apply text-base;
   }
@@ -97,7 +94,7 @@
   }
 
   .product-main li {
-      @apply list-disc ml-8;
+    @apply list-disc ml-8;
   }
 
   input[type='radio'] {

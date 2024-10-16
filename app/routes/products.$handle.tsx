@@ -120,18 +120,11 @@ export async function loader({params, request, context}: LoaderArgs) {
     throw new Error('Missing page handle');
   }
 
-  const cache = context.storefront.CacheCustom({
-    mode: 'public',
-    maxAge: 60,
-    staleWhileRevalidate: 60,
-  });
-
   const sanityProduct = await context.sanity.query<SanityProductPage>({
     query: PRODUCT_PAGE_QUERY,
     params: {
       slug: params.handle,
     },
-    cache,
   });
 
   const firstVariant = product.variants.nodes[0];
@@ -181,6 +174,9 @@ export default function Product() {
   const {product, variants, collection, sanityProduct} = data;
 
   const {selectedVariant} = product;
+  const isHomeProduct = product.collections.nodes.some(
+    (collection) => collection.handle === 'fur-zuhause',
+  );
 
   return (
     <section className="w-full mt-10 md:mt-24">
@@ -193,7 +189,8 @@ export default function Product() {
           selectedVariant={selectedVariant}
           product={product}
           variants={variants}
-          addOns={collection?.products.nodes || []}
+          addOns={(!isHomeProduct && collection?.products.nodes) || []}
+          isHomeProduct={isHomeProduct}
         />
       </div>
       {sanityProduct?.menus ? (
@@ -329,11 +326,13 @@ function ProductMain({
   product,
   variants,
   addOns,
+  isHomeProduct,
 }: {
   product: ProductFragment;
   selectedVariant: ProductFragment['selectedVariant'];
   variants: Promise<ProductVariantsQuery>;
   addOns: LatestProductFragment[];
+  isHomeProduct: boolean;
 }) {
   const {title, descriptionHtml} = product;
   return (
@@ -395,6 +394,7 @@ function ProductMain({
             product={product}
             selectedVariant={selectedVariant}
             variants={[]}
+            isHomeProduct={isHomeProduct}
           />
         }
       >
@@ -408,6 +408,7 @@ function ProductMain({
               selectedVariant={selectedVariant}
               variants={data.product?.variants.nodes || []}
               addOns={addOns}
+              isHomeProduct={isHomeProduct}
             />
           )}
         </Await>
@@ -446,18 +447,25 @@ function ProductForm({
   selectedVariant,
   variants,
   addOns,
+  isHomeProduct,
 }: {
   product: ProductFragment;
   selectedVariant: ProductFragment['selectedVariant'];
   variants: Array<ProductVariantFragment>;
   addOns?: LatestProductFragment[];
+  isHomeProduct: boolean;
 }) {
   const [addOnsForCart, setAddOnsForCart] = useState<LatestProductFragment[]>();
 
+  const soldOutLabel = 'Leider ausverkauft';
+  const homeProductLabel =
+    selectedVariant?.availableForSale && product.canBeSold?.value === 'true'
+      ? `${product.title} bestellen`
+      : soldOutLabel;
   const buttonLabel =
     selectedVariant?.availableForSale && product.canBeSold?.value === 'true'
       ? 'Mein Picknick buchen'
-      : 'Leider ausverkauft';
+      : soldOutLabel;
 
   const linesToAdd = selectedVariant
     ? [
@@ -536,36 +544,38 @@ function ProductForm({
           Welche Picknick-Arrangements gibt es?{' '}
         </span>
       </NavLink>
-      <div className="md:grid xl:grid-cols-[120px_auto] md:gap-1">
-        <legend className="font-normal font-quattrocentosans">
-          Besonderheiten
-        </legend>
-        <fieldset className="flex flex-wrap gap-4 items-start mt-1 xl:mt-0 ">
-          {addOns?.map((addOn) => (
-            <div key={addOn.id} className="flex items-center">
-              <input
-                type="checkbox"
-                id={addOn.id}
-                name="addOns"
-                value={addOn.id}
-                onChange={(e) => handleCheckboxChange(e)}
-              />
-              <label className="ml-2 font-thin" htmlFor={addOn.id}>
-                {addOn.title}
-              </label>
-            </div>
-          ))}
-        </fieldset>
-      </div>
+      {addOns && addOns?.length > 0 ? (
+        <div className="md:grid xl:grid-cols-[120px_auto] md:gap-1">
+          <legend className="font-normal font-quattrocentosans">
+            Besonderheiten
+          </legend>
+          <fieldset className="flex flex-wrap gap-4 items-start mt-1 xl:mt-0 ">
+            {addOns?.map((addOn) => (
+              <div key={addOn.id} className="flex items-center">
+                <input
+                  type="checkbox"
+                  id={addOn.id}
+                  name="addOns"
+                  value={addOn.id}
+                  onChange={(e) => handleCheckboxChange(e)}
+                />
+                <label className="ml-2 font-thin" htmlFor={addOn.id}>
+                  {addOn.title}
+                </label>
+              </div>
+            ))}
+          </fieldset>
+        </div>
+      ) : null}
       <AddToCartButton
         disabled={
           !selectedVariant ||
           !selectedVariant.availableForSale ||
-          product.canBeSold?.value === 'false'
+          !product.canBeSold
         }
         lines={linesToAdd}
       >
-        {buttonLabel}
+        {isHomeProduct ? homeProductLabel : buttonLabel}
       </AddToCartButton>
     </div>
   );
@@ -744,6 +754,13 @@ const PRODUCT_FRAGMENT = `#graphql
     seo {
       description
       title
+    }
+    collections(first: 5) {   # This field retrieves the collections the product belongs to
+      nodes {
+        id
+        title
+        handle
+      }
     }
   }
   ${PRODUCT_VARIANT_FRAGMENT}
