@@ -72,6 +72,12 @@ export async function loader({context, request}: LoaderArgs) {
     },
   });
 
+  const cache = storefront.CacheCustom({
+    mode: 'public',
+    maxAge: 60,
+    staleWhileRevalidate: 60,
+  });
+
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 8,
   });
@@ -85,6 +91,7 @@ export async function loader({context, request}: LoaderArgs) {
 
   const page = await context.sanity.query<SanityHomePage>({
     query: HOME_PAGE_QUERY,
+    cache,
   });
 
   if (!page) {

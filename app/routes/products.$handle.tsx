@@ -122,6 +122,12 @@ export async function loader({params, request, context}: LoaderArgs) {
     variables: {handle},
   });
 
+  const cache = storefront.CacheCustom({
+    mode: 'public',
+    maxAge: 60,
+    staleWhileRevalidate: 60,
+  });
+
   if (!product?.id) {
     throw new Response(null, {status: 404});
   }
@@ -135,6 +141,7 @@ export async function loader({params, request, context}: LoaderArgs) {
     params: {
       slug: params.handle,
     },
+    cache,
   });
 
   const firstVariant = product.variants.nodes[0];
