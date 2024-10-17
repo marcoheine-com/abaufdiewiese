@@ -171,6 +171,13 @@ export type SanityProductPage = {
   menuHeadline: string;
   menus: SanityProductMenuItem[];
   allergens: PortableTextBlock[];
+  modules?: (
+    | SanityModuleAccordion
+    | SanityShowContactform
+    | SanityModuleTextmedia
+    | SanityModuleGrid
+    | SanityModuleFeatures
+  )[];
   gid: string;
   slug?: string;
   seo: SanitySeo;

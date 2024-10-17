@@ -2,6 +2,7 @@ import groq from 'groq';
 import {PORTABLE_TEXT} from '../portableText/portableText';
 import {SEO_SHOPIFY} from '../seoShopify';
 import {IMAGE} from '~/queries/sanity/fragments/image';
+import {MODULES} from '../modules';
 
 export const PRODUCT_PAGE = groq`
   _id,
@@ -22,6 +23,9 @@ export const PRODUCT_PAGE = groq`
   },
   allergens[]{
     ${PORTABLE_TEXT}
+  },
+  modules[] {
+    ${MODULES}
   },
   "gid": store.gid,
   ${SEO_SHOPIFY},

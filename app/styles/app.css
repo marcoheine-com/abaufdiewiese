@@ -137,7 +137,8 @@ aside li {
 }
 
 .header-menu-mobile-toggle {
-  @media (min-width: 1080px) {
+  padding: 12px;
+  @media (min-width: 1140px) {
     display: none;
   }
 }
@@ -151,7 +152,7 @@ aside li {
 .header-menu-desktop {
   display: none;
   grid-gap: 1rem;
-  @media (min-width: 1080px) {
+  @media (min-width: 1140px) {
     display: flex;
     grid-gap: 1rem;
     margin-left: 3rem;

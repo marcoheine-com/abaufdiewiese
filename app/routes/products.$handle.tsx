@@ -2,7 +2,13 @@ import {ChangeEvent, Suspense} from 'react';
 import type {V2_MetaFunction} from '@shopify/remix-oxygen';
 import {defer, redirect, type LoaderArgs} from '@shopify/remix-oxygen';
 import type {FetcherWithComponents} from '@remix-run/react';
-import {Await, Link, NavLink, useLoaderData} from '@remix-run/react';
+import {
+  Await,
+  Link,
+  NavLink,
+  useLoaderData,
+  useMatches,
+} from '@remix-run/react';
 import type {
   ProductFragment,
   ProductVariantsQuery,
@@ -26,6 +32,10 @@ import {PRODUCT_COLLECTION_QUERY} from '~/queries/shopify/collection';
 import {SanityProductPage} from '~/lib/sanity';
 import {PRODUCT_PAGE_QUERY} from '~/queries/sanity/product';
 import PortableText from '~/components/portableText/PortableText';
+import Grid from '~/components/Grid';
+import Textmedia from '~/components/Textmedia';
+import Contactform from '~/components/Contactform';
+import AccordionBlock from '~/components/portableText/blocks/Accordion';
 
 export const meta: V2_MetaFunction = ({data}) => {
   const variant = data.product.variants.nodes[0];
@@ -172,6 +182,8 @@ function redirectToFirstVariant({
 export default function Product() {
   const data = useLoaderData<typeof loader>();
   const {product, variants, collection, sanityProduct} = data;
+  const [root] = useMatches();
+  const layout = root.data?.layout;
 
   const {selectedVariant} = product;
   const isHomeProduct = product.collections.nodes.some(
@@ -232,36 +244,95 @@ export default function Product() {
           value={sanityProduct.body}
         />
       )}
-      <section className="content-margin-top content-padding content-max-width">
-        <h3 className="font-normal uppercase">Nichts für dich dabei?</h3>
-        <p>
-          Das kriegen wir schon hin! Melde dich gerne direkt bei uns unter
-          <a href="mailto:info@abaufdiewiese.de"> info@abaufdiewiese.de</a> oder
-          über unser{' '}
-          <NavLink to="/kontakt" prefetch="intent">
-            Kontaktformular
-          </NavLink>
-          .
-        </p>
-        <NavLink
-          to="/unsere-picknicks"
-          className="self-center text-center mt-8 flex gap-2 border-0"
-          prefetch="intent"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 448 512"
-            height={24}
-            width={24}
-            fill="#FFEC9B"
+      {sanityProduct?.modules?.map((module) => {
+        switch (module._type) {
+          case 'module.accordion':
+            return (
+              <AccordionBlock
+                className="content-max-width content-padding content-margin-top"
+                key={module._key}
+                value={module}
+              />
+            );
+          case 'module.features':
+            return (
+              <section
+                className="content-padding content-margin-top content-max-width grid gap-8 md:gap-16 lg:gap-32 xl:gap-64 grid-cols-2 md:grid-cols-4"
+                key={module._key}
+              >
+                {module?.feature?.map((feature) => {
+                  return (
+                    <div
+                      key={feature._key}
+                      className="flex flex-col items-center"
+                    >
+                      <Image
+                        data={feature.icon}
+                        aspectRatio="1/1"
+                        sizes="(min-width: 45em) 20vw, 50vw"
+                      />
+                      <h4 className="uppercase text-[16px] max-w-[100px] text-center">
+                        {feature.title}
+                      </h4>
+                    </div>
+                  );
+                })}
+              </section>
+            );
+          case 'module.showContactform':
+            if (!module.showContactform) {
+              return null;
+            }
+
+            return (
+              <Contactform key={module._key} content={layout?.contactForm} />
+            );
+
+          case 'module.textmedia':
+            return <Textmedia key={module._key} data={module} />;
+
+          case 'module.grid':
+            return <Grid key={module._key} grid={module} />;
+
+          default:
+            return null;
+        }
+      })}
+      {!isHomeProduct ? (
+        <section className="content-margin-top content-padding content-max-width">
+          <h3 className="font-normal uppercase">Nichts für dich dabei?</h3>
+          <p>
+            Das kriegen wir schon hin! Melde dich gerne direkt bei uns unter
+            <a href="mailto:info@abaufdiewiese.de">
+              {' '}
+              info@abaufdiewiese.de
+            </a>{' '}
+            oder über unser{' '}
+            <NavLink to="/kontakt" prefetch="intent">
+              Kontaktformular
+            </NavLink>
+            .
+          </p>
+          <NavLink
+            to="/unsere-picknicks"
+            className="self-center text-center mt-8 flex gap-2 border-0"
+            prefetch="intent"
           >
-            <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
-          </svg>
-          <span className="border-b-2 border-b-primaryVariant">
-            Zurück zu den anderen Picknickterminen
-          </span>
-        </NavLink>
-      </section>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 448 512"
+              height={24}
+              width={24}
+              fill="#FFEC9B"
+            >
+              <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+            </svg>
+            <span className="border-b-2 border-b-primaryVariant">
+              Zurück zu den anderen Picknickterminen
+            </span>
+          </NavLink>
+        </section>
+      ) : null}
     </section>
   );
 }
@@ -290,33 +361,35 @@ function ProductImage({
           loading="eager"
         />
       </div>
-      <div className="flex gap-4 mt-4 justify-center">
-        {images.map((image) => {
-          // ts doesn't know that this is a ProductImage
-          // @ts-ignore
-          const thumbnail = image?.image;
+      {images.length > 1 && (
+        <div className="flex gap-4 mt-4 justify-center">
+          {images.map((image) => {
+            // ts doesn't know that this is a ProductImage
+            // @ts-ignore
+            const thumbnail = image?.image;
 
-          const isActive = thumbnail.id === activeImage?.id;
-          return (
-            <button
-              key={thumbnail.id}
-              className={`product-image-thumbnail ${
-                isActive ? 'product-image-thumbnail-active' : ''
-              }`}
-              onClick={() => setActiveImage(thumbnail)}
-            >
-              <Image
-                alt={thumbnail.altText || 'Product Image'}
-                aspectRatio="1/1"
-                data={thumbnail}
+            const isActive = thumbnail.id === activeImage?.id;
+            return (
+              <button
                 key={thumbnail.id}
-                className="max-h-[100px] object-cover"
-                sizes="(min-width: 768px) 100px, 100px"
-              />
-            </button>
-          );
-        })}
-      </div>
+                className={`product-image-thumbnail ${
+                  isActive ? 'product-image-thumbnail-active' : ''
+                }`}
+                onClick={() => setActiveImage(thumbnail)}
+              >
+                <Image
+                  alt={thumbnail.altText || 'Product Image'}
+                  aspectRatio="1/1"
+                  data={thumbnail}
+                  key={thumbnail.id}
+                  className="max-h-[100px] object-cover"
+                  sizes="(min-width: 768px) 100px, 100px"
+                />
+              </button>
+            );
+          })}
+        </div>
+      )}
     </section>
   );
 }
@@ -458,10 +531,9 @@ function ProductForm({
   const [addOnsForCart, setAddOnsForCart] = useState<LatestProductFragment[]>();
 
   const soldOutLabel = 'Leider ausverkauft';
-  const homeProductLabel =
-    selectedVariant?.availableForSale && product.canBeSold?.value === 'true'
-      ? `${product.title} bestellen`
-      : soldOutLabel;
+  const homeProductLabel = selectedVariant?.availableForSale
+    ? `${product.title} bestellen`
+    : soldOutLabel;
   const buttonLabel =
     selectedVariant?.availableForSale && product.canBeSold?.value === 'true'
       ? 'Mein Picknick buchen'
@@ -526,24 +598,26 @@ function ProductForm({
           return <ProductOptions key={option.name} option={option} />;
         }}
       </VariantSelector>
-      <NavLink
-        to="/faq#welche-picknickarrangements-gibt-es"
-        className="self-start mt-2 flex gap-2 border-0"
-        prefetch="intent"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 448 512"
-          fill="#FFEC9B"
-          width={24}
-          height={24}
+      {!isHomeProduct ? (
+        <NavLink
+          to="/faq#welche-picknickarrangements-gibt-es"
+          className="self-start mt-2 flex gap-2 border-0"
+          prefetch="intent"
         >
-          <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
-        </svg>
-        <span className="border-b-2 border-b-primaryVariant">
-          Welche Picknick-Arrangements gibt es?{' '}
-        </span>
-      </NavLink>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 448 512"
+            fill="#FFEC9B"
+            width={24}
+            height={24}
+          >
+            <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
+          </svg>
+          <span className="border-b-2 border-b-primaryVariant">
+            Welche Picknick-Arrangements gibt es?{' '}
+          </span>
+        </NavLink>
+      ) : null}
       {addOns && addOns?.length > 0 ? (
         <div className="md:grid xl:grid-cols-[120px_auto] md:gap-1">
           <legend className="font-normal font-quattrocentosans">
@@ -571,7 +645,7 @@ function ProductForm({
         disabled={
           !selectedVariant ||
           !selectedVariant.availableForSale ||
-          !product.canBeSold
+          product.canBeSold?.value === 'false'
         }
         lines={linesToAdd}
       >

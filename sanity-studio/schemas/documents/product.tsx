@@ -82,6 +82,22 @@ export default defineType({
       type: 'body',
       group: 'editorial',
     }),
+    // Modules
+    defineField({
+      name: 'modules',
+      title: 'Modules',
+      type: 'array',
+      of: [
+        {type: 'module.accordion'},
+        {type: 'module.features'},
+        {type: 'module.textmedia'},
+        {type: 'module.grid'},
+        {type: 'module.showContactform'},
+        {type: 'module.showNewsletter'},
+        {type: 'module.showHomeProducts'},
+      ],
+      group: 'editorial',
+    }),
     defineField({
       name: 'store',
       title: 'Shopify',
